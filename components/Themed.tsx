@@ -3,10 +3,17 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import { Text as DefaultText, View as DefaultView } from 'react-native';
+import {
+  Text as DefaultText,
+  View as DefaultView,
+  ScrollView as DefaultScrollView,
+  ImageBackground as DefaultImageBackground
+} from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+import styles from '../constants/style';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
@@ -29,6 +36,8 @@ type ThemeProps = {
 
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
+export type ScrollViewProps = ThemeProps & DefaultScrollView['props'];
+export type ImageBackgroundProps = ThemeProps & DefaultImageBackground['props'];
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
@@ -42,4 +51,22 @@ export function View(props: ViewProps) {
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+
+export function Container(props: ViewProps) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
+  const insets = useSafeAreaInsets();
+
+  return <DefaultView style={[{ backgroundColor, paddingTop: insets.top }, style, styles.container]} {...otherProps} />;
+}
+
+export function ScrollView(props: ScrollViewProps) {
+
+  return <DefaultScrollView showsVerticalScrollIndicator={false} style={[styles.scrollContainer, props.style]} {...props} />;
+}
+
+export function ImageBackground(props: ImageBackgroundProps) {
+
+  return <DefaultImageBackground  style={[styles.backgorundImage, props.style]} {...props} />;
 }
