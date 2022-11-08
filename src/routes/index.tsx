@@ -17,7 +17,7 @@ const Routes: React.FC = ()=>{
     }
 
 
-    return logged ?<></> : <></>;
+    return logged ? <></> : <></>;
 }
 
 export default Routes

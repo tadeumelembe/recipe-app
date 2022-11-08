@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Text, View, Container, ImageBackground, ScrollView } from "../../components/Themed";
+import { Text, View, Container, ImageBackground, ScrollView, TextInput } from "../../components/Themed";
 import styles from "../../constants/style";
 
 const Login: React.FC = () => {
@@ -9,17 +9,21 @@ const Login: React.FC = () => {
             <View style={[localStyles.header]}>
                 <ImageBackground imageStyle={{ borderBottomRightRadius: 80 }} source={require('../../assets/images/login-header.png')}>
                     <View style={[localStyles.headerImageView]}>
-                        <Text>
-                            Welcome
+                        <Text style={[styles.fontNunitoBold, styles.fontXl]}>
+                            Welcome Back!
                         </Text>
                     </View>
                 </ImageBackground>
             </View>
             <ScrollView>
 
-                <Text>
-                    Login
+                <Text style={[styles.fontNunitoRegular, styles.fontM, styles.textMuted2, { paddingTop: 25 }]}>
+                    Please login to continue.
                 </Text>
+
+                <TextInput
+                placeholder="Email"
+                />
             </ScrollView>
         </Container>
     )
@@ -36,11 +40,11 @@ const localStyles = StyleSheet.create({
     headerImage: {
         height: 300,
     },
-    headerImageView:{
+    headerImageView: {
         ...styles.horizontalPadding,
-        backgroundColor:'rgba(255, 255, 255, 0.3)',
-        width:'100%',
-        height:'100%',
-        justifyContent:'center'
+        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center'
     }
 })
