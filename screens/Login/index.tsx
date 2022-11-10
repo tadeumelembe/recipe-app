@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { Text, View, Container, ImageBackground, ScrollView, TextInput } from "../../components/Themed";
+import { Pressable, StyleSheet } from "react-native";
+import { Text, View, Container, ImageBackground, ScrollView, TextInput, TouchableOpacity } from "../../components/Themed";
 import styles from "../../constants/style";
 
 const Login: React.FC = () => {
@@ -17,13 +17,31 @@ const Login: React.FC = () => {
             </View>
             <ScrollView>
 
-                <Text style={[styles.fontNunitoRegular, styles.fontM, styles.textMuted2, { paddingTop: 25 }]}>
+                <Text style={[styles.fontNunitoRegular, styles.fontR, styles.textMuted2, { paddingTop: 25, paddingBottom: 50 }]}>
                     Please login to continue.
                 </Text>
 
-                <TextInput
-                placeholder="Email"
+                <View style={localStyles.inputView}>
+                    <TextInput
+                        placeholder="Email address"
+                        autoCapitalize="none"
+
+                    />
+                </View>
+
+                <View style={localStyles.inputView}>
+                    <TextInput
+                        placeholder="Password"
+                        autoCapitalize="none"
+                        secureTextEntry
+                    />
+                </View>
+
+                <TouchableOpacity
+                    btnText="Login"
+                    onPress={()=>alert('ok')}
                 />
+
             </ScrollView>
         </Container>
     )
@@ -46,5 +64,8 @@ const localStyles = StyleSheet.create({
         width: '100%',
         height: '100%',
         justifyContent: 'center'
+    },
+    inputView: {
+        marginBottom: 30
     }
 })

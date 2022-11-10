@@ -8,7 +8,8 @@ import {
   View as DefaultView,
   ScrollView as DefaultScrollView,
   ImageBackground as DefaultImageBackground,
-  TextInput as DefaultTextInput
+  TextInput as DefaultTextInput,
+  TouchableOpacity as DefaultTouchableOpacity
 } from 'react-native';
 
 import Colors from '../constants/Colors';
@@ -40,6 +41,9 @@ export type ViewProps = ThemeProps & DefaultView['props'];
 export type ScrollViewProps = ThemeProps & DefaultScrollView['props'];
 export type ImageBackgroundProps = ThemeProps & DefaultImageBackground['props'];
 export type TextInputProps = ThemeProps & DefaultTextInput['props'];
+export type TouchableOpacityProps = ThemeProps & DefaultTouchableOpacity['props'] & {
+  btnText: string
+};
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
@@ -64,22 +68,34 @@ export function Container(props: ViewProps) {
 }
 
 export function ScrollView(props: ScrollViewProps) {
+  const { style, ...otherProps } = props
 
-  return <DefaultScrollView showsVerticalScrollIndicator={false} style={[styles.scrollContainer, props.style]} {...props} />;
+  return <DefaultScrollView showsVerticalScrollIndicator={false} style={[styles.scrollContainer, style]} {...otherProps} />;
 }
 
 export function ImageBackground(props: ImageBackgroundProps) {
+  const { style, ...otherProps } = props
 
-  return <DefaultImageBackground style={[styles.backgorundImage, props.style]} {...props} />;
+  return <DefaultImageBackground style={[styles.backgorundImage, style]} {...otherProps} />;
 }
 
 export function TextInput(props: TextInputProps) {
-  const {placeholder, ...otherProps} = props
+  const { placeholder, style, ...otherProps } = props
   
   return (
     <DefaultView>
-      <Text>{placeholder}</Text>
-      <DefaultTextInput style={[styles.textInput, props.style]} {...otherProps} />
+      <Text style={[styles.fontNunitoRegular, styles.fontR, styles.textMuted]}>{placeholder}</Text>
+      <DefaultTextInput style={[styles.textInput, style]} {...otherProps} />
     </DefaultView>
   );
+}
+
+export function TouchableOpacity(props: TouchableOpacityProps) {
+  const { btnText, style, ...otherProps } = props
+
+  return (
+    <DefaultTouchableOpacity style={[styles.btn1, style]} {...otherProps}>
+      <Text style={[styles.fontNunitoBold, styles.fontM, styles.btn1Text]}>{btnText}</Text>
+    </DefaultTouchableOpacity>
+  )
 }
