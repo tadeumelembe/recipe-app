@@ -34,6 +34,9 @@ export default StyleSheet.create({
     fontSize: 18
   },
   fontM: {
+    fontSize: 16
+  },
+  fontR: {
     fontSize: 14
   },
   fontNunitoBold: {
@@ -56,7 +59,30 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#CCCCCC',
     fontFamily: 'nunito-regular',
-    color: '#030F09d',
-    fontSize: 16
+    color: '#030F09',
+    fontSize: 16,
+    paddingTop: 8
+  },
+  btn1: {
+    width: '100%',
+    height: 50,
+    borderRadius: 8,
+    backgroundColor: Colors[colorScheme].tint,
+    alignItems: 'center',
+    justifyContent: 'center',
+/*
+    shadowColor: "rgba(0,0,0,0.6)",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 8,
+    elevation: 7,
+*/
+
+  },
+  btn1Text: {
+    color: '#fff',
   }
 });
