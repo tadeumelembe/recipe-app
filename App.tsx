@@ -8,8 +8,8 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
-import Login from './screens/Login';
+import Routes from './navigation/routes';
+import { AuthProvider } from './src/context/authContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -33,22 +33,20 @@ export default function App() {
     return null;
   }
 
+  if (!isLoadingComplete)
+    return null;
+
 
   return (
     <SafeAreaProvider>
+      <StatusBar style={colorScheme == 'light' ? 'dark' : 'light'} />
 
-    <Login />
+      <AuthProvider>
+
+        <Routes />
+        
+      </AuthProvider>
     </SafeAreaProvider>
+  );
 
-  )
-  if (!isLoadingComplete) {
-    return null;
-  } else {
-    return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
-    );
-  }
 }

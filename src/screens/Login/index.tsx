@@ -1,13 +1,13 @@
 import React from "react";
-import { Pressable, StyleSheet } from "react-native";
-import { Text, View, Container, ImageBackground, ScrollView, TextInput, TouchableOpacity } from "../../components/Themed";
-import styles from "../../constants/style";
+import { Pressable, StyleSheet, TouchableHighlight, TouchableWithoutFeedback } from "react-native";
+import { Text, View, Container, ImageBackground, ScrollView, TextInput, TouchableOpacity, TextButton } from "../../../components/Themed";
+import styles from "../../../constants/style";
 
-const Login: React.FC = () => {
+const Login: React.FC = ({ navigation }) => {
     return (
         <Container style={{ paddingTop: 0 }}>
             <View style={[localStyles.header]}>
-                <ImageBackground imageStyle={{ borderBottomRightRadius: 80 }} source={require('../../assets/images/login-header.png')}>
+                <ImageBackground imageStyle={{ borderBottomRightRadius: 80 }} source={require('../../../assets/images/login-header.png')}>
                     <View style={[localStyles.headerImageView]}>
                         <Text style={[styles.fontNunitoBold, styles.fontXl]}>
                             Welcome Back!
@@ -39,9 +39,21 @@ const Login: React.FC = () => {
 
                 <TouchableOpacity
                     btnText="Login"
-                    onPress={()=>alert('ok')}
+                    onPress={() => alert('ok')}
                 />
 
+                <View style={[{ alignItems: 'center', marginTop: 40 }]}>
+                    <Text style={[styles.fontR, styles.fontNunitoMedium, styles.textMuted]}>
+                        New to xxxx?
+                    </Text>
+
+                    <TextButton
+                        btnText="Create New Account"
+                        onPress={() => navigation.navigate('SignUp')}
+
+                    />
+
+                </View>
             </ScrollView>
         </Container>
     )
