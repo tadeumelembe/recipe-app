@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { useThemeColor } from "../components/Themed";
 import Colors from "./Colors";
 import Layout from "./Layout";
 
@@ -13,6 +14,9 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
     flexDirection: 'column',
     flex: 1
+  },
+  inline:{
+    flexDirection:'row',
   },
   scrollContainer: {
     paddingHorizontal: horizontal_padding,
@@ -70,19 +74,22 @@ export default StyleSheet.create({
     backgroundColor: Colors[colorScheme].tint,
     alignItems: 'center',
     justifyContent: 'center',
-/*
-    shadowColor: "rgba(0,0,0,0.6)",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 8,
-    elevation: 7,
-*/
+    /*
+        shadowColor: "rgba(0,0,0,0.6)",
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 8,
+        elevation: 7,
+    */
 
   },
   btn1Text: {
     color: '#fff',
+  },
+  btnTextLink: {
+    color: Colors[colorScheme].tint
   }
 });

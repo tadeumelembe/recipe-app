@@ -12,6 +12,8 @@ import {
   TouchableOpacity as DefaultTouchableOpacity
 } from 'react-native';
 
+import { Ionicons } from '@expo/vector-icons';
+
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import styles from '../constants/style';
@@ -98,4 +100,21 @@ export function TouchableOpacity(props: TouchableOpacityProps) {
       <Text style={[styles.fontNunitoBold, styles.fontM, styles.btn1Text]}>{btnText}</Text>
     </DefaultTouchableOpacity>
   )
+}
+
+export function TextButton(props: TouchableOpacityProps) {
+  const { btnText, style, ...otherProps } = props
+
+  return (
+    <DefaultTouchableOpacity style={[{backgroundColor:'transparent'}, style]} {...otherProps}>
+      <Text style={[styles.fontNunitoBold, styles.fontM, styles.btnTextLink]}>{btnText}</Text>
+    </DefaultTouchableOpacity>
+  )
+}
+
+export function IoniconsIcon(props: {
+  name: React.ComponentProps<typeof Ionicons>['name'];
+  color: string;
+}) {
+  return <Ionicons size={20} style={{ marginBottom: -3 }} {...props} />;
 }
