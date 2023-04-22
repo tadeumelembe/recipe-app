@@ -10,12 +10,18 @@ export default {
     tint: tintColorLight,
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,
+    card:'rgba(48, 190, 118, 0.8)',
+    avatarBackground:'#ccc'
   },
   dark: {
     text: '#fff',
-    background: 'rgba(0,0,0,.90)',
+    textMuted: '#A8A8A8',
+    textMuted2: '#606060',
+    background: 'rgba(48, 190, 118, 0.08)', //'rgba(18, 18, 18, 1)',
     tint: tintColorDark,
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
+    card:'rgba(48, 190, 118, .05)',
+    avatarBackground:'#ccc'
   },
 };
