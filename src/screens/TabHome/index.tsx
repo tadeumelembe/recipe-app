@@ -1,25 +1,53 @@
 import React from "react";
-import { Container, IoniconsIcon, ScrollView, Text, View } from "../../../components/Themed";
-import styles from "../../../constants/style";
+import { ListRenderItemInfo, StyleSheet } from "react-native";
+import { Container, FlatList, ScrollView, View } from "../../../components/Themed";
 
-const TabHome: React.FC = ({ navigation }) => {
+import { RootTabScreenProps } from "../../../types";
+import Head from "../../components/Head";
+import FeedCard from "../../components/TabHome/FeedCard";
+
+
+const data = [
+    {
+        profile_name: 'Tadeu Melembe'
+    },
+    {
+        profile_name: 'Wildson Guiamba'
+    },
+    {
+        profile_name: 'Itan'
+    }
+]
+
+interface data {
+    profile_name: string
+}
+
+export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
+    function renderItem({ item }: ListRenderItemInfo<data>) {
+        return <FeedCard navigation={navigation} />;
+    }
+
+
     return (
         <Container>
-            <ScrollView>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text>Logo</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{ paddingRight: 40 }}>
-                            <IoniconsIcon name="notifications-outline" color="#000" />
-                        </View>
-                        <View>
-                            <IoniconsIcon name="mail-outline" color="#000" />
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
+            <Head navigation={navigation} />
+
+            <FlatList
+                data={data}
+                style={localStyles.flatlist}
+                keyExtractor={(item) => item.profile_name}
+                renderItem={renderItem}
+            />
+
+
         </Container>
     )
 }
 
-export default TabHome
+const localStyles = StyleSheet.create({
+    flatlist:{
+        width:'100%',
+        paddingTop:15
+    }
+})

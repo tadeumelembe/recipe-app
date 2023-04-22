@@ -1,26 +1,48 @@
-import { StyleSheet } from "react-native";
+import React from "react";
+import { ColorSchemeName, Platform, StyleSheet } from "react-native";
 import { useThemeColor } from "../components/Themed";
+import useColorScheme from "../hooks/useColorScheme";
 import Colors from "./Colors";
 import Layout from "./Layout";
 
-const horizontal_padding = 30;
-const colorScheme = 'light'
+const horizontal_padding = 20;
 
-export default StyleSheet.create({
+export default function useGlobalStyles() {
+  const colorScheme = useColorScheme();
+  const styles = React.useMemo(() => getGlobalStyles({ colorScheme }), [colorScheme]);
+
+  return styles
+}
+
+const getGlobalStyles = ({ colorScheme }: NonNullable<ColorSchemeName>) => StyleSheet.create({
+
   container: {
-    //width: Layout.window.width - 30,
+    width: '100%',
     alignItems: 'center',
+    paddingTop: 30,
+    paddingHorizontal: horizontal_padding,
+
     backgroundColor: Colors[colorScheme].background,
     justifyContent: 'flex-start',
     flexDirection: 'column',
     flex: 1
   },
-  inline:{
-    flexDirection:'row',
+  bgNone: {
+    backgroundColor: '#ffffff00'
+  },
+  inline: {
+    flexDirection: 'row',
+  },
+  row: {
+    flexDirection: 'row',
+    width: '100%'
+  },
+  paddingHorizontal: {
+    paddingHorizontal: horizontal_padding,
   },
   scrollContainer: {
     paddingHorizontal: horizontal_padding,
-    width: '100%'
+    width: '100%',
   },
   backgorundImage: {
     flex: 1,
@@ -58,6 +80,10 @@ export default StyleSheet.create({
   textMuted2: {
     color: Colors[colorScheme].textMuted2
   },
+  avatar: {
+    borderRadius: 100,
+    backgroundColor: Colors[colorScheme].avatarBackground
+  },
   textInput: {
     width: '100%',
     borderBottomWidth: 1,
@@ -91,5 +117,28 @@ export default StyleSheet.create({
   },
   btnTextLink: {
     color: Colors[colorScheme].tint
-  }
+  },
+  card: {
+    backgroundColor: Colors[colorScheme].card,
+    borderRadius: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+      },
+      android: {
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 12
+        },
+        shadowOpacity: 0.58,
+        shadowRadius: 16.00,
+
+        elevation: 0,
+
+      },
+    })
+  },
 });

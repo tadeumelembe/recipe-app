@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, ScrollView, Text } from "../../../components/Themed";
+import { Container, IoniconsIcon, ScrollView, Text } from "../../../components/Themed";
 
 const TabHome: React.FC = ({ navigation }) => {
     return (
