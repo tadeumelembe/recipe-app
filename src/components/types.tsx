@@ -12,4 +12,5 @@ export interface IUserContext {
 
 export interface IHomeFeedCard{
     navigation: NavigationProp<any, any>,
+    item: any
 }
