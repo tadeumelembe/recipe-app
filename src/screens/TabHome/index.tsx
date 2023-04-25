@@ -9,13 +9,21 @@ import FeedCard from "../../components/TabHome/FeedCard";
 
 const data = [
     {
-        profile_name: 'Tadeu Melembe'
+        profile_name: 'Tadeu Melembe',
+        created_at: '2h ago',
+        title:'Red Wine and Mint Soufflé',
+        description:'Integer at bibendum nisi. Integer eu tortor orci. Proin in consequat odio, vitae viverra est. Integer neque mauris, consequat vitae sapien sit amet, pretium convallis velit. Donec auctor velit consectetur rutrum hendrerit. Nam ornare vel urna quis dictum. Sed feugiat, magna eget ullamcorper scelerisque, nulla urna consequat magna, scelerisque tempus sem ex in ex. Sed a sagittis ante. Aenean non eros a urna sodales aliquam. Nulla risus lectus, accumsan dignissim nunc ac, placerat ullamcorper nibh.'
     },
     {
-        profile_name: 'Wildson Guiamba'
+        profile_name: 'Wildson Guiamba',
+        created_at: '1day ago',
+        title:'White Wine Toffee',
+        description:'Proin sit amet dictum turpis, at aliquam nulla. Cras tincidunt, nisl quis tincidunt hendrerit, orci lorem pharetra nunc, sed aliquam eros nunc quis purus. Suspendisse vulputate nisl vitae est finibus, id tristique dui suscipit. In condimentum eros nisl, ut interdum turpis suscipit vitae. Suspendisse hendrerit pulvinar lacus, in egestas risus gravida ut.'
     },
     {
-        profile_name: 'Itan'
+        profile_name: 'Itan',
+        created_at: '50min ago',
+        title:'Vanilla Pud',
     }
 ]
 
@@ -25,7 +33,7 @@ interface data {
 
 export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
     function renderItem({ item }: ListRenderItemInfo<data>) {
-        return <FeedCard navigation={navigation} />;
+        return <FeedCard navigation={navigation} item={item} />;
     }
 
 

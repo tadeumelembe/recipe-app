@@ -6,15 +6,9 @@ import Colors from "./Colors";
 import Layout from "./Layout";
 
 const horizontal_padding = 20;
+const colorScheme = 'light'
 
-export default function useGlobalStyles() {
-  const colorScheme = useColorScheme();
-  const styles = React.useMemo(() => getGlobalStyles({ colorScheme }), [colorScheme]);
-
-  return styles
-}
-
-const getGlobalStyles = ({ colorScheme }: NonNullable<ColorSchemeName>) => StyleSheet.create({
+export default StyleSheet.create({
 
   container: {
     width: '100%',

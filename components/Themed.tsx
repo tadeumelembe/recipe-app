@@ -17,7 +17,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import useGlobalStyles from '../constants/style';
+import styles from '../constants/style';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function useThemeColor(
@@ -77,7 +77,6 @@ export function FlatList(props: FlatListProps) {
 }
 
 export function Avatar(props: AvatarProps) {
-  const styles = useGlobalStyles()
 
   const { style, size, ...otherProps } = props;
   let width = 30
@@ -89,8 +88,8 @@ export function Avatar(props: AvatarProps) {
       height = 20
       break;
     case 'xs':
-      width = 32
-      height = 32
+      width = 35
+      height = 35
       break;
     case 'sm':
       width = 42
@@ -122,32 +121,27 @@ export function Avatar(props: AvatarProps) {
 }
 
 export function Container(props: ViewProps) {
-  const styles = useGlobalStyles()
-
   const { style, lightColor, darkColor, ...otherProps } = props;
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
   const insets = useSafeAreaInsets();
-
+  console.log(backgroundColor)
   return <DefaultView style={[styles.container, { backgroundColor, paddingTop: insets.top }, style,]} {...otherProps} />;
 }
 
 export function ScrollView(props: ScrollViewProps) {
   const { style, ...otherProps } = props
-  const styles = useGlobalStyles()
 
   return <DefaultScrollView showsVerticalScrollIndicator={false} style={[styles.scrollContainer, style]} {...otherProps} />;
 }
 
 export function ImageBackground(props: ImageBackgroundProps) {
   const { style, ...otherProps } = props
-  const styles = useGlobalStyles()
 
   return <DefaultImageBackground style={[styles.backgorundImage, style]} {...otherProps} />;
 }
 
 export function TextInput(props: TextInputProps) {
   const { placeholder, style, ...otherProps } = props
-  const styles = useGlobalStyles()
 
   return (
     <DefaultView>
@@ -159,7 +153,6 @@ export function TextInput(props: TextInputProps) {
 
 export function TouchableOpacity(props: TouchableOpacityProps) {
   const { btnText, style, ...otherProps } = props
-  const styles = useGlobalStyles()
 
   return (
     <DefaultTouchableOpacity style={[styles.btn1, style]} {...otherProps}>
@@ -170,7 +163,6 @@ export function TouchableOpacity(props: TouchableOpacityProps) {
 
 export function TextButton(props: TouchableOpacityProps) {
   const { btnText, style, ...otherProps } = props
-  const styles = useGlobalStyles()
 
   return (
     <DefaultTouchableOpacity style={[{ backgroundColor: 'transparent' }, style]} {...otherProps}>
@@ -182,6 +174,7 @@ export function TextButton(props: TouchableOpacityProps) {
 export function IoniconsIcon(props: {
   name: React.ComponentProps<typeof Ionicons>['name'];
   color: string;
+  size:number;
 }) {
-  return <Ionicons size={20} style={{ marginBottom: -3 }} {...props} />;
+  return <Ionicons {...props} />;
 }

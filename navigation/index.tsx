@@ -81,7 +81,7 @@ function BottomTabNavigator() {
         component={TabHome}
         options={({ navigation }: RootTabScreenProps<'TabHome'>) => ({
           title: 'Search',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home-outline" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIconAlt name="home" color={color} />,
         })}
       />
       <BottomTab.Screen
@@ -104,4 +104,11 @@ function TabBarIcon(props: {
   color: string;
 }) {
   return <Ionicons size={20} style={{ marginBottom: -3 }} {...props} />;
+}
+
+function TabBarIconAlt(props: {
+  name: React.ComponentProps<typeof Octicons>['name'];
+  color: string;
+}) {
+  return <Octicons size={20} style={{ marginBottom: -3 }} {...props} />;
 }
