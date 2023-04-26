@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet } from "react-native";
 
@@ -12,10 +13,10 @@ const Head: React.FC<IHead> = ({ navigation }) => {
             <Text>Logo</Text>
             <View style={localStyles.iconContainer}>
                 <View style={{ paddingRight: 15 }}>
-                    <IoniconsIcon name="notifications-outline" color="#000" />
+                    <Ionicons name="notifications-outline" size={22} color="#000" />
                 </View>
                 <View>
-                    <IoniconsIcon name="mail-outline" color="#000" />
+                    <Ionicons name="mail-outline" size={22} color="#000" />
                 </View>
             </View>
         </View>

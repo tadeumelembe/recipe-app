@@ -1,7 +1,7 @@
 import { NavigationProp } from "@react-navigation/native";
 
 export interface IHead {
-    navigation:  NavigationProp<any, any>,
+    navigation: NavigationProp<any, any>,
 }
 
 export interface IUserContext {
@@ -10,7 +10,16 @@ export interface IUserContext {
     email: string,
 }
 
-export interface IHomeFeedCard{
+export interface IHomeFeedCard {
     navigation: NavigationProp<any, any>,
-    item: any
+    item: IHomeItem
+}
+
+export interface IHomeItem {
+    id: string,
+    profile_name: string,
+    created_at: string,
+    image: string | null,
+    title: string,
+    description: string | null
 }

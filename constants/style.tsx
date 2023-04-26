@@ -29,7 +29,8 @@ export default StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    width: '100%'
+    //width: '100%'
+    flex:1
   },
   paddingHorizontal: {
     paddingHorizontal: horizontal_padding,
@@ -58,6 +59,9 @@ export default StyleSheet.create({
   },
   fontR: {
     fontSize: 14
+  },
+  fontS: {
+    fontSize: 12
   },
   fontNunitoBold: {
     fontFamily: 'nunito-bold'

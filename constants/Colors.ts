@@ -6,11 +6,12 @@ export default {
     text: '#000',
     textMuted: '#A8A8A8',
     textMuted2: '#606060',
+    icon: '#363837',
     background: '#fff',
     tint: tintColorLight,
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,
-    card:'rgba(48, 190, 118, 0.8)',
+    card:'rgba(255, 255, 255, 0.5)',
     avatarBackground:'#ccc'
   },
   dark: {

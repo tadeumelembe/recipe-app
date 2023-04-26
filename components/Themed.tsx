@@ -24,9 +24,9 @@ export function useThemeColor(
   props: { light?: string; dark?: string },
   colorName: keyof typeof Colors.light & keyof typeof Colors.dark
 ) {
-  const theme = useColorScheme();
+  const theme = 'light' //useColorScheme();
   const colorFromProps = props[theme];
-
+  
   if (colorFromProps) {
     return colorFromProps;
   } else {
@@ -124,7 +124,7 @@ export function Container(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
   const insets = useSafeAreaInsets();
-  console.log(backgroundColor)
+  
   return <DefaultView style={[styles.container, { backgroundColor, paddingTop: insets.top }, style,]} {...otherProps} />;
 }
 
