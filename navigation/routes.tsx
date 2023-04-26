@@ -33,23 +33,22 @@ function AuthRoutes({ colorScheme }: { colorScheme: ColorSchemeName }) {
     );
 }
 
-function AppRoutes() {
-    const colorScheme = useColorScheme();
+function AppRoutes({ colorScheme }: { colorScheme: ColorSchemeName }) {
 
     return (
         <SafeAreaProvider>
             <Navigation colorScheme={colorScheme} />
-            <StatusBar />
+            <StatusBar style={colorScheme == 'light' ? 'dark' : 'light'} />
         </SafeAreaProvider>
     );
 }
 
 const Routes: React.FC = () => {
-    const colorScheme = useColorScheme();
+    const colorScheme = 'light'//useColorScheme();
 
     const { isSigned } = useAuth();
 
-    return isSigned ? <AppRoutes /> : <AuthRoutes colorScheme={colorScheme} />;
+    return isSigned ? <AppRoutes colorScheme={colorScheme} /> : <AuthRoutes colorScheme={colorScheme} />;
 
 };
 

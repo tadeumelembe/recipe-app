@@ -39,7 +39,6 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar style={colorScheme == 'light' ? 'dark' : 'light'} />
 
       <AuthProvider>
 
