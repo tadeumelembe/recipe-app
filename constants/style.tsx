@@ -5,21 +5,21 @@ import useColorScheme from "../hooks/useColorScheme";
 import Colors from "./Colors";
 import Layout from "./Layout";
 
-const horizontal_padding = 20;
+const horizontal_padding = 15;
 const colorScheme = 'light'
 
 export default StyleSheet.create({
 
   container: {
     width: '100%',
-    alignItems: 'center',
     paddingTop: 30,
     paddingHorizontal: horizontal_padding,
-
     backgroundColor: Colors[colorScheme].background,
     justifyContent: 'flex-start',
     flexDirection: 'column',
-    flex: 1
+    flex: 1,
+    alignItems: 'center',
+
   },
   bgNone: {
     backgroundColor: '#ffffff00'
@@ -30,7 +30,7 @@ export default StyleSheet.create({
   row: {
     flexDirection: 'row',
     //width: '100%'
-    flex:1
+    flex: 1
   },
   paddingHorizontal: {
     paddingHorizontal: horizontal_padding,
@@ -136,6 +136,8 @@ export default StyleSheet.create({
 
         elevation: 0,
 
+        borderColor: 'rgba(0,0,0,.08)',
+        borderWidth: 0.8,
       },
     })
   },

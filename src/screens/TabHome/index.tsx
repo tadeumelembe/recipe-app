@@ -53,6 +53,7 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
                 style={localStyles.flatlist}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
+               // ItemSeparatorComponent={(({highlighted}) => (<View style={{borderTopColor:'rgba(0,0,0,.05)',borderWidth:0.,marginBottom:20}} />))}
                 ListFooterComponent={
                     <View style={{ marginTop: 15 }}></View>
                 }

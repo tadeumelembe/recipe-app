@@ -68,10 +68,10 @@ const localStyle = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 15,
         backgroundColor: 'rgba(255,255,255,.95)',
-        borderTopLeftRadius: 10,
         maxHeight: 62,
         alignItems: 'flex-start',
         borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
         ...style.row,
     },
     profile_name: {
@@ -86,7 +86,9 @@ const localStyle = StyleSheet.create({
         ...style.fontNunitoMedium
     },
     content: {
-        padding: 15
+        padding: 15,
+        borderBottomRightRadius:10,
+        borderBottomLeftRadius:10,
     },
     
     description: {
@@ -96,8 +98,8 @@ const localStyle = StyleSheet.create({
         paddingVertical: 15
     },
     image: {
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10.8,
+        borderTopRightRadius: 10.8,
     },
     image_bg: {
         height: 200,
