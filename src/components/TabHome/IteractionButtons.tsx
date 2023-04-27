@@ -1,6 +1,6 @@
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import React, { useState, useRef, useEffect, Ref } from "react";
-import { Image, Animated, Pressable, StyleSheet } from "react-native";
+import { Image, Animated, TouchableOpacity, Pressable, StyleSheet } from "react-native";
 
 import { Avatar, View, Text, IoniconsIcon, ImageBackground } from "../../../components/Themed";
 import Colors from "../../../constants/Colors";
@@ -22,12 +22,17 @@ const InteractionButtons: React.FC = () => {
         Animated.sequence([
             Animated.timing(buttonToScale, {
                 toValue: 0.7,
-                duration: 90,
+                duration: 70,
+                useNativeDriver: true,
+            }),
+            Animated.timing(buttonToScale, {
+                toValue: 1.2,
+                duration: 70,
                 useNativeDriver: true,
             }),
             Animated.timing(buttonToScale, {
                 toValue: 1,
-                duration: 90,
+                duration: 70,
                 useNativeDriver: true,
             })
         ]).start();
@@ -60,10 +65,10 @@ const InteractionButtons: React.FC = () => {
                     <Text style={localStyle.statistic_info}>32</Text>
                 </View>
 
-                <Pressable style={[localStyle.iteract_buttons, { marginHorizontal: 30 }]}>
+                <TouchableOpacity style={[localStyle.iteract_buttons, { marginHorizontal: 30 }]}>
                     <FontAwesome name="comment-o" size={19} color={Colors.light.icon} />
                     <Text style={localStyle.statistic_info}>8</Text>
-                </Pressable>
+                </TouchableOpacity>
 
                 <Pressable style={localStyle.iteract_buttons}>
                     <Ionicons name="share-social-outline" size={iconSize} color={Colors.light.icon} />

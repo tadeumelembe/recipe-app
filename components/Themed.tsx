@@ -151,7 +151,7 @@ export function TextInput(props: TextInputProps) {
   );
 }
 
-export function TouchableOpacity(props: TouchableOpacityProps) {
+export function Button(props: TouchableOpacityProps) {
   const { btnText, style, ...otherProps } = props
 
   return (

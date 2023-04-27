@@ -1,6 +1,6 @@
 import React from "react";
 import { Pressable, StyleSheet, TouchableHighlight, TouchableWithoutFeedback } from "react-native";
-import { Text, View, Container, ImageBackground, ScrollView, TextInput, TouchableOpacity, TextButton } from "../../../components/Themed";
+import { Text, View, Container, ImageBackground, ScrollView, TextInput, Button, TextButton } from "../../../components/Themed";
 import styles from "../../../constants/style";
 
 const SignUp: React.FC = ({ navigation }) => {
@@ -45,7 +45,7 @@ const SignUp: React.FC = ({ navigation }) => {
                     />
                 </View>
 
-                <TouchableOpacity
+                <Button
                     btnText="Create Account"
                     onPress={() => alert('ok')}
                 />
