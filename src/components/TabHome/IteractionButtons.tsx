@@ -1,6 +1,6 @@
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { Image, Pressable, StyleSheet } from "react-native";
+import React, { useState, useRef, useEffect, Ref } from "react";
+import { Image, Animated, Pressable, StyleSheet } from "react-native";
 
 import { Avatar, View, Text, IoniconsIcon, ImageBackground } from "../../../components/Themed";
 import Colors from "../../../constants/Colors";
@@ -14,36 +14,72 @@ const InteractionButtons: React.FC = () => {
     const [liked, setLiked] = useState(false)
     const colorScheme = 'light'
     const iconSize = 20;
+
+    const scaleBookemarkButton = useRef(new Animated.Value(1)).current;
+    const scaleLikeButton = useRef(new Animated.Value(1)).current;
+
+    function scaleButtonSequence(buttonToScale: any) {
+        Animated.sequence([
+            Animated.timing(buttonToScale, {
+                toValue: 0.7,
+                duration: 90,
+                useNativeDriver: true,
+            }),
+            Animated.timing(buttonToScale, {
+                toValue: 1,
+                duration: 90,
+                useNativeDriver: true,
+            })
+        ]).start();
+    }
+
+    function handleBookmarked() {
+        setBookemarked(!bookmarked)
+        console.log(scaleBookemarkButton)
+        scaleButtonSequence(scaleBookemarkButton)
+    }
+
+    function handleLiked() {
+        setLiked(!liked)
+        scaleButtonSequence(scaleLikeButton)
+    }
+
+
+
     return (
-        <View style={[style.row, { justifyContent: 'flex-end' }]}>
+        <View style={[style.row, { justifyContent: 'flex-start' }]}>
+
             <View style={localStyle.statistics_section}>
+
                 <View style={localStyle.iteract_buttons}>
-                <Pressable onPress={() => setLiked(!liked)}>
-                        {liked ?
-                            <Ionicons name="heart" size={22} color={Colors.light.tint} />
-                            :
-                            <Ionicons name="heart-outline" size={22} color={Colors.light.icon} />
-                        }
+                    <Pressable onPress={() => handleLiked()}>
+                        <Animated.View style={{ transform: [{ scale: scaleLikeButton }] }}>
+                            <Ionicons name={liked ? "heart" : "heart-outline"} size={iconSize} color={liked ? Colors.light.tint : Colors.light.icon} />
+                        </Animated.View>
                     </Pressable>
                     <Text style={localStyle.statistic_info}>32</Text>
                 </View>
-                <View style={localStyle.iteract_buttons}>
-                    <FontAwesome name="comment-o" size={20} color={Colors.light.icon} />
-                    <Text style={localStyle.statistic_info}>8</Text>
-                </View>
 
-                <View style={localStyle.iteract_buttons}>
-                    <Ionicons name="share-social-outline" size={22} color={Colors.light.icon} />
+                <Pressable style={[localStyle.iteract_buttons, { marginHorizontal: 30 }]}>
+                    <FontAwesome name="comment-o" size={19} color={Colors.light.icon} />
                     <Text style={localStyle.statistic_info}>8</Text>
-                </View>
+                </Pressable>
+
+                <Pressable style={localStyle.iteract_buttons}>
+                    <Ionicons name="share-social-outline" size={iconSize} color={Colors.light.icon} />
+                    <Text style={localStyle.statistic_info}>8</Text>
+                </Pressable>
+
             </View>
-            <Pressable onPress={() => setBookemarked(!bookmarked)}>
-                {!bookmarked ?
-                    <Ionicons name="bookmark" size={22} color={Colors.light.tint} />
-                    :
-                    <Ionicons name="bookmark-outline" size={22} color={Colors.light.icon} />
-                }
+
+            <Pressable onPress={() => { handleBookmarked() }}>
+
+                <Animated.View style={{ transform: [{ scale: scaleBookemarkButton }] }}>
+                    <Ionicons name={bookmarked ? "bookmark" : 'bookmark-outline'} size={iconSize} color={bookmarked ? "black" : Colors.light.icon} />
+                </Animated.View>
+
             </Pressable>
+
         </View>
     )
 }
@@ -51,19 +87,22 @@ const InteractionButtons: React.FC = () => {
 export default InteractionButtons
 
 const localStyle = StyleSheet.create({
-    
+
     statistics_section: {
-        ...style.row,
+        flexDirection: 'row',
+        flex: 1,
         justifyContent: 'flex-start',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     iteract_buttons: {
         ...style.row,
-        alignItems: 'center'
+        flex: 0,
+        alignItems: 'center',
+
     },
-    statistic_info:{
+    statistic_info: {
         ...style.fontR,
         ...style.textMuted2,
-        paddingLeft:2
+        paddingLeft: 2
     }
 })
