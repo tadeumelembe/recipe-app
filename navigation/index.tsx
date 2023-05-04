@@ -14,9 +14,11 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../src/screens/ModalScreen';
 import NotFoundScreen from '../src/screens/NotFoundScreen';
+
 import TabHome from '../src/screens/TabHome';
-import TabProfile from '../src/screens/TabProfile';
+import TabProfile from '../src/screens/Profile';
 import TabSearch from '../src/screens/TabSearch';
+
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 

@@ -3,7 +3,7 @@ import { ListRenderItemInfo, StyleSheet } from "react-native";
 import { Container, FlatList, ScrollView, View } from "../../../components/Themed";
 
 import { RootTabScreenProps } from "../../../types";
-import Head from "../../components/Head";
+import Header from "../../components/Head";
 import FeedCard from "../../components/TabHome/FeedCard";
 import { IHomeItem } from "../../components/types";
 
@@ -39,6 +39,7 @@ interface data {
 }
 
 export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
+    
     function renderItem({ item }: ListRenderItemInfo<IHomeItem>) {
         return <FeedCard navigation={navigation} item={item} />;
     }
@@ -46,7 +47,7 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
 
     return (
         <Container>
-            <Head navigation={navigation} />
+            <Header navigation={navigation} />
 
             <FlatList
                 data={data}

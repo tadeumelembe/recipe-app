@@ -11,15 +11,10 @@ const colorScheme = 'light'
 export default StyleSheet.create({
 
   container: {
-    width: '100%',
     paddingTop: 30,
     paddingHorizontal: horizontal_padding,
     backgroundColor: Colors[colorScheme].background,
-    justifyContent: 'flex-start',
-    flexDirection: 'column',
     flex: 1,
-    alignItems: 'center',
-
   },
   bgNone: {
     backgroundColor: '#ffffff00'
@@ -72,6 +67,9 @@ export default StyleSheet.create({
   fontNunitoRegular: {
     fontFamily: 'nunito-regular'
   },
+  textPrimary: {
+    color: Colors[colorScheme].tint
+  },
   textMuted: {
     color: Colors[colorScheme].textMuted
   },
@@ -115,6 +113,10 @@ export default StyleSheet.create({
   },
   btnTextLink: {
     color: Colors[colorScheme].tint
+  },
+  borderSeparator: {
+    borderBottomColor: Colors[colorScheme].textMuted,
+    borderBottomWidth: 0.3
   },
   card: {
     backgroundColor: Colors[colorScheme].card,

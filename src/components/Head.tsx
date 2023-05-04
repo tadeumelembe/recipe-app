@@ -6,7 +6,7 @@ import { Container, IoniconsIcon, ScrollView, Text, View } from "../../component
 import styles from "../../constants/style";
 import { IHead } from "./types";
 
-const Head: React.FC<IHead> = ({ navigation }) => {
+const HeaderHome: React.FC<IHead> = ({ navigation }) => {
 
     return (
         <View style={[localStyles.root, styles.paddingHorizontal]}>
@@ -23,7 +23,7 @@ const Head: React.FC<IHead> = ({ navigation }) => {
     )
 }
 
-export default Head
+export default HeaderHome
 
 const localStyles = StyleSheet.create({
     root: {

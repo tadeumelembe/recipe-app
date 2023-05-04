@@ -26,7 +26,9 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 
 export type RootTabParamList = {
   TabSearch: undefined;
-  TabProfile: undefined;
+  TabProfile: {
+    navigation: NavigationProp<any, any>
+  };
   TabHome: {
     navigation: NavigationProp<any, any>
   };

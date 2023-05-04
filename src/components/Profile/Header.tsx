@@ -9,56 +9,59 @@ import Colors from "../../../constants/Colors";
 const HeaderProfile: React.FC = () => {
     return (
         <View style={localStyle.root}>
-
-            <View style={localStyle.rowView}>
+            <View style={localStyle.topHead}>
                 <Text style={localStyle.title}>My Kitchen</Text>
-                
+
                 <TouchableOpacity style={localStyle.settingSection}>
                     <Ionicons name="settings-outline" size={22} color="black" />
                     <Text style={localStyle.settingsText}>Settings</Text>
                 </TouchableOpacity>
             </View>
 
-            <View style={[localStyle.rowView, { marginTop: 30 }]}>
+            <View style={localStyle.profileInfoSection}>
                 <Avatar size="xl" />
 
-                <View style={[localStyle.column, { marginLeft: 15 }]}>
-                    <View style={localStyle.column}>
-                            <Text style={localStyle.profileName}>Nick Evans</Text>
+                <View style={localStyle.nameSection}>
+                    <View>
+                        <Text style={localStyle.profileName}>Nick Evans</Text>
                         <Text style={localStyle.secondaryText}>Nick Evans</Text>
                     </View>
 
-                    <View style={[localStyle.row,{alignItems:'center'}]}>
+                    <View style={localStyle.statsSection}>
                         <Text style={localStyle.secondaryText}>584 followers</Text>
                         <View style={{ marginHorizontal: 8 }}>
-                            <Octicons name="dot-fill" size={15} color="black" />
+                            <Octicons name="dot-fill" size={10} color="gray" />
                         </View>
                         <Text style={localStyle.secondaryText}>23k likes</Text>
                     </View>
                 </View>
             </View>
-            
+
         </View>
     )
 }
 
 const localStyle = StyleSheet.create({
     root: {
-        flexDirection: 'column',
-        flex: 1,
         width: '100%',
     },
-    row: {
+    profileInfoSection: {
         flexDirection: 'row',
-        flex: 1
-    },
-    column: {
-        flexDirection: 'column',
-        flex: 1
-    },
-    rowView: {
-        ...style.row,
+
+        marginTop: 30,
         flex: 0,
+        width: '100%'
+    },
+    nameSection: {
+        marginLeft: 15,
+        justifyContent: 'space-evenly'
+    },
+    statsSection: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    topHead: {
+        flexDirection: 'row',
         width: '100%',
         alignItems: 'center',
         justifyContent: 'space-between'
@@ -66,12 +69,10 @@ const localStyle = StyleSheet.create({
     title: {
         ...style.fontXl,
         flex: 0,
-
         ...style.fontNunitoBold,
     },
     settingSection: {
-        ...style.row,
-        flex: 0,
+        flexDirection: 'row',
         alignItems: 'center'
 
     },
