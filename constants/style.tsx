@@ -33,6 +33,7 @@ export default StyleSheet.create({
   scrollContainer: {
     paddingHorizontal: horizontal_padding,
     width: '100%',
+    backgroundColor:'#fff'
   },
   backgorundImage: {
     flex: 1,
@@ -87,7 +88,8 @@ export default StyleSheet.create({
     fontFamily: 'nunito-regular',
     color: '#030F09',
     fontSize: 16,
-    paddingTop: 8
+    paddingTop: 8,
+    paddingHorizontal:5
   },
   btn1: {
     width: '100%',

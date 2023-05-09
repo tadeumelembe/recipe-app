@@ -72,7 +72,7 @@ function MyTabBar({ state, descriptors, navigation, position }: any) {
                         <Animated.Text style={[localStyles.tabLabel, { opacity }]}>
                             {label}
                         </Animated.Text>
-                        <Animated.View style={{ ...localStyles.tabIndicator, opacity: indicatorOpacity }}></Animated.View>
+                        <Animated.View style={{ ...localStyles.tabIndicator, opacity: indicatorOpacity }} />
 
                     </TouchableOpacity>
                 );

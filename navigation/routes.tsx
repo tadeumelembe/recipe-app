@@ -11,8 +11,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Navigation from '.';
 import useColorScheme from '../hooks/useColorScheme';
 
-import Login from '../src/screens/Login';
-import SignUp from '../src/screens/SignUp';
+import Login from '../src/screens/Auth/Login';
+import SignUp from '../src/screens/Auth/SignUp';
 
 import { AuthProvider, useAuth } from '../src/context/authContext';
 
@@ -48,7 +48,7 @@ const Routes: React.FC = () => {
 
     const { isSigned } = useAuth();
 
-    return isSigned ? <AppRoutes colorScheme={colorScheme} /> : <AuthRoutes colorScheme={colorScheme} />;
+    return !isSigned ? <AppRoutes colorScheme={colorScheme} /> : <AuthRoutes colorScheme={colorScheme} />;
 
 };
 

@@ -10,6 +10,7 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Routes from './navigation/routes';
 import { AuthProvider } from './src/context/authContext';
+import { View } from './components/Themed';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,9 +42,9 @@ export default function App() {
     <SafeAreaProvider>
 
       <AuthProvider>
-
+    <View style={{flex:1}} onLayout={onLayoutRootView}>
         <Routes />
-        
+        </View>
       </AuthProvider>
     </SafeAreaProvider>
   );
