@@ -1,25 +1,26 @@
-import React, { useRef, useEffect } from "react";
-import { KeyboardAvoidingView, Keyboard, Animated, StyleSheet, Platform } from "react-native";
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from "react";
+import { KeyboardAvoidingView, Platform } from "react-native";
 
-import { Text, View, Container, ImageBackground, ScrollView, TextInput, Button, TextButton } from "../../../../components/Themed";
+import { Text, View, Container, ScrollView, TextInput, Button, TextButton } from "../../../../components/Themed";
 import styles from "../../../../constants/style";
 import AuthHeader from "../../../components/Auth/AuthHeader";
+import { IAuthPage } from "../../../components/types";
 import authStyles from "../authStyles"
 
-const SignUp: React.FC = ({ navigation }) => {
+const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
 
     return (
         <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         >
-            <AuthHeader title={'Sign Up'} />
 
             <ScrollView
                 style={authStyles.scrollView}
                 keyboardShouldPersistTaps={'handled'}
             >
+            <AuthHeader title={'Sign Up'} />
+
                 <Container style={authStyles.container}>
 
                     <Text style={authStyles.pageTitle}>
@@ -74,32 +75,3 @@ const SignUp: React.FC = ({ navigation }) => {
 }
 
 export default SignUp
-
-const localStyles = StyleSheet.create({
-    scrollView: {
-        paddingHorizontal: 0,
-        flex: 1
-    },
-    header: {
-        height: 300,
-        width: '100%',
-        borderBottomRightRadius: 100,
-    },
-    headerText: {
-        ...styles.fontNunitoBold,
-        ...styles.fontXl
-    },
-    headerImage: {
-        height: 300,
-    },
-    headerImageView: {
-        ...styles.horizontalPadding,
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center'
-    },
-    inputView: {
-        marginBottom: 30
-    }
-})

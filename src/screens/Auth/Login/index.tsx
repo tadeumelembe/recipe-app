@@ -1,14 +1,14 @@
-import React, { useEffect, useRef } from "react";
-import { KeyboardAvoidingView, Keyboard, Platform, Animated, StyleSheet } from "react-native";
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from "react";
+import { KeyboardAvoidingView, Platform } from "react-native";
 
-import { Text, View, Container, ImageBackground, ScrollView, TextInput, Button, TextButton } from "../../../../components/Themed";
+import { Text, View, Container, ScrollView, TextInput, Button, TextButton } from "../../../../components/Themed";
+import AuthHeader from "../../../components/Auth/AuthHeader";
 import styles from "../../../../constants/style";
-import Header from "../../../components/Auth/AuthHeader";
 import authStyles from "../authStyles"
+import { IAuthPage } from "../../../components/types";
 
 
-const Login: React.FC = ({ navigation }) => {
+const Login: React.FC<IAuthPage> = ({ navigation }) => {
 
 
     return (
@@ -21,7 +21,7 @@ const Login: React.FC = ({ navigation }) => {
                 keyboardShouldPersistTaps={'handled'}
             >
 
-                <Header title={'Recipe Rells'} />
+                <AuthHeader title={'Recipe Rells'} />
 
                 <Container style={{ flex: 1 }}>
 

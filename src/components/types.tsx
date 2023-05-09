@@ -23,3 +23,8 @@ export interface IHomeItem {
     title: string,
     description: string | null
 }
+
+
+export interface IAuthPage {
+    navigation: NavigationProp<any, any>,
+}

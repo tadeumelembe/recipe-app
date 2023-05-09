@@ -48,7 +48,7 @@ const Routes: React.FC = () => {
 
     const { isSigned } = useAuth();
 
-    return !isSigned ? <AppRoutes colorScheme={colorScheme} /> : <AuthRoutes colorScheme={colorScheme} />;
+    return isSigned ? <AppRoutes colorScheme={colorScheme} /> : <AuthRoutes colorScheme={colorScheme} />;
 
 };
 
