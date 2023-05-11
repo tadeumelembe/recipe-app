@@ -1,6 +1,6 @@
 import { NavigationProp } from "@react-navigation/native";
 
-interface IRecipeItem {
+export interface IProfileRecipeItem {
     item:{
         name: string;
         image: string;

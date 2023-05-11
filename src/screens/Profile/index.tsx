@@ -20,13 +20,8 @@ const TabProfile = ({ navigation }: RootTabScreenProps<'TabProfile'>) => {
 
 
     function Head() {
-        return (
-            <View pointerEvents="box-none" style={[style.paddingHorizontal, { height: headerHeight }]}>
-                <Header />
-            </View>
-        )
+        return <Header headerHeight={headerHeight} navigation={navigation} />
     }
-
 
     return (
         <Container style={{ paddingHorizontal: 0 }}>
@@ -41,7 +36,7 @@ const TabProfile = ({ navigation }: RootTabScreenProps<'TabProfile'>) => {
                     <Recipe navigation={navigation} />
                 </Tabs.Tab>
                 <Tabs.Tab name="Saved">
-                    <Saved navigation={navigation}/>
+                    <Saved navigation={navigation} />
                 </Tabs.Tab>
             </Tabs.Container>
         </Container>

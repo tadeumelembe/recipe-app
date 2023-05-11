@@ -42,6 +42,5 @@ export interface IProfileHeader {
 }
 
 export interface IRecipeTab {
-    navigation: NavigationProp<any, any>,
-    
+    navigation: NavigationProp<any, any>,   
 }

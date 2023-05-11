@@ -18,6 +18,7 @@ import NotFoundScreen from '../src/screens/NotFoundScreen';
 import TabHome from '../src/screens/TabHome';
 import TabProfile from '../src/screens/Profile';
 import TabSearch from '../src/screens/TabSearch';
+import Settings from '../src/screens/Settings';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -38,6 +39,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  * https://reactnavigation.org/docs/modal
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const ProfileStack = createNativeStackNavigator();
 
 function RootNavigator() {
   return (
@@ -52,6 +54,18 @@ function RootNavigator() {
     </Stack.Navigator>
   );
 }
+
+function ProfileStackScreen() {
+  return (
+    <ProfileStack.Navigator>
+
+      <ProfileStack.Screen name="Root" component={TabProfile} options={{ headerShown: false }} />
+      <ProfileStack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
+    
+    </ProfileStack.Navigator>
+  );
+}
+
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -88,7 +102,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="TabProfile"
-        component={TabProfile}
+        component={ProfileStackScreen}
         options={{
           title: 'Home5x`',
           tabBarIcon: ({ color }) => <TabBarIcon name="person-outline" color={color} />,

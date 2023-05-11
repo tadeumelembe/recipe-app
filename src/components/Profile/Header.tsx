@@ -5,14 +5,17 @@ import { Ionicons, Octicons } from '@expo/vector-icons';
 import { View, Text, Avatar } from "../../../components/Themed"
 import style from "../../../constants/style";
 import Colors from "../../../constants/Colors";
+import { IProfileHeader } from "../types";
 
-const HeaderProfile: React.FC = () => {
+
+
+const HeaderProfile: React.FC<IProfileHeader> = ({navigation, headerHeight}) => {
     return (
-        <View style={localStyle.root}>
+        <View style={[localStyle.root,{height:headerHeight}]}>
             <View style={localStyle.topHead}>
                 <Text style={localStyle.title}>My Kitchen</Text>
 
-                <TouchableOpacity style={localStyle.settingSection}>
+                <TouchableOpacity onPress={()=>navigation.navigate('Settings')} style={localStyle.settingSection}>
                     <Ionicons name="settings-outline" size={22} color="black" />
                     <Text style={localStyle.settingsText}>Settings</Text>
                 </TouchableOpacity>
@@ -44,6 +47,7 @@ const HeaderProfile: React.FC = () => {
 const localStyle = StyleSheet.create({
     root: {
         width: '100%',
+        ...style.paddingHorizontal
     },
     profileInfoSection: {
         flexDirection: 'row',
