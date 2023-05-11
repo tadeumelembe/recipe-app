@@ -1,14 +1,19 @@
 import React from "react"
 import { StyleSheet } from "react-native"
 import { Tabs } from "react-native-collapsible-tab-view"
+
+import RecipeItem from "../../../components/Profile/RecipeItems"
+
 import { View } from "../../../../components/Themed"
 import style from "../../../../constants/style"
-import RecipeItem from "../../../components/Profile/RecipeItems"
+import { IRecipeItem, IRecipeTab } from "../../../components/types"
 import { data } from "../data"
 
-const Recipe: React.FC = () => {
-    function renderItem({ item }) {
-        return <RecipeItem item={item} />;
+
+const Recipe: React.FC<IRecipeTab> = ({ navigation }) => {
+
+    function renderItem({ item }: any) {
+        return <RecipeItem navigation={navigation} item={item} />;
     }
 
     return (
@@ -16,7 +21,7 @@ const Recipe: React.FC = () => {
             <Tabs.FlatList
                 data={data}
                 contentConatinerStyle={localStyles.flatListConatinerStyle}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item: any) => item.id}
                 style={localStyles.flatListStyle}
                 renderItem={renderItem}
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
