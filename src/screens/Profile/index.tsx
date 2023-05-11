@@ -244,46 +244,9 @@ function Head() {
 const TabProfile = ({ navigation }: RootTabScreenProps<'TabProfile'>) => {
     const [activeTabIndex, setActiveTabIndex] = useState<number>(0)
 
-    function CustomTabBar(props: TabBarProps) {
-        const tabProps = [...props.tabProps]
-        console.log(tabProps)
-        return (
-            <View style={localStyles.tabButtons}>
-                {tabProps.map((element, index) => {
-                    const isFocused = index === activeTabIndex;
-
-
-                    return (
-                        <TouchableOpacity
-                            accessibilityRole="button"
-                            accessibilityState={isFocused ? { selected: true } : {}}
-                            //  accessibilityLabel={options.tabBarAccessibilityLabel}
-                            //testID={options.tabBarTestID}
-                            //onPress={onPress}
-                            //onLongPress={onLongPress}
-                            style={[localStyles.tabViewLabelButton]}
-                            key={index}
-                        >
-                            <Animated.Text style={[localStyles.tabLabelNumber,]}>
-                                16
-                            </Animated.Text>
-                            <Animated.Text style={[localStyles.tabLabel,]}>
-                                {element[1].name}
-                            </Animated.Text>
-                            <Animated.View style={[localStyles.tabIndicator, isFocused && { borderWidth: 2 }]} />
-
-                        </TouchableOpacity>
-                    )
-                })}
-            </View>
-        )
-    }
-
     return (
         <Tabs.Container
-            renderTabBar={props =>
-                <CustomTabBar {...props} />
-            }
+         
             onIndexChange={setActiveTabIndex}
             allowHeaderOverscroll={true}
             containerStyle={localStyles.tabContainer}
