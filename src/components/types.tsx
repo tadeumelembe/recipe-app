@@ -28,3 +28,20 @@ export interface IHomeItem {
 export interface IAuthPage {
     navigation: NavigationProp<any, any>,
 }
+
+export interface IRecipeItem {
+    name: string;
+    image: string;
+    id: number;
+}
+
+/* Profile Types **/
+export interface IProfileHeader {
+    navigation: NavigationProp<any, any>;
+    headerHeight: number;
+}
+
+export interface IRecipeTab {
+    navigation: NavigationProp<any, any>,
+    
+}
