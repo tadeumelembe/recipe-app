@@ -38,12 +38,12 @@ function AppRoutes({ colorScheme }: { colorScheme: ColorSchemeName }) {
     return (
         <SafeAreaProvider>
             <Navigation colorScheme={colorScheme} />
-            <StatusBar style={colorScheme == 'light' ? 'dark' : 'light'} />
+            <StatusBar backgroundColor={'#fff'} style={'dark'} />
         </SafeAreaProvider>
     );
 }
 
-const Routes: React.FC = () => {
+const Routes: React.FC<any> = () => {
     const colorScheme = 'light'//useColorScheme();
 
     const { isSigned } = useAuth();

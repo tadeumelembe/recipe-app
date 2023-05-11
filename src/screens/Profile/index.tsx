@@ -1,14 +1,18 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, Animated } from "react-native";
+import React, { useRef, useState } from "react";
+import { StyleSheet, TouchableOpacity, Animated, SafeAreaView, StatusBar } from "react-native";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Ionicons, Octicons } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
+import { Tabs, MaterialTabBar, TabBarProps } from 'react-native-collapsible-tab-view'
 
-import { Container, ScrollView, View, Text } from "../../../components/Themed";
+
+import { Container, ScrollView, View, Text, FlatList } from "../../../components/Themed";
 import Header from "../../components/Profile/Header";
 import { RootTabScreenProps } from "../../../types";
 import style from "../../../constants/style";
 import Colors from "../../../constants/Colors";
+import RecipeItem from "../../components/Profile/RecipeItems";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -46,15 +50,7 @@ function MyTabBar({ state, descriptors, navigation, position }: any) {
                     });
                 };
 
-                const inputRange = state.routes.map((_: any, i: number) => i);
-                const opacity = position.interpolate({
-                    inputRange,
-                    outputRange: inputRange.map((i: any) => (i === index ? 1 : 0.5)),
-                });
-                const indicatorOpacity = position.interpolate({
-                    inputRange,
-                    outputRange: inputRange.map((i: any) => (i === index ? 1 : 0)),
-                });
+               
 
                 return (
                     <TouchableOpacity
@@ -65,6 +61,7 @@ function MyTabBar({ state, descriptors, navigation, position }: any) {
                         onPress={onPress}
                         onLongPress={onLongPress}
                         style={[localStyles.tabViewLabelButton]}
+                        key={index}
                     >
                         <Animated.Text style={[localStyles.tabLabelNumber, { opacity }]}>
                             16
@@ -81,23 +78,149 @@ function MyTabBar({ state, descriptors, navigation, position }: any) {
     );
 }
 
-function MyTabs() {
-    return (
-        <Tab.Navigator
-            tabBar={props => <MyTabBar {...props} />}
-        >
-            <Tab.Screen name="Recipes" component={Recipe} />
-            <Tab.Screen name="Saved" component={Saved} />
-            <Tab.Screen name="Following" component={Saved} />
-        </Tab.Navigator>
-    );
-}
-
+const data = [
+    {
+        id: '1',
+        profile_name: 'Tadeu Melembe',
+        created_at: '2h ago',
+        title: 'Red Wine and Mint Soufflé',
+        image: require('../../../assets/images/dish-1.png'),
+        description: 'Integer at bibendum nisi. Integer eu tortor orci. Proin in consequat odio, vitae viverra est. Integer neque mauris, consequat vitae sapien sit amet, pretium convallis velit. Donec auctor velit consectetur rutrum hendrerit. Nam ornare vel urna quis dictum. Sed feugiat, magna eget ullamcorper scelerisque, nulla urna consequat magna, scelerisque tempus sem ex in ex. Sed a sagittis ante. Aenean non eros a urna sodales aliquam. Nulla risus lectus, accumsan dignissim nunc ac, placerat ullamcorper nibh.'
+    },
+    {
+        id: '2',
+        profile_name: 'Wildson Guiamba',
+        created_at: '1day ago',
+        image: require('../../../assets/images/dish-2.png'),
+        title: 'White Wine Toffee',
+        description: 'Proin sit amet dictum turpis, at aliquam nulla. Cras tincidunt, nisl quis tincidunt hendrerit, orci lorem pharetra nunc, sed aliquam eros nunc quis purus. Suspendisse vulputate nisl vitae est finibus, id tristique dui suscipit. In condimentum eros nisl, ut interdum turpis suscipit vitae. Suspendisse hendrerit pulvinar lacus, in egestas risus gravida ut.'
+    },
+    {
+        id: '3',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '334',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '343',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '3434',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '322',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '31233',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '3435',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '863',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '334',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '343',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '3434',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '322',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '31233',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '3435',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    },
+    {
+        id: '863',
+        profile_name: 'Itan',
+        image: require('../../../assets/images/dish-3.png'),
+        created_at: '50min ago',
+        title: 'Vanilla Pud',
+    }
+]
 function Recipe() {
+    function renderItem({ item }) {
+        return <RecipeItem />;
+    }
+
     return (
-        <View style={{ flex: 1, backgroundColor: 'tomato' }}>
-            <Text>recipe</Text>
-        </View>
+        <Container>
+            <Tabs.FlatList
+                data={data}
+                style={localStyles.flatlist}
+                keyExtractor={(item) => item.id}
+                renderItem={renderItem}
+                // ItemSeparatorComponent={(({highlighted}) => (<View style={{borderTopColor:'rgba(0,0,0,.05)',borderWidth:0.,marginBottom:20}} />))}
+                ListFooterComponent={
+                    <View style={{ marginTop: 15 }} />
+                }
+                scrollEventThrottle={10}
+                numColumns={2}
+            />
+        </Container>
     )
 }
 
@@ -109,29 +232,87 @@ function Saved() {
     )
 }
 
-
+function Head() {
+    return (
+        <View style={[style.container, { height: 190 }]}>
+            <Header />
+        </View>
+    )
+}
 
 
 const TabProfile = ({ navigation }: RootTabScreenProps<'TabProfile'>) => {
-    return (
-        <Container>
-            <Header />
+    const [activeTabIndex, setActiveTabIndex] = useState<number>(0)
 
-            <View style={[style.borderSeparator, { marginVertical: 25 }]}></View>
+    function CustomTabBar(props: TabBarProps) {
+        const tabProps = [...props.tabProps]
+        console.log(tabProps)
+        return (
+            <View style={localStyles.tabButtons}>
+                {tabProps.map((element, index) => {
+                    const isFocused = index === activeTabIndex;
 
-            <View style={localStyles.tabView}>
-                <MyTabs />
+
+                    return (
+                        <TouchableOpacity
+                            accessibilityRole="button"
+                            accessibilityState={isFocused ? { selected: true } : {}}
+                            //  accessibilityLabel={options.tabBarAccessibilityLabel}
+                            //testID={options.tabBarTestID}
+                            //onPress={onPress}
+                            //onLongPress={onLongPress}
+                            style={[localStyles.tabViewLabelButton]}
+                            key={index}
+                        >
+                            <Animated.Text style={[localStyles.tabLabelNumber,]}>
+                                16
+                            </Animated.Text>
+                            <Animated.Text style={[localStyles.tabLabel,]}>
+                                {element[1].name}
+                            </Animated.Text>
+                            <Animated.View style={[localStyles.tabIndicator, isFocused && { borderWidth: 2 }]} />
+
+                        </TouchableOpacity>
+                    )
+                })}
             </View>
-        </Container>
+        )
+    }
+
+    return (
+        <Tabs.Container
+            renderTabBar={props =>
+                <CustomTabBar {...props} />
+            }
+            onIndexChange={setActiveTabIndex}
+            allowHeaderOverscroll={true}
+            containerStyle={localStyles.tabContainer}
+            headerContainerStyle={localStyles.headerContainerStyle}
+            headerHeight={190}
+            renderHeader={Head}>
+            <Tabs.Tab name="Recipe">
+                <Recipe />
+            </Tabs.Tab>
+            <Tabs.Tab name="Saved">
+                <Saved />
+            </Tabs.Tab>
+        </Tabs.Container>
     )
 }
 
 export default TabProfile
 
 const localStyles = StyleSheet.create({
+    tabContainer: {
+        flex: 1
+    },
+    headerContainerStyle: {
+        shadowOpacity: 0,
+        elevation: 0,
+        ...style.borderSeparator
+    },
     tabView: {
         flex: 1,
-
     },
     tabButtons: {
         flexDirection: 'row',
@@ -158,8 +339,11 @@ const localStyles = StyleSheet.create({
     },
     tabIndicator: {
         borderTopColor: Colors.light.tint,
-        borderTopWidth: 2,
         marginBottom: -0.2,
         width: '100%'
+    },
+    flatlist: {
+        width: '100%',
+        paddingTop: 15
     }
 })

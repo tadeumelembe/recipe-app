@@ -7,9 +7,15 @@ import styles from "../../../../constants/style";
 import authStyles from "../authStyles"
 import { IAuthPage } from "../../../components/types";
 
+import { useAuth } from "../../../context/authContext";
 
 const Login: React.FC<IAuthPage> = ({ navigation }) => {
 
+    const { signIn } = useAuth();
+
+    function handleSignIn() {
+        return signIn()
+    }
 
     return (
         <KeyboardAvoidingView
@@ -47,7 +53,7 @@ const Login: React.FC<IAuthPage> = ({ navigation }) => {
 
                     <Button
                         btnText="Login"
-                        onPress={() => alert('ok')}
+                        onPress={() => handleSignIn()}
                     />
 
                     <View style={[{ alignItems: 'center', marginTop: 40 }]}>

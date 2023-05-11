@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, } from 'react-native-safe-area-context';
 
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';

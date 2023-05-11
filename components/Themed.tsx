@@ -125,7 +125,7 @@ export function Container(props: ViewProps) {
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
   const insets = useSafeAreaInsets();
   
-  return <DefaultView style={[styles.container, { backgroundColor, paddingTop: insets.top+5 }, style,]} {...otherProps} />;
+  return <DefaultView style={[styles.container, { backgroundColor, paddingTop: insets.top }, style,]} {...otherProps} />;
 }
 
 export function ScrollView(props: ScrollViewProps) {

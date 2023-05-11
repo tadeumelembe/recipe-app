@@ -1,5 +1,5 @@
 import React from "react";
-import { ColorSchemeName, Platform, StyleSheet } from "react-native";
+import { ColorSchemeName, StatusBar, Platform, StyleSheet } from "react-native";
 import { useThemeColor } from "../components/Themed";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "./Colors";
@@ -11,10 +11,10 @@ const colorScheme = 'light'
 export default StyleSheet.create({
 
   container: {
-    paddingTop: 30,
     paddingHorizontal: horizontal_padding,
     backgroundColor: Colors[colorScheme].background,
     flex: 1,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
   },
   bgNone: {
     backgroundColor: '#ffffff00'
@@ -31,7 +31,7 @@ export default StyleSheet.create({
     paddingHorizontal: horizontal_padding,
   },
   scrollContainer: {
-    paddingHorizontal: horizontal_padding,
+    paddingHorizontal: 0,
     width: '100%',
     backgroundColor:'#fff'
   },
@@ -117,7 +117,7 @@ export default StyleSheet.create({
     color: Colors[colorScheme].tint
   },
   borderSeparator: {
-    borderBottomColor: Colors[colorScheme].textMuted,
+    borderBottomColor: Colors[colorScheme].borderSeparator,
     borderBottomWidth: 0.3
   },
   card: {

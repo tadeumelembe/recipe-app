@@ -12,7 +12,8 @@ export default {
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,
     card:'rgba(255, 255, 255, 0.5)',
-    avatarBackground:'#ccc'
+    avatarBackground:'#ccc',
+    borderSeparator: 'rgba(0, 0, 0, 0.2)',
   },
   dark: {
     text: '#fff',
