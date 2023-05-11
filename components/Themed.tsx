@@ -26,7 +26,7 @@ export function useThemeColor(
 ) {
   const theme = 'light' //useColorScheme();
   const colorFromProps = props[theme];
-  
+
   if (colorFromProps) {
     return colorFromProps;
   } else {
@@ -71,6 +71,7 @@ export function FlatList(props: FlatListProps) {
       style={{ width: '100%' }}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
+      
       {...otherProps}
     />
   )
@@ -124,7 +125,7 @@ export function Container(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
   const insets = useSafeAreaInsets();
-  
+
   return <DefaultView style={[styles.container, { backgroundColor, paddingTop: insets.top }, style,]} {...otherProps} />;
 }
 
@@ -174,7 +175,7 @@ export function TextButton(props: TouchableOpacityProps) {
 export function IoniconsIcon(props: {
   name: React.ComponentProps<typeof Ionicons>['name'];
   color: string;
-  size:number;
+  size: number;
 }) {
   return <Ionicons {...props} />;
 }

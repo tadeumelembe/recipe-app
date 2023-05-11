@@ -14,7 +14,7 @@ export default StyleSheet.create({
     paddingHorizontal: horizontal_padding,
     backgroundColor: Colors[colorScheme].background,
     flex: 1,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   bgNone: {
     backgroundColor: '#ffffff00'

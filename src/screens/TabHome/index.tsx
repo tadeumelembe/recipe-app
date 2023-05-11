@@ -51,6 +51,7 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
 
             <FlatList
                 data={data}
+           
                 style={localStyles.flatlist}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
@@ -67,6 +68,6 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
 const localStyles = StyleSheet.create({
     flatlist: {
         width: '100%',
-        paddingTop: 15
+        paddingTop: 15,
     }
 })

@@ -13,15 +13,25 @@ import InteractionButtons from "./IteractionButtons";
 const FeedCard: React.FC<IHomeFeedCard> = ({ navigation, item }) => {
     const [bookmarked, setBookemarked] = useState(false)
     const [liked, setLiked] = useState(false)
-const colorScheme = 'light'
+    const colorScheme = 'light'
     return (
         <View style={localStyle.root}>
-            <ImageBackground
-                source={item.image}
-                resizeMode="cover"
-                style={localStyle.image_bg}
-                imageStyle={localStyle.image}
-            >
+            {item.image ?
+                <ImageBackground
+                    source={item.image}
+                    resizeMode="cover"
+                    style={localStyle.image_bg}
+                    imageStyle={localStyle.image}
+                >
+                    <View style={localStyle.header}>
+                        <Avatar size="xs" />
+                        <View style={{ marginLeft: 10, ...style.bgNone }}>
+                            <Text style={localStyle.profile_name}>{item.profile_name}</Text>
+                            <Text style={localStyle.created_at}>{item.created_at}</Text>
+                        </View>
+                    </View>
+                </ImageBackground>
+                :
                 <View style={localStyle.header}>
                     <Avatar size="xs" />
                     <View style={{ marginLeft: 10, ...style.bgNone }}>
@@ -29,22 +39,17 @@ const colorScheme = 'light'
                         <Text style={localStyle.created_at}>{item.created_at}</Text>
                     </View>
                 </View>
-            </ImageBackground>
-            {!item.image &&
-                <Image
-                    style={localStyle.image}
-                    source={`${item.image}`}
-                />
             }
+
             <View style={localStyle.content}>
                 <View style={localStyle.title_row}>
                     <Text style={localStyle.title}>{item.title}</Text>
-                    
+
                 </View>
                 {item.description &&
                     <Text numberOfLines={2} style={localStyle.description}>{item.description}</Text>
                 }
-               <InteractionButtons />
+                <InteractionButtons />
             </View>
         </View>
     )
@@ -87,10 +92,10 @@ const localStyle = StyleSheet.create({
     },
     content: {
         padding: 15,
-        borderBottomRightRadius:10,
-        borderBottomLeftRadius:10,
+        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: 10,
     },
-    
+
     description: {
         ...style.fontR,
         ...style.fontNunitoRegular,
