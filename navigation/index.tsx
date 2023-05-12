@@ -22,6 +22,9 @@ import Settings from '../src/screens/Settings';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import ProfileStack from './profileStack';
+
+import RecipeDetails from '../src/screens/RecipeDetails';
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -39,7 +42,6 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  * https://reactnavigation.org/docs/modal
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
-const ProfileStack = createNativeStackNavigator();
 
 function RootNavigator() {
   return (
@@ -47,6 +49,7 @@ function RootNavigator() {
 
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
 
+      <Stack.Screen name="RecipeDetails" component={RecipeDetails} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
@@ -55,16 +58,6 @@ function RootNavigator() {
   );
 }
 
-function ProfileStackScreen() {
-  return (
-    <ProfileStack.Navigator>
-
-      <ProfileStack.Screen name="Root" component={TabProfile} options={{ headerShown: false }} />
-      <ProfileStack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
-    
-    </ProfileStack.Navigator>
-  );
-}
 
 
 /**
@@ -102,7 +95,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="TabProfile"
-        component={ProfileStackScreen}
+        component={ProfileStack}
         options={{
           title: 'Home5x`',
           tabBarIcon: ({ color }) => <TabBarIcon name="person-outline" color={color} />,

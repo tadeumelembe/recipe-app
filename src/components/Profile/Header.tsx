@@ -1,26 +1,39 @@
 import React from "react"
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons, Octicons } from '@expo/vector-icons';
+import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
+import { Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons';
 
-import { View, Text, Avatar } from "../../../components/Themed"
+import { View, Text, Avatar, Button } from "../../../components/Themed"
 import style from "../../../constants/style";
 import Colors from "../../../constants/Colors";
 import { IProfileHeader } from "../types";
 
 
 
-const HeaderProfile: React.FC<IProfileHeader> = ({navigation, headerHeight}) => {
+const HeaderProfile: React.FC<IProfileHeader> = ({ navigation, headerHeight }) => {
+    const isOther = true
     return (
-        <View style={[localStyle.root,{height:headerHeight}]}>
-            <View style={localStyle.topHead}>
-                <Text style={localStyle.title}>My Kitchen</Text>
+        <View style={[localStyle.root, { height: headerHeight }]}>
+            {isOther ?
+                <View style={localStyle.topHead}>
+                    <Pressable onPress={() => navigation.goBack()} style={localStyle.buttonSection}>
+                        <MaterialIcons name="arrow-back-ios" size={20} color="black" />
+                        <Text style={localStyle.backText}>Back</Text>
+                    </Pressable>
 
-                <TouchableOpacity onPress={()=>navigation.navigate('Settings')} style={localStyle.settingSection}>
-                    <Ionicons name="settings-outline" size={22} color="black" />
-                    <Text style={localStyle.settingsText}>Settings</Text>
-                </TouchableOpacity>
-            </View>
+                    <Pressable onPress={() => alert('more')} style={localStyle.buttonSection}>
+                        <MaterialIcons name="more-horiz" size={24} color="black" />
+                    </Pressable>
+                </View>
+                :
+                <View style={localStyle.topHead}>
+                    <Text style={localStyle.title}>My Kitchen</Text>
 
+                    <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={localStyle.settingSection}>
+                        <Ionicons name="settings-outline" size={22} color="black" />
+                        <Text style={localStyle.settingsText}>Settings</Text>
+                    </TouchableOpacity>
+                </View>
+            }
             <View style={localStyle.profileInfoSection}>
                 <Avatar size="xl" />
 
@@ -39,6 +52,10 @@ const HeaderProfile: React.FC<IProfileHeader> = ({navigation, headerHeight}) => 
                     </View>
                 </View>
             </View>
+            {isOther &&
+                <Button style={localStyle.followButton} btnText="Follow" />
+            }
+            <View style={[style.borderSeparator, { marginTop: 15 }]} />
 
         </View>
     )
@@ -94,6 +111,25 @@ const localStyle = StyleSheet.create({
         ...style.fontR,
         ...style.textMuted2,
         ...style.fontNunitoRegular
+    },
+    followButton: {
+        marginTop: 15
+    },
+    buttonSection: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    backText: {
+        ...style.fontR,
+        ...style.fontNunitoRegular,
+        paddingLeft: 0,
+        ...style.textMuted2
+    },
+    logOutText: {
+        ...style.textPrimary,
+        ...style.fontNunitoBold,
+        ...style.fontM,
+        paddingLeft: 5
     }
 })
 

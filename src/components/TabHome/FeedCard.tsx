@@ -15,7 +15,7 @@ const FeedCard: React.FC<IHomeFeedCard> = ({ navigation, item }) => {
     const [liked, setLiked] = useState(false)
     const colorScheme = 'light'
     return (
-        <View style={localStyle.root}>
+        <Pressable onPress={()=>navigation.navigate('RecipeDetails')} style={localStyle.root}>
             {item.image ?
                 <ImageBackground
                     source={item.image}
@@ -51,7 +51,7 @@ const FeedCard: React.FC<IHomeFeedCard> = ({ navigation, item }) => {
                 }
                 <InteractionButtons />
             </View>
-        </View>
+        </Pressable>
     )
 }
 

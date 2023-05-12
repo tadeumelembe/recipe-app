@@ -16,7 +16,7 @@ import Saved from "./Saved";
 
 const TabProfile = ({ navigation }: RootTabScreenProps<'TabProfile'>) => {
     const [activeTabIndex, setActiveTabIndex] = useState<number>(0)
-    const headerHeight = 190;
+    const headerHeight = 230;
 
 
     function Head() {
@@ -24,7 +24,7 @@ const TabProfile = ({ navigation }: RootTabScreenProps<'TabProfile'>) => {
     }
 
     return (
-        <Container style={{ paddingHorizontal: 0 }}>
+        <Container style={localStyles.root}>
             <Tabs.Container
                 onIndexChange={setActiveTabIndex}
                 allowHeaderOverscroll={true}
@@ -46,6 +46,9 @@ const TabProfile = ({ navigation }: RootTabScreenProps<'TabProfile'>) => {
 export default TabProfile
 
 const localStyles = StyleSheet.create({
+    root: {
+        paddingHorizontal: 0
+    },
     tabContainer: {
         flex: 1,
     },

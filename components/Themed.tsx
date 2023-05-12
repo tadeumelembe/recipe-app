@@ -154,9 +154,9 @@ export function TextInput(props: TextInputProps) {
 
 export function Button(props: TouchableOpacityProps) {
   const { btnText, style, ...otherProps } = props
-
+  
   return (
-    <DefaultTouchableOpacity style={[styles.btn1, style]} {...otherProps}>
+    <DefaultTouchableOpacity style={[styles.btn1,  style]} {...otherProps}>
       <Text style={[styles.fontNunitoBold, styles.fontM, styles.btn1Text]}>{btnText}</Text>
     </DefaultTouchableOpacity>
   )

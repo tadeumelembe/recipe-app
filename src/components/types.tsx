@@ -35,12 +35,23 @@ export interface IRecipeItem {
     id: number;
 }
 
-/* Profile Types **/
+/* ---------------------------- */
+/* Begin Profile Types **/
 export interface IProfileHeader {
     navigation: NavigationProp<any, any>;
     headerHeight: number;
 }
 
 export interface IRecipeTab {
-    navigation: NavigationProp<any, any>,   
+    navigation: NavigationProp<any, any>,
 }
+
+export interface IProfileRecipeItem {
+    item: {
+        title: string;
+        image: string;
+        id: number;
+    };
+    navigation: NavigationProp<any, any>;
+}
+/*End Profile Types **/

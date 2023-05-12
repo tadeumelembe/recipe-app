@@ -5,7 +5,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import Colors from "./Colors";
 import Layout from "./Layout";
 
-const horizontal_padding = 15;
+const horizontal_padding = 20;
 const colorScheme = 'light'
 
 export default StyleSheet.create({
@@ -33,7 +33,7 @@ export default StyleSheet.create({
   scrollContainer: {
     paddingHorizontal: 0,
     width: '100%',
-    backgroundColor:'#fff'
+    backgroundColor: '#fff'
   },
   backgorundImage: {
     flex: 1,
@@ -68,6 +68,10 @@ export default StyleSheet.create({
   fontNunitoRegular: {
     fontFamily: 'nunito-regular'
   },
+  textH1: {
+    fontSize: 24,
+    fontFamily: 'nunito-bold'
+  },
   textPrimary: {
     color: Colors[colorScheme].tint
   },
@@ -89,26 +93,30 @@ export default StyleSheet.create({
     color: '#030F09',
     fontSize: 16,
     paddingTop: 8,
-    paddingHorizontal:5
+    paddingHorizontal: 5
   },
   btn1: {
     width: '100%',
-    height: 50,
+    height: 45,
     borderRadius: 8,
     backgroundColor: Colors[colorScheme].tint,
     alignItems: 'center',
     justifyContent: 'center',
-    /*
-        shadowColor: "rgba(0,0,0,0.6)",
-        shadowOffset: {
-          width: 0,
-          height: 3,
-        },
-        shadowOpacity: 0.29,
-        shadowRadius: 8,
-        elevation: 7,
-    */
 
+    shadowColor: "rgba(0,0,0,0.6)",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 8,
+    elevation: 17,
+  },
+  btnSecondary:{
+    backgroundColor: Colors[colorScheme].background,
+
+    borderColor: 'rgba(0,0,0,.08)',
+    borderWidth: 2,
   },
   btn1Text: {
     color: '#fff',
@@ -118,7 +126,7 @@ export default StyleSheet.create({
   },
   borderSeparator: {
     borderBottomColor: Colors[colorScheme].borderSeparator,
-    borderBottomWidth: 0.3
+    borderBottomWidth: 0.9,
   },
   card: {
     backgroundColor: Colors[colorScheme].card,
@@ -133,15 +141,15 @@ export default StyleSheet.create({
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
-          height: 12
+          height: 1,
         },
-        shadowOpacity: 0.58,
-        shadowRadius: 16.00,
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
 
-        elevation: 0,
+        elevation: 2,
 
-        borderColor: 'rgba(0,0,0,.08)',
-        borderWidth: 0.8,
+        // borderColor: 'rgba(0,0,0,.08)',
+        // borderWidth: 0.8,
       },
     })
   },
