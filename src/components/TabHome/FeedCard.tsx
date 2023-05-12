@@ -63,7 +63,7 @@ const localStyle = StyleSheet.create({
         minHeight: 100,
         marginBottom: 20,
         maxWidth: 395,
-        ...style.card
+        ...style.card,
     },
     title_row: {
         justifyContent: 'space-between',

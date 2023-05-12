@@ -10,7 +10,8 @@ import {
   ImageBackground as DefaultImageBackground,
   TextInput as DefaultTextInput,
   TouchableOpacity as DefaultTouchableOpacity,
-  FlatList as DefaultFlatList
+  FlatList as DefaultFlatList,
+  StyleSheet
 } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -19,6 +20,8 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import styles from '../constants/style';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CollapsibleProps, CollapsibleRef, MaterialTabBar, MaterialTabItem, TabProps, Tabs } from 'react-native-collapsible-tab-view';
+import { Children, PropsWithChildren } from 'react';
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
@@ -44,6 +47,7 @@ export type ViewProps = ThemeProps & DefaultView['props'];
 export type ScrollViewProps = ThemeProps & DefaultScrollView['props'];
 export type ImageBackgroundProps = ThemeProps & DefaultImageBackground['props'];
 export type TextInputProps = ThemeProps & DefaultTextInput['props'];
+export type TopTabBarProps = ThemeProps & CollapsibleProps;
 export type FlatListProps = ThemeProps & DefaultFlatList['props'];
 export type TouchableOpacityProps = ThemeProps & DefaultTouchableOpacity['props'] & {
   btnText: string
@@ -71,10 +75,62 @@ export function FlatList(props: FlatListProps) {
       style={{ width: '100%' }}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
-      
+
       {...otherProps}
     />
   )
+}
+
+export function TopTabBar(props: TopTabBarProps) {
+  const { children, lightColor, darkColor, ...otherProps } = props
+
+  const indicatorColor = useThemeColor({ light: lightColor, dark: darkColor }, 'tint');
+
+  const localStyles = StyleSheet.create({
+    tabContainer: {
+      flex: 1,
+    },
+    headerContainerStyle: {
+      shadowOpacity: 0,
+      elevation: 0,
+      ...styles.borderSeparator
+    },
+    tabBarLabel: {
+      ...styles.fontM,
+      ...styles.fontNunitoRegular,
+      paddingHorizontal: 15
+    },
+    tabBarIndicatorStyle: {
+      backgroundColor: indicatorColor
+    }
+  })
+
+  return (
+    <Tabs.Container
+      lazy={true}
+      allowHeaderOverscroll={true}
+      containerStyle={localStyles.tabContainer}
+      headerContainerStyle={localStyles.headerContainerStyle}
+      renderTabBar={(props) =>
+        <MaterialTabBar
+          indicatorStyle={localStyles.tabBarIndicatorStyle}
+          TabItemComponent={(props) =>
+            <MaterialTabItem
+              activeColor="#000"
+              {...props}
+            />
+          }
+          labelStyle={localStyles.tabBarLabel}
+          {...props}
+          scrollEnabled
+        />
+      }
+      {...otherProps}
+    >
+      {children}
+    </Tabs.Container>
+  )
+
 }
 
 export function Avatar(props: AvatarProps) {
@@ -154,9 +210,9 @@ export function TextInput(props: TextInputProps) {
 
 export function Button(props: TouchableOpacityProps) {
   const { btnText, style, ...otherProps } = props
-  
+
   return (
-    <DefaultTouchableOpacity style={[styles.btn1,  style]} {...otherProps}>
+    <DefaultTouchableOpacity style={[styles.btn1, style]} {...otherProps}>
       <Text style={[styles.fontNunitoBold, styles.fontM, styles.btn1Text]}>{btnText}</Text>
     </DefaultTouchableOpacity>
   )

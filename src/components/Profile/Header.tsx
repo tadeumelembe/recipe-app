@@ -12,7 +12,7 @@ import { IProfileHeader } from "../types";
 const HeaderProfile: React.FC<IProfileHeader> = ({ navigation, headerHeight }) => {
     const isOther = true
     return (
-        <View style={[localStyle.root, { height: headerHeight }]}>
+        <View style={[localStyle.root, { minHeight: headerHeight }]}>
             {isOther ?
                 <View style={localStyle.topHead}>
                     <Pressable onPress={() => navigation.goBack()} style={localStyle.buttonSection}>
@@ -52,10 +52,12 @@ const HeaderProfile: React.FC<IProfileHeader> = ({ navigation, headerHeight }) =
                     </View>
                 </View>
             </View>
-            {isOther &&
+            {isOther ?
                 <Button style={localStyle.followButton} btnText="Follow" />
+                :
+                <View style={[style.borderSeparator, { marginTop: 25 }]} />
+
             }
-            <View style={[style.borderSeparator, { marginTop: 15 }]} />
 
         </View>
     )

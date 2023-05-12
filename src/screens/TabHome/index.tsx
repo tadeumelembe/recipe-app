@@ -1,6 +1,7 @@
 import React from "react";
 import { ListRenderItemInfo, StyleSheet } from "react-native";
 import { Container, FlatList, ScrollView, View } from "../../../components/Themed";
+import style from "../../../constants/style";
 
 import { RootTabScreenProps } from "../../../types";
 import Header from "../../components/Head";
@@ -46,12 +47,12 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
 
 
     return (
-        <Container>
+        <Container style={localStyles.root}>
             <Header navigation={navigation} />
 
             <FlatList
                 data={data}
-           
+                contentContainerStyle={localStyles.fatlistContainer}
                 style={localStyles.flatlist}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
@@ -66,8 +67,14 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
 }
 
 const localStyles = StyleSheet.create({
+    root: {
+        paddingHorizontal: 0
+    },
     flatlist: {
         width: '100%',
         paddingTop: 15,
+    },
+    fatlistContainer: {
+        ...style.horizontalPadding
     }
 })

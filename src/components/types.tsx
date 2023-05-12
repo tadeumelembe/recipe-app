@@ -55,3 +55,10 @@ export interface IProfileRecipeItem {
     navigation: NavigationProp<any, any>;
 }
 /*End Profile Types **/
+
+
+/* ---------------------------- */
+/* Begin Settings Types **/
+
+/*End Settings Types **/
+

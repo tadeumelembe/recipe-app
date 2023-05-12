@@ -146,7 +146,7 @@ export default StyleSheet.create({
         shadowOpacity: 0.20,
         shadowRadius: 1.41,
 
-        elevation: 2,
+        elevation: 0.8,
 
         // borderColor: 'rgba(0,0,0,.08)',
         // borderWidth: 0.8,
