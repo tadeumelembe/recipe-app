@@ -7,24 +7,21 @@ import { Tabs, MaterialTabBar, TabBarProps, MaterialTabItem } from 'react-native
 
 import { Container, ScrollView, View, Text, FlatList, TopTabBar } from "../../../components/Themed";
 import Header from "../../components/Profile/Header";
-import { RootTabScreenProps } from "../../../types";
+import { RootStackScreenProps, RootTabScreenProps } from "../../../types";
 import style from "../../../constants/style";
 import Colors from "../../../constants/Colors";
 import Layout from "../../../constants/Layout";
+import HeaderRecipe from "../../components/RecipeDetails/Header";
 
 const headeHeight = Layout.window.height * 35 / 100
 
-const RecipeDetails = ({ navigation }: RootTabScreenProps<'TabProfile'>) => {
+const RecipeDetails = ({ navigation, route }: RootStackScreenProps<'RecipeDetails'>) => {
     const [activeTabIndex, setActiveTabIndex] = useState<number>(0)
     const headerHeight = headeHeight;
-
-
+    const { recipe } = route.params
+    
     function Head() {
-        return (
-            <View style={{ height: headerHeight }}>
-
-            </View>
-        )
+        return (<HeaderRecipe item={recipe} navigation={navigation} headerHeight={headeHeight} />)
     }
     return (
         <Container style={localStyles.root}>
