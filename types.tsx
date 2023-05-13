@@ -20,11 +20,11 @@ export type RootStackParamList = {
   NotFound: undefined;
   RecipeDetails: {
     navigation: NavigationProp<any, any>;
-    recipe: IRecipeItem
+    item: IRecipeItem
   };
   CookingMode:{
       navigation: NavigationProp<any, any>;
-      recipe: IRecipeItem
+      item: IRecipeItem
   }
 };
 

@@ -16,16 +16,15 @@ import ModalScreen from '../src/screens/ModalScreen';
 import NotFoundScreen from '../src/screens/NotFoundScreen';
 
 import TabHome from '../src/screens/TabHome';
-import TabProfile from '../src/screens/Profile';
 import TabSearch from '../src/screens/TabSearch';
-import Settings from '../src/screens/Settings';
-
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
-import LinkingConfiguration from './LinkingConfiguration';
-import ProfileStack from './profileStack';
 
 import RecipeDetails from '../src/screens/RecipeDetails';
 import CookingMode from '../src/screens/CookingMode';
+
+import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import LinkingConfiguration from './LinkingConfiguration';
+
+import ProfileStack from './profileStack';
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {

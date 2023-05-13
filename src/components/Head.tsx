@@ -9,28 +9,28 @@ import { IHead } from "./types";
 
 const Header: React.FC<IHead> = ({ navigation, type }) => {
     return (
-        <>
+        <View>
             {type === 'back' ?
                 <View style={localStyle.topHead}>
                     <Pressable onPress={() => navigation.goBack()} style={localStyle.buttonSection}>
-                        <MaterialIcons name="arrow-back-ios" size={20} color="black" />
+                        <MaterialIcons name="arrow-back-ios" size={20} color="#030F09" />
                         <Text style={localStyle.backText}>Back</Text>
                     </Pressable>
                 </View>
                 :
-                <View style={[localStyle.root, styles.paddingHorizontal]}>
+                <View style={[localStyle.root]}>
                     <Text>Logo</Text>
                     <View style={localStyle.iconContainer}>
                         <View style={{ paddingRight: 15 }}>
-                            <Ionicons name="notifications-outline" size={22} color="#000" />
+                            <Ionicons name="notifications-outline" size={22} color="#030F09" />
                         </View>
                         <View>
-                            <Ionicons name="mail-outline" size={22} color="#000" />
+                            <Ionicons name="mail-outline" size={22} color="#030F09" />
                         </View>
                     </View>
                 </View>
             }
-        </>
+        </View>
     )
 }
 
@@ -60,6 +60,7 @@ const localStyle = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        paddingVertical:5
     },
 });

@@ -10,7 +10,7 @@ import { IRecipeDetailsHeader } from "../types";
 
 
 const HeaderRecipee: React.FC<IRecipeDetailsHeader> = ({ navigation, item, headerHeight }) => {
-    console.log(item)
+    
     return (
         <View style={[localStyle.root, { minHeight: headerHeight }]}>
 
@@ -27,13 +27,15 @@ const HeaderRecipee: React.FC<IRecipeDetailsHeader> = ({ navigation, item, heade
                             <Text style={localStyle.backText}>Back</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate('CookingMode')} style={[localStyle.buttonSection,localStyle.playButton]}>
+                        <TouchableOpacity onPress={() => navigation.navigate('CookingMode', { item: item })} style={[localStyle.buttonSection, localStyle.playButton]}>
                             <Ionicons name="md-play-outline" size={24} color="white" />
                             <Text style={localStyle.playText}>Cook now</Text>
                         </TouchableOpacity>
                     </View>
+
                     <Text style={localStyle.title}>{item.title}</Text>
                 </View>
+
             </ImageBackground>
 
         </View>
@@ -63,13 +65,13 @@ const localStyle = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    playButton:{
-        borderWidth:1,
-        borderColor:'#fff',
-        borderRadius:10,
+    playButton: {
+        borderWidth: 1,
+        borderColor: '#fff',
+        borderRadius: 10,
         backgroundColor: 'rgba(0,0,0,.45)',
-        paddingHorizontal:8,
-        paddingVertical:3
+        paddingHorizontal: 8,
+        paddingVertical: 3
     },
     backText: {
         ...style.fontR,
@@ -89,7 +91,7 @@ const localStyle = StyleSheet.create({
         ...style.textH1,
         color: '#fff'
     },
-    playText:{
+    playText: {
         ...style.fontS,
         ...style.fontNunitoBold,
         color: '#fff'

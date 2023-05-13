@@ -2,7 +2,7 @@ import { NavigationProp } from "@react-navigation/native";
 
 export interface IHead {
     navigation: NavigationProp<any, any>,
-    type: string | null;
+    type?: string | null | undefined;
 }
 
 export interface IUserContext {

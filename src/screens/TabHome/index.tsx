@@ -48,8 +48,9 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
 
     return (
         <Container style={localStyles.root}>
-            <Header navigation={navigation} />
-
+            <View style={style.horizontalPadding}>
+                <Header navigation={navigation} />
+            </View>
             <FlatList
                 data={data}
                 contentContainerStyle={localStyles.fatlistContainer}
