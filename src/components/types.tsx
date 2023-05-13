@@ -2,6 +2,7 @@ import { NavigationProp } from "@react-navigation/native";
 
 export interface IHead {
     navigation: NavigationProp<any, any>,
+    type: string | null;
 }
 
 export interface IUserContext {
@@ -58,7 +59,10 @@ export interface IProfileRecipeItem {
 
 
 /* ---------------------------- */
-/* Begin Settings Types **/
-
-/*End Settings Types **/
+/* Begin RecipeDetails Types **/
+export interface IRecipeDetailsHeader {
+    navigation: NavigationProp<any, any>;
+    headerHeight: number;
+}
+/*End RecipeDetails Types **/
 

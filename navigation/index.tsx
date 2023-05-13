@@ -25,6 +25,7 @@ import LinkingConfiguration from './LinkingConfiguration';
 import ProfileStack from './profileStack';
 
 import RecipeDetails from '../src/screens/RecipeDetails';
+import CookingMode from '../src/screens/CookingMode';
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -50,6 +51,7 @@ function RootNavigator() {
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
 
       <Stack.Screen name="RecipeDetails" component={RecipeDetails} options={{ headerShown: false }} />
+      <Stack.Screen name="CookingMode" component={CookingMode} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />

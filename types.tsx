@@ -6,6 +6,7 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigationProp, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { IRecipeItem } from './src/components/types';
 
 declare global {
   namespace ReactNavigation {
@@ -17,6 +18,14 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
+  RecipeDetails: {
+    navigation: NavigationProp<any, any>;
+    recipe: IRecipeItem
+  };
+  CookingMode:{
+      navigation: NavigationProp<any, any>;
+      recipe: IRecipeItem
+  }
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
