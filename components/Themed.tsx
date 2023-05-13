@@ -85,6 +85,7 @@ export function TopTabBar(props: TopTabBarProps) {
   const { children, lightColor, darkColor, ...otherProps } = props
 
   const indicatorColor = useThemeColor({ light: lightColor, dark: darkColor }, 'tint');
+  const inactiveTabColor = useThemeColor({ light: lightColor, dark: darkColor }, 'textMuted2');
 
   const localStyles = StyleSheet.create({
     tabContainer: {
@@ -113,6 +114,7 @@ export function TopTabBar(props: TopTabBarProps) {
       headerContainerStyle={localStyles.headerContainerStyle}
       renderTabBar={(props) =>
         <MaterialTabBar
+        inactiveColor={inactiveTabColor}
           indicatorStyle={localStyles.tabBarIndicatorStyle}
           TabItemComponent={(props) =>
             <MaterialTabItem
