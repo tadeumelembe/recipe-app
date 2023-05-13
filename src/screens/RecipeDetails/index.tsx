@@ -18,7 +18,15 @@ const headeHeight = Layout.window.height * 35 / 100
 const RecipeDetails = ({ navigation, route }: RootStackScreenProps<'RecipeDetails'>) => {
     const [activeTabIndex, setActiveTabIndex] = useState<number>(0)
     const headerHeight = headeHeight;
-    const { item } = route.params
+    //const { recipe_id } = route.params
+
+    const item = {
+        created_at: "50min ago",
+        id: "3",
+        image: 21,
+        profile_name: "Itan",
+        title: "Vanilla Pud",
+      }
 
     function Head() {
         return (<HeaderRecipe item={item} navigation={navigation} headerHeight={headeHeight} />)

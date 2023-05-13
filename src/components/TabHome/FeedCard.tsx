@@ -14,8 +14,9 @@ const FeedCard: React.FC<IHomeFeedCard> = ({ navigation, item }) => {
     const [bookmarked, setBookemarked] = useState(false)
     const [liked, setLiked] = useState(false)
     const colorScheme = 'light'
+    console.log(item)
     return (
-        <Pressable onPress={() => navigation.navigate('RecipeDetails', { item: item })} style={localStyle.root}>
+        <Pressable onPress={() => navigation.navigate('RecipeDetails', { recipe_id: item.id })} style={localStyle.root}>
             {item.image ?
                 <ImageBackground
                     source={item.image}
