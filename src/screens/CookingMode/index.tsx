@@ -32,13 +32,12 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
     useEffect(() => {
         let timeOut
 
-        if (showControls) {
+        let opacity = showControls ? 1 : 0
             Animated.timing(controllersOpacity, {
-                toValue: 1,
+                toValue: opacity,
                 duration: 100,
                 useNativeDriver: true
             }).start()
-        }
 
         if (showControls && isPlaying) {
             timeOut = setTimeout(() => {
