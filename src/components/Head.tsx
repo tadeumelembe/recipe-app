@@ -1,31 +1,42 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 
 import { Container, IoniconsIcon, ScrollView, Text, View } from "../../components/Themed";
+import style from "../../constants/style";
 import styles from "../../constants/style";
 import { IHead } from "./types";
 
-const HeaderHome: React.FC<IHead> = ({ navigation }) => {
-
+const Header: React.FC<IHead> = ({ navigation, type }) => {
     return (
-        <View style={[localStyles.root, styles.paddingHorizontal]}>
-            <Text>Logo</Text>
-            <View style={localStyles.iconContainer}>
-                <View style={{ paddingRight: 15 }}>
-                    <Ionicons name="notifications-outline" size={22} color="#000" />
+        <>
+            {type === 'back' ?
+                <View style={localStyle.topHead}>
+                    <Pressable onPress={() => navigation.goBack()} style={localStyle.buttonSection}>
+                        <MaterialIcons name="arrow-back-ios" size={20} color="black" />
+                        <Text style={localStyle.backText}>Back</Text>
+                    </Pressable>
                 </View>
-                <View>
-                    <Ionicons name="mail-outline" size={22} color="#000" />
+                :
+                <View style={[localStyle.root, styles.paddingHorizontal]}>
+                    <Text>Logo</Text>
+                    <View style={localStyle.iconContainer}>
+                        <View style={{ paddingRight: 15 }}>
+                            <Ionicons name="notifications-outline" size={22} color="#000" />
+                        </View>
+                        <View>
+                            <Ionicons name="mail-outline" size={22} color="#000" />
+                        </View>
+                    </View>
                 </View>
-            </View>
-        </View>
+            }
+        </>
     )
 }
 
-export default HeaderHome
+export default Header
 
-const localStyles = StyleSheet.create({
+const localStyle = StyleSheet.create({
     root: {
         flexDirection: 'row',
         width: '100%',
@@ -34,5 +45,21 @@ const localStyles = StyleSheet.create({
     },
     iconContainer: {
         flexDirection: 'row',
+    },
+    buttonSection: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    backText: {
+        ...style.fontR,
+        ...style.fontNunitoRegular,
+        paddingLeft: 0,
+        ...style.textMuted2
+    },
+    topHead: {
+        flexDirection: 'row',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
 });
