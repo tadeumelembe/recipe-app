@@ -190,7 +190,7 @@ export function Container(props: ViewProps) {
 export function ScrollView(props: ScrollViewProps) {
   const { style, ...otherProps } = props
 
-  return <DefaultScrollView showsVerticalScrollIndicator={false} style={[styles.scrollContainer, style]} {...otherProps} />;
+  return <DefaultScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={[styles.scrollContainer, style]} {...otherProps} />;
 }
 
 export function ImageBackground(props: ImageBackgroundProps) {
