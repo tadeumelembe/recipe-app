@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { StyleSheet, Image } from "react-native"
 import { ImageBackground, Text, View } from "../../../components/Themed"
 import Layout from "../../../constants/Layout"
@@ -8,6 +8,7 @@ import { IProfileRecipeItem } from "../types"
 const cardWidth = (Layout.window.width - 15) * 40 / 100
 
 const RecipeItem: React.FC<IProfileRecipeItem> = ({ item }) => {
+    console.log('RecipeItem rendered')
     return (
         <View style={localStyle.card}>
             <Image
@@ -21,7 +22,7 @@ const RecipeItem: React.FC<IProfileRecipeItem> = ({ item }) => {
     )
 }
 
-export default RecipeItem
+export default memo(RecipeItem)
 
 const localStyle = StyleSheet.create({
 
@@ -36,20 +37,20 @@ const localStyle = StyleSheet.create({
         borderTopLeftRadius: 11,
         borderTopRightRadius: 11,
         width: '100%',
-        height: cardWidth-35
+        height: cardWidth - 35
     },
     nameSection: {
         alignItems: 'center',
-        justifyContent:'center',
+        justifyContent: 'center',
         position: 'absolute',
         width: '100%',
         bottom: 0,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
-        height:35
+        height: 35
     },
     name: {
-       // paddingVertical: 8,
+        // paddingVertical: 8,
         ...style.fontNunitoRegular,
         ...style.fontM
     }
