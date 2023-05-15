@@ -11,9 +11,6 @@ import InteractionButtons from "./IteractionButtons";
 
 
 const FeedCard: React.FC<IHomeFeedCard> = ({ navigation, item }) => {
-    const [bookmarked, setBookemarked] = useState(false)
-    const [liked, setLiked] = useState(false)
-    const colorScheme = 'light'
     
     return (
         <Pressable onPress={() => navigation.navigate('RecipeDetails', { recipe_id: item.id })} style={localStyle.root}>

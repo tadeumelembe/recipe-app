@@ -103,7 +103,6 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
     }, [isVideoReady])
 
     useEffect(() => {
-        console.log(isFullScreen)
         if (isFullScreen) {
             //console.log(videoContainerHeight * videoDetails.naturalSize.width / videoDetails.naturalSize.height)
             if (videoDetails?.naturalSize?.width > videoDetails?.naturalSize?.height) {
@@ -247,10 +246,10 @@ export default CookingMode
 
 const localStyles = StyleSheet.create({
     slider: {
-        height: 5,
+        height: 3,
         width: '100%',
         justifyContent: 'center',
-        backgroundColor: '#000',
+        backgroundColor: '#fff',
         marginVertical: 0,
         overflow: 'visible',
     },

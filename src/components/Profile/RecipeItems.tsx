@@ -8,7 +8,6 @@ import { IProfileRecipeItem } from "../types"
 const cardWidth = (Layout.window.width - 15) * 40 / 100
 
 const RecipeItem: React.FC<IProfileRecipeItem> = ({ item }) => {
-    console.log('RecipeItem rendered')
     return (
         <View style={localStyle.card}>
             <Image

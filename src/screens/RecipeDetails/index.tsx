@@ -27,10 +27,12 @@ const RecipeDetails = ({ navigation, route }: RootStackScreenProps<'RecipeDetail
         profile_name: "Itan",
         title: "Vanilla Pud",
       }
+      console.log(item)
 
     function Head() {
         return (<HeaderRecipe item={item} navigation={navigation} headerHeight={headeHeight} />)
     }
+
     return (
         <Container style={localStyles.root}>
             <TopTabBar

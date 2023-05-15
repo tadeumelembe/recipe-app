@@ -40,7 +40,6 @@ const InteractionButtons: React.FC = () => {
 
     function handleBookmarked() {
         setBookemarked(!bookmarked)
-        console.log(scaleBookemarkButton)
         scaleButtonSequence(scaleBookemarkButton)
     }
 
