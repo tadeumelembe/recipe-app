@@ -10,6 +10,7 @@ import style from "../../../constants/style";
 import Layout from "../../../constants/Layout";
 
 import Header from "../../components/Head";
+import Colors from "../../../constants/Colors";
 
 const headeHeight = Layout.window.height * 35 / 100
 const videoContainerHeight = 200
@@ -29,6 +30,10 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [showControls, setShowControls] = useState(false);
 
+    const [sliderPositionState, setSliderPositionState] = useState(0);
+    const sliderPositionRef = useRef();
+    sliderPositionRef.current = sliderPositionState;
+
     const [timeoutId, setTimeoutId] = useState('');
     const currenttimeout = useRef();
     currenttimeout.current = timeoutId
@@ -36,14 +41,11 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
     const controllersOpacity = useRef(new Animated.Value(1)).current
 
     useFocusEffect(() => {
-        // This will run when component is `focused` or mounted.
-        //StatusBar.setHidden(true);
-
-        // This will run when component is `blured` or unmounted.
         return () => {
             StatusBar.setHidden(false);
         }
     });
+
 
     useEffect(() => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => handleBackButton())
@@ -55,6 +57,18 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
             return true
         }
         return false
+    }
+
+    const sliderPosition = useRef(new Animated.Value(sliderPositionRef.current)).current
+    const sliderScale = useRef(new Animated.Value(1)).current
+
+    const animateSlider = (position: number) => {
+        setSliderPositionState(position)
+        Animated.timing(sliderPosition, {
+            toValue: position,
+            duration: 0,
+            useNativeDriver: true
+        }).start()
     }
 
 
@@ -105,7 +119,7 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
 
 
     return (
-        <Container style={[localStyles.root, { paddingTop: 0 }]}>
+        <Container style={[localStyles.root, isFullScreen && { paddingTop: 0 }]}>
             <ScrollView >
                 {!isFullScreen &&
                     <View style={style.horizontalPadding}>
@@ -146,6 +160,7 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                                                 <Ionicons name="pause" size={60} color="white" style={localStyles.playPauseIcon} />
                                             }
                                         </Pressable>
+
                                         <Pressable onPress={() => setIsFullScreen(prevState => !prevState)} style={localStyles.fullScreenButton}>
                                             {!isFullScreen ?
                                                 <MaterialIcons name="fullscreen" size={30} color="white" />
@@ -153,9 +168,45 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                                                 <MaterialIcons name="fullscreen-exit" size={30} color="white" />
                                             }
                                         </Pressable>
+
+                                        <View
+                                            onResponderMove={
+                                                (e) => {
+                                                    animateSlider(e.nativeEvent.locationX)
+                                                }
+                                            }
+                                            onResponderRelease={(e) => Animated.timing(sliderScale, {
+                                                toValue: 1,
+                                                duration: 100,
+                                                useNativeDriver: true
+                                            }).start()
+                                            }
+                                            onResponderGrant={(e) => {
+                                                Animated.timing(sliderScale, {
+                                                    toValue: 2,
+                                                    duration: 100,
+                                                    useNativeDriver: true
+                                                }).start()
+                                            }}
+                                            onMoveShouldSetResponder={() => true}
+                                            onStartShouldSetResponder={() => true}
+                                            style={localStyles.sliderContainer}
+                                        >
+                                            <View
+                                                style={localStyles.slider}
+
+                                            >
+                                                <Animated.View style={[localStyles.sliderIcon, { transform: [{ translateX: sliderPosition }, { scale: sliderScale }] }]}>
+
+                                                </Animated.View>
+
+                                            </View>
+
+                                        </View>
                                     </>
                                 }
                             </Pressable>
+
 
                         </Animated.View>
                     }
@@ -195,6 +246,29 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
 export default CookingMode
 
 const localStyles = StyleSheet.create({
+    slider: {
+        height: 5,
+        width: '100%',
+        justifyContent: 'center',
+        backgroundColor: '#000',
+        marginVertical: 0,
+        overflow: 'visible',
+    },
+    sliderContainer: {
+        paddingVertical: 10,
+        position: 'absolute',
+        bottom: 0,
+        zIndex: 1,
+        width: '100%',
+        backgroundColor: '#ffffff00'
+    },
+    sliderIcon: {
+        backgroundColor: Colors.light.tint,
+        height: 10,
+        width: 10,
+        position: 'absolute',
+        borderRadius: 5,
+    },
     root: {
         paddingHorizontal: 0,
         flex: 1
@@ -219,8 +293,8 @@ const localStyles = StyleSheet.create({
     videoContainerFullscreen: {
         height: Layout.window.height,
         width: Layout.window.width,
-        transform:[{
-            rotate:'0deg'
+        transform: [{
+            rotate: '0deg'
         }]
     },
     image: {
