@@ -28,7 +28,10 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
     //const [controlsWidth, setVideoDetails] = useState<VideoReadyForDisplayEvent>({});
     const [isPlaying, setIsPlaying] = useState(false);
     const [isFullScreen, setIsFullScreen] = useState(false);
+    const [isManuallySliding, setIsManuallySliding] = useState(false);
     const [showControls, setShowControls] = useState(false);
+
+    const [videoTimeSeek, setVideoTimeSeek] = useState(0);
 
     const [sliderPositionState, setSliderPositionState] = useState(0);
     const sliderPositionRef = useRef();
@@ -46,35 +49,21 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
         }
     });
 
+    useEffect(
+        () =>
+            navigation.addListener('beforeRemove', (e) => {
+                if (!isFullScreen) {
+                    // If we don't have unsaved changes, then we don't need to do anything
+                    return;
+                }
+
+                // Prevent default behavior of leaving the screen
+                e.preventDefault();
+            }),
+        [navigation, isFullScreen]
+    );
 
     useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => handleBackButton())
-        return () => backHandler.remove()
-    }, [])
-
-    function handleBackButton() {
-        if (isFullScreen) {
-            return true
-        }
-        return false
-    }
-
-    const sliderPosition = useRef(new Animated.Value(sliderPositionRef.current)).current
-    const sliderScale = useRef(new Animated.Value(1)).current
-
-    const animateSlider = (position: number) => {
-        setSliderPositionState(position)
-        Animated.timing(sliderPosition, {
-            toValue: position,
-            duration: 0,
-            useNativeDriver: true
-        }).start()
-    }
-
-
-    useEffect(() => {
-        let timeOut
-
         let opacity = showControls ? 1 : 0
         Animated.timing(controllersOpacity, {
             toValue: opacity,
@@ -83,24 +72,12 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
         }).start()
 
         if (showControls && isPlaying) {
-            timeOut = setTimeout(() => {
-                setShowControls(false)
-                Animated.timing(controllersOpacity, {
-                    toValue: 0,
-                    duration: 100,
-                    useNativeDriver: true
-                }).start()
-            }, 2000)
-            setTimeoutId(timeOut)
+            handleHideControlsTimeout()
         } else if (!isPlaying) {
             clearTimeout(currenttimeout.current)
         }
 
     }, [showControls, isPlaying])
-
-    useEffect(() => {
-        if (isVideoReady) setShowControls(true)
-    }, [isVideoReady])
 
     useEffect(() => {
         if (isFullScreen) {
@@ -114,6 +91,67 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
             StatusBar.setHidden(false);
         }
     }, [isFullScreen])
+
+    // useEffect(() => {
+    //     console.log(status)
+    //     if (isManuallySliding) return;
+    //     let timePercentage = (status.positionMillis * 100) / status.durationMillis
+
+    //     let position = (timePercentage * (Layout.window.width - 30)) / 100
+    //     animateSlider(position, 200, false)
+    // }, [status])
+
+    const sliderPosition = useRef(new Animated.Value(sliderPositionRef.current)).current
+    const sliderScale = useRef(new Animated.Value(1)).current
+
+    const animateSlider = (position: number, animationDuration = 0, nativeDriver = true) => {
+        let maximumSliderPosition = Layout.window.width - 30
+
+        if (position > maximumSliderPosition || position < 0) return;
+
+        setSliderPositionState(position)
+        // Animated.timing(sliderPosition, {
+        //     toValue: position,
+        //     duration: animationDuration,
+        //     useNativeDriver: nativeDriver
+        // }).start()
+    }
+
+    function handleHideControlsTimeout() {
+        setIsManuallySliding(false)
+
+        let timeOut = setTimeout(() => {
+            setShowControls(false)
+            Animated.timing(controllersOpacity, {
+                toValue: 0,
+                duration: 100,
+                useNativeDriver: true
+            }).start()
+        }, 2000)
+        setTimeoutId(timeOut)
+    }
+
+
+    function handleSliderRelease(position: number) {
+        console.log(position)
+        handleHideControlsTimeout()
+        Animated.timing(sliderScale, {
+            toValue: 1,
+            duration: 100,
+            useNativeDriver: true
+        }).start()
+
+        handleVideoSeekPosition(position)
+    }
+
+    function handleVideoSeekPosition(position: number) {
+        let positionPercentage = (position * 100) / (Layout.window.width - 30)
+        console.log(positionPercentage)
+
+        let timeToSeek = (positionPercentage * videoDetails.status.durationMillis) / 100
+
+        setVideoTimeSeek(timeToSeek)
+    }
 
 
 
@@ -171,15 +209,13 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                                         <View
                                             onResponderMove={
                                                 (e) => {
+                                                    setIsManuallySliding(true)
+                                                    clearTimeout(currenttimeout.current)
+
                                                     animateSlider(e.nativeEvent.locationX)
                                                 }
                                             }
-                                            onResponderRelease={(e) => Animated.timing(sliderScale, {
-                                                toValue: 1,
-                                                duration: 100,
-                                                useNativeDriver: true
-                                            }).start()
-                                            }
+                                            onResponderRelease={(e) => handleSliderRelease(e.nativeEvent.locationX)}
                                             onResponderGrant={(e) => {
                                                 Animated.timing(sliderScale, {
                                                     toValue: 2,
@@ -195,7 +231,7 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                                                 style={localStyles.slider}
 
                                             >
-                                                <Animated.View style={[localStyles.sliderIcon, { transform: [{ translateX: sliderPosition }, { scale: sliderScale }] }]}>
+                                                <Animated.View style={[localStyles.sliderIcon, { transform: [{ translateX: sliderPositionRef.current }, { scale: sliderScale }] }]}>
 
                                                 </Animated.View>
 
@@ -218,19 +254,21 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                         }}
                         //useNativeControls
                         resizeMode={ResizeMode.CONTAIN}
-                        onLoad={(e) => console.log(e)}
+                        //onLoad={(e) => console.log(e)}
                         onError={(e) => setVideoError(e)}
                         isLooping
                         posterSource={item.image}
                         usePoster={false}
                         shouldPlay={isPlaying}
-                        //onPlaybackStatusUpdate={status => { setStatus(() => status) }}
+                        onPlaybackStatusUpdate={status => { setStatus(() => status) }}
                         onReadyForDisplay={(e) => {
+                            setShowControls(true)
                             setControlsWidth(() => videoContainerHeight * e.naturalSize.width / e.naturalSize.height)
-
                             setVideoDetails(e)
                             setIsVideoReady(true)
                         }}
+                        positionMillis={videoTimeSeek}
+                        progressUpdateIntervalMillis={200}
                     />
 
                 </Animated.View>
@@ -255,6 +293,7 @@ const localStyles = StyleSheet.create({
     },
     sliderContainer: {
         paddingVertical: 10,
+        paddingHorizontal: 15,
         position: 'absolute',
         bottom: 0,
         zIndex: 1,
