@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { ActivityIndicator, StatusBar, Animated, BackHandler, Pressable, StyleSheet, } from "react-native";
-import { Video, ResizeMode, AVPlaybackStatus, AVPlaybackStatusSuccess, VideoReadyForDisplayEvent } from 'expo-av';
+import { ResizeMode, AVPlaybackStatus, AVPlaybackStatusSuccess, VideoReadyForDisplayEvent } from 'expo-av';
+import Video from 'react-native-video';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
@@ -19,14 +20,15 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
 
     const { item } = route.params
 
-    const video = useRef(null);
+    const videoRef = useRef(null);
     const [status, setStatus] = useState<AVPlaybackStatusSuccess>({});
+    const [isVideoLoading, setIsVideoLoading] = useState(true);
     const [isVideoReady, setIsVideoReady] = useState(false);
     const [videoError, setVideoError] = useState('');
     const [controlsWidth, setControlsWidth] = useState(0);
     const [videoDetails, setVideoDetails] = useState<VideoReadyForDisplayEvent>({});
     //const [controlsWidth, setVideoDetails] = useState<VideoReadyForDisplayEvent>({});
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isPaused, setIsPaused] = useState(true);
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [isManuallySliding, setIsManuallySliding] = useState(false);
     const [showControls, setShowControls] = useState(false);
@@ -44,8 +46,9 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
     const controllersOpacity = useRef(new Animated.Value(1)).current
 
     useFocusEffect(() => {
+
         return () => {
-            StatusBar.setHidden(false);
+         //   StatusBar.setHidden(false);
         }
     });
 
@@ -71,35 +74,34 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
             useNativeDriver: true
         }).start()
 
-        if (showControls && isPlaying) {
+        if (showControls && isPaused) {
             handleHideControlsTimeout()
-        } else if (!isPlaying) {
+        } else if (!isPaused) {
             clearTimeout(currenttimeout.current)
         }
 
-    }, [showControls, isPlaying])
+    }, [showControls, isPaused])
 
     useEffect(() => {
         if (isFullScreen) {
-            //console.log(videoContainerHeight * videoDetails.naturalSize.width / videoDetails.naturalSize.height)
+            StatusBar.setHidden(true);
+
             if (videoDetails?.naturalSize?.width > videoDetails?.naturalSize?.height) {
 
             }
-            StatusBar.setHidden(true);
         } else {
 
             StatusBar.setHidden(false);
         }
     }, [isFullScreen])
 
-    // useEffect(() => {
-    //     console.log(status)
-    //     if (isManuallySliding) return;
-    //     let timePercentage = (status.positionMillis * 100) / status.durationMillis
+    useEffect(() => {
+        if (isManuallySliding || !isVideoReady) return;
+        let timePercentage = (status.currentTime * 100) / videoDetails.duration
 
-    //     let position = (timePercentage * (Layout.window.width - 30)) / 100
-    //     animateSlider(position, 200, false)
-    // }, [status])
+        let position = (timePercentage * (Layout.window.width - 30)) / 100
+        animateSlider(position, 200, false)
+    }, [status])
 
     const sliderPosition = useRef(new Animated.Value(sliderPositionRef.current)).current
     const sliderScale = useRef(new Animated.Value(1)).current
@@ -148,9 +150,9 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
         let positionPercentage = (position * 100) / (Layout.window.width - 30)
         console.log(positionPercentage)
 
-        let timeToSeek = (positionPercentage * videoDetails.status.durationMillis) / 100
+        let timeToSeek = (positionPercentage * videoDetails.duration) / 100
 
-        setVideoTimeSeek(timeToSeek)
+        videoRef?.current?.seek(timeToSeek)
     }
 
 
@@ -170,7 +172,7 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
 
                 <Animated.View style={isFullScreen ? localStyles.videoContainerFullscreen : localStyles.videoContainer}>
 
-                    {!isVideoReady &&
+                    {isVideoLoading &&
                         <View style={localStyles.videoLoader}>
                             <ImageBackground
                                 source={item.image}
@@ -184,14 +186,20 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                         </View>
                     }
 
-                    {isVideoReady &&
+                    {videoError &&
+                        <View style={localStyles.videoError}>
+                           <Text style={localStyles.videoErrorInfo}>Ocorreu um erro</Text>
+                        </View>
+                    }
+
+                    {(isVideoReady && !videoError) &&
                         <Animated.View style={[localStyles.controlsContainer, { opacity: controllersOpacity, alignSelf: 'center' }]}>
 
                             <Pressable onPress={() => setShowControls(prevState => !prevState)} style={{ width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0)', alignItems: 'center', justifyContent: 'center' }}>
                                 {showControls &&
                                     <>
-                                        <Pressable onPress={() => setIsPlaying(prevState => !prevState)} style={localStyles.playPauseButton}>
-                                            {!isPlaying ?
+                                        <Pressable onPress={() => setIsPaused(prevState => !prevState)} style={localStyles.playPauseButton}>
+                                            {isPaused ?
                                                 <Ionicons name="play" size={60} color="white" style={localStyles.playPauseIcon} />
                                                 :
                                                 <Ionicons name="pause" size={60} color="white" style={localStyles.playPauseIcon} />
@@ -247,26 +255,33 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                     }
 
                     <Video
-                        ref={video}
+                        ref={videoRef}
                         style={localStyles.video}
                         source={{
-                            uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',//'https://scontent-jnb1-1.cdninstagram.com/o1/v/t16/f1/m78/EC4464B2D10B74DC74DBC9B379B93683_video_dashinit.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uNDgwLnN0b3J5LmJhc2VsaW5lIn0&_nc_ht=scontent-jnb1-1.cdninstagram.com&_nc_cat=102&vs=1322204014971969_672847916&_nc_vs=HBkcFQIYUWlnX3hwdl9wbGFjZW1lbnRfcGVybWFuZW50X3YyL0VDNDQ2NEIyRDEwQjc0REM3NERCQzlCMzc5QjkzNjgzX3ZpZGVvX2Rhc2hpbml0Lm1wNBUAAsgBACgAGAAbAYgHdXNlX29pbAExFQAAJrD58dGN5Ms%2FFQIoAkMzLBdAF3bItDlYEBgSZGFzaF9iYXNlbGluZV8yX3YxEQB16AcA&ccb=9-4&oh=00_AfCRW0sF6gfEUG829QUAoGw6iwC98-a4ip9JQM5egzwtEw&oe=646208FB&_nc_sid=276363',
+                            uri: 'https://scontent-mia3-1.cdninstagram.com/o1/v/t16/f1/m51/D54083C46596B02B22B6D6299F6AE08D_video_dashinit.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uNDgwLnN0b3J5LmJhc2VsaW5lIn0&_nc_ht=scontent-mia3-1.cdninstagram.com&_nc_cat=108&vs=1490071194853724_2838398618&_nc_vs=HBkcFQIYRGlnX3hwdl9wZXJtYW5lbnQvRDU0MDgzQzQ2NTk2QjAyQjIyQjZENjI5OUY2QUUwOERfdmlkZW9fZGFzaGluaXQubXA0FQACyAEAKAAYABsBiAd1c2Vfb2lsATEVAAAmpM7Iqf3D3D8VAigCQzMsF0Ahqn752yLRGBJkYXNoX2Jhc2VsaW5lXzJfdjERAHXoBwA%3D&ccb=9-4&oh=00_AfCmatZ1Z4OPZjn-OV8eWsonm-MjPJSQG-FEWy_R7nL6yw&oe=6466B331&_nc_sid=b32767',
                         }}
-                        //useNativeControls
-                        resizeMode={ResizeMode.CONTAIN}
-                        //onLoad={(e) => console.log(e)}
-                        onError={(e) => setVideoError(e)}
-                        isLooping
-                        posterSource={item.image}
-                        usePoster={false}
-                        shouldPlay={isPlaying}
-                        onPlaybackStatusUpdate={status => { setStatus(() => status) }}
-                        onReadyForDisplay={(e) => {
-                            setShowControls(true)
+                        resizeMode={'contain'}
+                        onError={(e) => {
+                            setVideoError(e)
+                            setIsVideoLoading(false)
+                            console.log(e)
+                        }}
+                        repeat={true}
+                        paused={isPaused}
+                        onLoad={(e) => {
                             setControlsWidth(() => videoContainerHeight * e.naturalSize.width / e.naturalSize.height)
+                            setIsVideoLoading(false)
+                            setShowControls(true)
                             setVideoDetails(e)
                             setIsVideoReady(true)
+
                         }}
+                        onProgress={status => { setStatus(() => status) }}
+                        onReadyForDisplay={(e) => {
+                            setShowControls(true)
+                            setIsVideoReady(true)
+                        }}
+                        see
                         positionMillis={videoTimeSeek}
                         progressUpdateIntervalMillis={200}
                     />
@@ -349,7 +364,7 @@ const localStyles = StyleSheet.create({
     video: {
         height: '100%',
         width: '100%',
-        backgroundColor: 'rgba(40, 41, 40, 0.8)',
+        backgroundColor: 'rgba(40, 41, 40, .95)',
     },
     controlsContainer: {
         height: '100%',
@@ -392,6 +407,21 @@ const localStyles = StyleSheet.create({
         left: 0,
         right: 0,
         justifyContent: 'center',
+        zIndex: 1
+    },
+    videoError: {
+        position: 'absolute',
+        bottom: 0,
+        top: 0,
+        left: 0,
+        right: 0,
+        justifyContent: 'center',
+        zIndex: 1,
+        backgroundColor: 'rgba(40, 41, 40, 1)',
+    },
+    videoErrorInfo: {
+      textAlign:'center',
+      color:'#fff'
     },
     loaderCover: {
         height: '100%',
