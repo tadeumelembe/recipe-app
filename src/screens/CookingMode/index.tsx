@@ -48,7 +48,7 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
     useFocusEffect(() => {
 
         return () => {
-         //   StatusBar.setHidden(false);
+            //   StatusBar.setHidden(false);
         }
     });
 
@@ -188,7 +188,7 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
 
                     {videoError &&
                         <View style={localStyles.videoError}>
-                           <Text style={localStyles.videoErrorInfo}>Ocorreu um erro</Text>
+                            <Text style={localStyles.videoErrorInfo}>Ocorreu um erro</Text>
                         </View>
                     }
 
@@ -239,6 +239,7 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                                                 style={localStyles.slider}
 
                                             >
+                                                <View style={[localStyles.sliderIcon, { height: 3, width: sliderPositionRef.current + 5, backgroundColor: Colors.light.tint }]}></View>
                                                 <Animated.View style={[localStyles.sliderIcon, { transform: [{ translateX: sliderPositionRef.current }, { scale: sliderScale }] }]}>
 
                                                 </Animated.View>
@@ -420,8 +421,8 @@ const localStyles = StyleSheet.create({
         backgroundColor: 'rgba(40, 41, 40, 1)',
     },
     videoErrorInfo: {
-      textAlign:'center',
-      color:'#fff'
+        textAlign: 'center',
+        color: '#fff'
     },
     loaderCover: {
         height: '100%',
