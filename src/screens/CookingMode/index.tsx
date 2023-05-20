@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, RefObject, useCallback } from "react";
 import { ActivityIndicator, StatusBar, Animated, BackHandler, Pressable, StyleSheet, } from "react-native";
 import { ResizeMode, AVPlaybackStatus, AVPlaybackStatusSuccess, VideoReadyForDisplayEvent } from 'expo-av';
 import Video from 'react-native-video';
@@ -12,6 +12,7 @@ import Layout from "../../../constants/Layout";
 
 import Header from "../../components/Head";
 import Colors from "../../../constants/Colors";
+import VideoControls from "../../components/CookingMode/VideoControls";
 
 const headeHeight = Layout.window.height * 35 / 100
 const videoContainerHeight = 200
@@ -20,30 +21,16 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
 
     const { item } = route.params
 
-    const videoRef = useRef(null);
+    const videoRef = useRef<RefObject<any>>(null);
     const [status, setStatus] = useState<AVPlaybackStatusSuccess>({});
     const [isVideoLoading, setIsVideoLoading] = useState(true);
     const [isVideoReady, setIsVideoReady] = useState(false);
     const [videoError, setVideoError] = useState('');
     const [controlsWidth, setControlsWidth] = useState(0);
     const [videoDetails, setVideoDetails] = useState<VideoReadyForDisplayEvent>({});
-    //const [controlsWidth, setVideoDetails] = useState<VideoReadyForDisplayEvent>({});
     const [isPaused, setIsPaused] = useState(true);
     const [isFullScreen, setIsFullScreen] = useState(false);
-    const [isManuallySliding, setIsManuallySliding] = useState(false);
     const [showControls, setShowControls] = useState(false);
-
-    const [videoTimeSeek, setVideoTimeSeek] = useState(0);
-
-    const [sliderPositionState, setSliderPositionState] = useState(0);
-    const sliderPositionRef = useRef();
-    sliderPositionRef.current = sliderPositionState;
-
-    const [timeoutId, setTimeoutId] = useState('');
-    const currenttimeout = useRef();
-    currenttimeout.current = timeoutId
-
-    const controllersOpacity = useRef(new Animated.Value(1)).current
 
     useFocusEffect(() => {
 
@@ -55,32 +42,13 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
     useEffect(
         () =>
             navigation.addListener('beforeRemove', (e) => {
-                if (!isFullScreen) {
-                    // If we don't have unsaved changes, then we don't need to do anything
-                    return;
-                }
+                if (!isFullScreen) return;
 
-                // Prevent default behavior of leaving the screen
                 e.preventDefault();
             }),
         [navigation, isFullScreen]
     );
 
-    useEffect(() => {
-        let opacity = showControls ? 1 : 0
-        Animated.timing(controllersOpacity, {
-            toValue: opacity,
-            duration: 100,
-            useNativeDriver: true
-        }).start()
-
-        if (showControls && isPaused) {
-            handleHideControlsTimeout()
-        } else if (!isPaused) {
-            clearTimeout(currenttimeout.current)
-        }
-
-    }, [showControls, isPaused])
 
     useEffect(() => {
         if (isFullScreen) {
@@ -95,71 +63,24 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
         }
     }, [isFullScreen])
 
-    useEffect(() => {
-        if (isManuallySliding || !isVideoReady) return;
-        let timePercentage = (status.currentTime * 100) / videoDetails.duration
+    const memorizedChangeControls = useCallback(status => handleChangeControls(status), []);
+    const memorizedChangeFullScreen = useCallback(status => handleChangeIsFullScreen(status), []);
+    const memorizedChangePausd = useCallback(status => handleChangeIsPaused(status), []);
 
-        let position = (timePercentage * (Layout.window.width - 30)) / 100
-        animateSlider(position, 200, false)
-    }, [status])
-
-    const sliderPosition = useRef(new Animated.Value(sliderPositionRef.current)).current
-    const sliderScale = useRef(new Animated.Value(1)).current
-
-    const animateSlider = (position: number, animationDuration = 0, nativeDriver = true) => {
-        let maximumSliderPosition = Layout.window.width - 30
-
-        if (position > maximumSliderPosition || position < 0) return;
-
-        setSliderPositionState(position)
-        // Animated.timing(sliderPosition, {
-        //     toValue: position,
-        //     duration: animationDuration,
-        //     useNativeDriver: nativeDriver
-        // }).start()
+    function handleChangeControls(status: any) {
+        setShowControls(status)
     }
 
-    function handleHideControlsTimeout() {
-        setIsManuallySliding(false)
-
-        let timeOut = setTimeout(() => {
-            setShowControls(false)
-            Animated.timing(controllersOpacity, {
-                toValue: 0,
-                duration: 100,
-                useNativeDriver: true
-            }).start()
-        }, 2000)
-        setTimeoutId(timeOut)
+    function handleChangeIsFullScreen(status: boolean) {
+        setIsFullScreen(status)
     }
-
-
-    function handleSliderRelease(position: number) {
-        console.log(position)
-        handleHideControlsTimeout()
-        Animated.timing(sliderScale, {
-            toValue: 1,
-            duration: 100,
-            useNativeDriver: true
-        }).start()
-
-        handleVideoSeekPosition(position)
+    function handleChangeIsPaused(status: boolean) {
+        setIsPaused(status)
     }
-
-    function handleVideoSeekPosition(position: number) {
-        let positionPercentage = (position * 100) / (Layout.window.width - 30)
-        console.log(positionPercentage)
-
-        let timeToSeek = (positionPercentage * videoDetails.duration) / 100
-
-        videoRef?.current?.seek(timeToSeek)
-    }
-
-
 
     return (
         <Container style={[localStyles.root, isFullScreen && { paddingTop: 0 }]}>
-            <ScrollView >
+            <ScrollView contentContainerStyle={{ flex: 1 }}>
                 {!isFullScreen &&
                     <View style={style.horizontalPadding}>
                         <Header navigation={navigation} type='back' />
@@ -193,73 +114,28 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                     }
 
                     {(isVideoReady && !videoError) &&
-                        <Animated.View style={[localStyles.controlsContainer, { opacity: controllersOpacity, alignSelf: 'center' }]}>
-
-                            <Pressable onPress={() => setShowControls(prevState => !prevState)} style={{ width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0)', alignItems: 'center', justifyContent: 'center' }}>
-                                {showControls &&
-                                    <>
-                                        <Pressable onPress={() => setIsPaused(prevState => !prevState)} style={localStyles.playPauseButton}>
-                                            {isPaused ?
-                                                <Ionicons name="play" size={60} color="white" style={localStyles.playPauseIcon} />
-                                                :
-                                                <Ionicons name="pause" size={60} color="white" style={localStyles.playPauseIcon} />
-                                            }
-                                        </Pressable>
-
-                                        <Pressable onPress={() => setIsFullScreen(prevState => !prevState)} style={localStyles.fullScreenButton}>
-                                            {!isFullScreen ?
-                                                <MaterialIcons name="fullscreen" size={30} color="white" />
-                                                :
-                                                <MaterialIcons name="fullscreen-exit" size={30} color="white" />
-                                            }
-                                        </Pressable>
-
-                                        <View
-                                            onResponderMove={
-                                                (e) => {
-                                                    setIsManuallySliding(true)
-                                                    clearTimeout(currenttimeout.current)
-
-                                                    animateSlider(e.nativeEvent.locationX)
-                                                }
-                                            }
-                                            onResponderRelease={(e) => handleSliderRelease(e.nativeEvent.locationX)}
-                                            onResponderGrant={(e) => {
-                                                Animated.timing(sliderScale, {
-                                                    toValue: 2,
-                                                    duration: 100,
-                                                    useNativeDriver: true
-                                                }).start()
-                                            }}
-                                            onMoveShouldSetResponder={() => true}
-                                            onStartShouldSetResponder={() => true}
-                                            style={localStyles.sliderContainer}
-                                        >
-                                            <View
-                                                style={localStyles.slider}
-
-                                            >
-                                                <View style={[localStyles.sliderIcon, { height: 3, width: sliderPositionRef.current + 5, backgroundColor: Colors.light.tint }]}></View>
-                                                <Animated.View style={[localStyles.sliderIcon, { transform: [{ translateX: sliderPositionRef.current }, { scale: sliderScale }] }]}>
-
-                                                </Animated.View>
-
-                                            </View>
-
-                                        </View>
-                                    </>
-                                }
-                            </Pressable>
-
-
-                        </Animated.View>
+                        <VideoControls
+                            videoRef={videoRef}
+                            videoDetails={videoDetails}
+                            showControls={showControls}
+                            setShowControls={setShowControls}
+                            isFullScreen={isFullScreen}
+                            setIsFullScreen={setIsFullScreen}
+                            isPaused={isPaused}
+                            setIsPaused={setIsPaused}
+                            isVideoReady={isVideoReady}
+                            status={status}
+                            handleChangeControls={memorizedChangeControls}
+                            handleChangeIsFullScreen={memorizedChangeFullScreen}
+                            handleChangeIsPaused={memorizedChangePausd}
+                        />
                     }
 
                     <Video
                         ref={videoRef}
                         style={localStyles.video}
                         source={{
-                            uri: 'https://scontent-mia3-1.cdninstagram.com/o1/v/t16/f1/m51/D54083C46596B02B22B6D6299F6AE08D_video_dashinit.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uNDgwLnN0b3J5LmJhc2VsaW5lIn0&_nc_ht=scontent-mia3-1.cdninstagram.com&_nc_cat=108&vs=1490071194853724_2838398618&_nc_vs=HBkcFQIYRGlnX3hwdl9wZXJtYW5lbnQvRDU0MDgzQzQ2NTk2QjAyQjIyQjZENjI5OUY2QUUwOERfdmlkZW9fZGFzaGluaXQubXA0FQACyAEAKAAYABsBiAd1c2Vfb2lsATEVAAAmpM7Iqf3D3D8VAigCQzMsF0Ahqn752yLRGBJkYXNoX2Jhc2VsaW5lXzJfdjERAHXoBwA%3D&ccb=9-4&oh=00_AfCmatZ1Z4OPZjn-OV8eWsonm-MjPJSQG-FEWy_R7nL6yw&oe=6466B331&_nc_sid=b32767',
+                            uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4', //'https://scontent-mia3-1.cdninstagram.com/o1/v/t16/f1/m51/D54083C46596B02B22B6D6299F6AE08D_video_dashinit.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uNDgwLnN0b3J5LmJhc2VsaW5lIn0&_nc_ht=scontent-mia3-1.cdninstagram.com&_nc_cat=108&vs=1490071194853724_2838398618&_nc_vs=HBkcFQIYRGlnX3hwdl9wZXJtYW5lbnQvRDU0MDgzQzQ2NTk2QjAyQjIyQjZENjI5OUY2QUUwOERfdmlkZW9fZGFzaGluaXQubXA0FQACyAEAKAAYABsBiAd1c2Vfb2lsATEVAAAmpM7Iqf3D3D8VAigCQzMsF0Ahqn752yLRGBJkYXNoX2Jhc2VsaW5lXzJfdjERAHXoBwA%3D&ccb=9-4&oh=00_AfCmatZ1Z4OPZjn-OV8eWsonm-MjPJSQG-FEWy_R7nL6yw&oe=6466B331&_nc_sid=b32767',
                         }}
                         resizeMode={'contain'}
                         onError={(e) => {
@@ -269,26 +145,30 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                         }}
                         repeat={true}
                         paused={isPaused}
-                        onLoad={(e) => {
-                            setControlsWidth(() => videoContainerHeight * e.naturalSize.width / e.naturalSize.height)
+                        onLoad={(e: any) => {
                             setIsVideoLoading(false)
                             setShowControls(true)
                             setVideoDetails(e)
                             setIsVideoReady(true)
 
                         }}
-                        onProgress={status => { setStatus(() => status) }}
-                        onReadyForDisplay={(e) => {
+                        onProgress={(status: any) => { setStatus(() => status) }}
+                        onReadyForDisplay={(e: any) => {
                             setShowControls(true)
                             setIsVideoReady(true)
                         }}
-                        see
-                        positionMillis={videoTimeSeek}
                         progressUpdateIntervalMillis={200}
                     />
 
                 </Animated.View>
 
+                {!isFullScreen &&
+                    <View style={localStyles.steps}>
+
+
+                        <Text style={localStyles.recipeName}>Steps</Text>
+                    </View>
+                }
 
             </ScrollView>
         </Container>
@@ -299,30 +179,6 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
 export default CookingMode
 
 const localStyles = StyleSheet.create({
-    slider: {
-        height: 3,
-        width: '100%',
-        justifyContent: 'center',
-        backgroundColor: '#fff',
-        marginVertical: 0,
-        overflow: 'visible',
-    },
-    sliderContainer: {
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        position: 'absolute',
-        bottom: 0,
-        zIndex: 1,
-        width: '100%',
-        backgroundColor: '#ffffff00'
-    },
-    sliderIcon: {
-        backgroundColor: Colors.light.tint,
-        height: 10,
-        width: 10,
-        position: 'absolute',
-        borderRadius: 5,
-    },
     root: {
         paddingHorizontal: 0,
         flex: 1
@@ -345,11 +201,15 @@ const localStyles = StyleSheet.create({
         marginTop: 20,
     },
     videoContainerFullscreen: {
-        height: Layout.window.height,
-        width: Layout.window.width,
+        height: Layout.window.width,
+        width: Layout.window.height,
+        backgroundColor: 'rgba(40, 41, 40, .9)',
+        zIndex: 1,
         transform: [{
-            rotate: '0deg'
-        }]
+            rotateZ: '90deg'
+        }],
+        flex: 1,
+        alignSelf: 'center'
     },
     image: {
         height: '100%'
@@ -358,48 +218,11 @@ const localStyles = StyleSheet.create({
         height: '100%',
         justifyContent: 'flex-start',
     },
-    videoLoaderSkeleton: {
-        backgroundColor: 'rgba(40, 41, 40, .9)',
-
-    },
     video: {
         height: '100%',
         width: '100%',
         backgroundColor: 'rgba(40, 41, 40, .95)',
-    },
-    controlsContainer: {
-        height: '100%',
-        width: '100%',
-        backgroundColor: 'rgba(40, 41, 40, 0.5)',
-        position: 'absolute',
-        zIndex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    controlsContainerHidden: {
-        backgroundColor: 'rgba(40, 41, 40, 0)',
-    },
-    playPauseButton: {
-        width: 80,
-        height: 80,
-        borderRadius: 45,
-        alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
-        zIndex: 1,
-        justifyContent: 'center',
-    },
-    fullScreenButton: {
-        width: 40,
-        height: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        top: 15,
-        right: 15,
-        zIndex: 1
-    },
-    playPauseIcon: {
-        paddingLeft: 6
+        //transform:[{rotateZ:'90deg'}]
     },
     videoLoader: {
         position: 'absolute',
@@ -435,5 +258,9 @@ const localStyles = StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0
+    },
+    steps: {
+        ...style.horizontalPadding,
+        marginTop: 20
     }
 })
