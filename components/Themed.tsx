@@ -13,15 +13,17 @@ import {
   FlatList as DefaultFlatList,
   StyleSheet
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CollapsibleProps, CollapsibleRef, MaterialTabBar, MaterialTabItem, TabProps, Tabs } from 'react-native-collapsible-tab-view';
+import { Children, PropsWithChildren } from 'react';
 
+import { FlashList, FlashListProps } from "@shopify/flash-list";
 import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import styles from '../constants/style';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CollapsibleProps, CollapsibleRef, MaterialTabBar, MaterialTabItem, TabProps, Tabs } from 'react-native-collapsible-tab-view';
-import { Children, PropsWithChildren } from 'react';
+
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
@@ -48,7 +50,7 @@ export type ScrollViewProps = ThemeProps & DefaultScrollView['props'];
 export type ImageBackgroundProps = ThemeProps & DefaultImageBackground['props'];
 export type TextInputProps = ThemeProps & DefaultTextInput['props'];
 export type TopTabBarProps = ThemeProps & CollapsibleProps;
-export type FlatListProps = ThemeProps & DefaultFlatList['props'];
+export type FlatListProps = ThemeProps & FlashListProps<any>;
 export type TouchableOpacityProps = ThemeProps & DefaultTouchableOpacity['props'] & {
   btnText: string
 };
@@ -71,8 +73,7 @@ export function View(props: ViewProps) {
 export function FlatList(props: FlatListProps) {
   const { ...otherProps } = props;
   return (
-    <DefaultFlatList
-      style={{ width: '100%' }}
+    <FlashList
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
 
