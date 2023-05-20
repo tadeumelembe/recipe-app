@@ -44,9 +44,11 @@ const FeedCard: React.FC<IHomeFeedCard> = ({ navigation, item }) => {
                     <Text style={localStyle.title}>{item.title}</Text>
 
                 </View>
+                <View style={{paddingVertical:15}}>
                 {item.description &&
                     <Text numberOfLines={2} style={localStyle.description}>{item.description}</Text>
                 }
+                </View>
                 <InteractionButtons />
             </View>
         </Pressable>
@@ -98,7 +100,6 @@ const localStyle = StyleSheet.create({
         ...style.fontR,
         ...style.fontNunitoRegular,
         ...style.textMuted2,
-        paddingVertical: 15
     },
     image: {
         borderTopLeftRadius: 10.8,
