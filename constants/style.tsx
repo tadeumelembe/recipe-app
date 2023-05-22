@@ -76,6 +76,10 @@ export default StyleSheet.create({
     fontSize: 20,
     fontFamily: 'nunito-bold'
   },
+  textH3: {
+    fontSize: 16,
+    fontFamily: 'nunito-bold'
+  },
   textPrimary: {
     color: Colors[colorScheme].tint
   },
