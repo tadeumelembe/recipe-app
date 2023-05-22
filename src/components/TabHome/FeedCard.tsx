@@ -13,7 +13,7 @@ import InteractionButtons from "./IteractionButtons";
 const FeedCard: React.FC<IHomeFeedCard> = ({ navigation, item }) => {
     
     return (
-        <Pressable onPress={() => navigation.navigate('RecipeDetails', { recipe_id: item.id })} style={localStyle.root}>
+        <Pressable onPress={() => navigation.navigate('RecipeScreen', { recipe_id: item.id })} style={localStyle.root}>
             {item.image ?
                 <ImageBackground
                     source={item.image}

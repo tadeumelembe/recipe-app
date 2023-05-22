@@ -10,7 +10,7 @@ import { IRecipeItem } from './src/components/types';
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
+    interface RootParamList extends RootStackParamList { }
   }
 }
 
@@ -22,16 +22,38 @@ export type RootStackParamList = {
     navigation: NavigationProp<any, any>;
     recipe_id: number
   };
-  CookingMode:{
-      navigation: NavigationProp<any, any>;
-      item: IRecipeItem
-  }
+  CookingMode: {
+    navigation: NavigationProp<any, any>;
+    item: IRecipeItem
+  };
 };
+
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
   RootStackParamList,
   Screen
 >;
+
+
+export type ProfileStackParamList = {
+  Root: {
+    navigation: NavigationProp<any, any>;
+  },
+  AddRecipe: undefined | {
+    navigation: NavigationProp<any, any>;
+  },
+  Settings: {
+    navigation: NavigationProp<any, any>;
+  },
+  ChangePassword: {
+    navigation: NavigationProp<any, any>;
+  },
+};
+export type ProfileStackScreenProps<Screen extends keyof ProfileStackParamList> = NativeStackScreenProps<
+  ProfileStackParamList,
+  Screen
+>;
+
 
 export type RootTabParamList = {
   TabSearch: undefined;

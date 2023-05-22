@@ -25,6 +25,8 @@ import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../typ
 import LinkingConfiguration from './LinkingConfiguration';
 
 import ProfileStack from './profileStack';
+import AddRecipe from '../src/screens/AddRecipe';
+import RecipeStack from './recipeDetailsStack';
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -49,8 +51,9 @@ function RootNavigator() {
 
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
 
-      <Stack.Screen name="RecipeDetails" component={RecipeDetails} options={{ headerShown: false }} />
+      <Stack.Screen name="RecipeScreen" component={RecipeStack} options={{ headerShown: false }} />
       <Stack.Screen name="CookingMode" component={CookingMode} options={{ headerShown: false }} />
+      <Stack.Screen name="AddRecipe" component={AddRecipe} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
@@ -78,7 +81,7 @@ function BottomTabNavigator() {
         headerShown: false,
         tabBarShowLabel: false,
       }}>
-         <BottomTab.Screen
+      <BottomTab.Screen
         name="TabSearch"
         component={TabSearch}
         options={{

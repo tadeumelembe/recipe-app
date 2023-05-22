@@ -6,11 +6,12 @@ import style from "../../../constants/style";
 import Header from "../../components/Settings/Haader";
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import Colors from "../../../constants/Colors";
+import { ProfileStackScreenProps } from "../../../types";
 
 type ISwitchButton = DefaultView['props'] & {
     label: string
 }
-const Settings: React.FC = ({ navigation }) => {
+const Settings = ({ navigation }: ProfileStackScreenProps<'Settings'>) => {
 
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled((previousState: Boolean) => !previousState);

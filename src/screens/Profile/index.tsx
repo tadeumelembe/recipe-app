@@ -5,16 +5,16 @@ import { NavigationProp } from "@react-navigation/native";
 import { Tabs, MaterialTabBar, TabBarProps } from 'react-native-collapsible-tab-view'
 
 
-import { Container, ScrollView, View, Text, FlatList } from "../../../components/Themed";
+import { Container, ScrollView, View, Text, FlatList, ButtonRounded } from "../../../components/Themed";
 import Header from "../../components/Profile/Header";
-import { RootTabScreenProps } from "../../../types";
+import { ProfileStackScreenProps, RootTabScreenProps } from "../../../types";
 import style from "../../../constants/style";
 import Colors from "../../../constants/Colors";
 
 import Recipe from "./Recipe";
 import Saved from "./Saved";
 
-const TabProfile = ({ navigation }: RootTabScreenProps<'TabProfile'>) => {
+const TabProfile = ({ navigation }: ProfileStackScreenProps<'Root'>) => {
     const [activeTabIndex, setActiveTabIndex] = useState<number>(0)
     const headerHeight = 190;
 
@@ -40,6 +40,8 @@ const TabProfile = ({ navigation }: RootTabScreenProps<'TabProfile'>) => {
                     <Saved navigation={navigation} />
                 </Tabs.Tab>
             </Tabs.Container>
+
+            <ButtonRounded iconName="add" onPress={() => navigation.navigate('AddRecipe')} />
         </Container>
     )
 }

@@ -10,7 +10,7 @@ import { IProfileHeader } from "../types";
 
 
 const HeaderProfile: React.FC<IProfileHeader> = ({ navigation, headerHeight }) => {
-    const isOther = true
+    const isOther = false
     return (
         <View style={[localStyle.root, { minHeight: headerHeight }]}>
             {isOther ?

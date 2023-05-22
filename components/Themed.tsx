@@ -52,7 +52,8 @@ export type TextInputProps = ThemeProps & DefaultTextInput['props'];
 export type TopTabBarProps = ThemeProps & CollapsibleProps;
 export type FlatListProps = ThemeProps & FlashListProps<any>;
 export type TouchableOpacityProps = ThemeProps & DefaultTouchableOpacity['props'] & {
-  btnText: string
+  btnText?: string,
+  iconName?: string
 };
 export type AvatarProps = ViewProps & { size?: string };
 
@@ -115,7 +116,7 @@ export function TopTabBar(props: TopTabBarProps) {
       headerContainerStyle={localStyles.headerContainerStyle}
       renderTabBar={(props) =>
         <MaterialTabBar
-        inactiveColor={inactiveTabColor}
+          inactiveColor={inactiveTabColor}
           indicatorStyle={localStyles.tabBarIndicatorStyle}
           TabItemComponent={(props) =>
             <MaterialTabItem
@@ -217,6 +218,16 @@ export function Button(props: TouchableOpacityProps) {
   return (
     <DefaultTouchableOpacity style={[styles.btn1, style]} {...otherProps}>
       <Text style={[styles.fontNunitoBold, styles.fontM, styles.btn1Text]}>{btnText}</Text>
+    </DefaultTouchableOpacity>
+  )
+}
+
+export function ButtonRounded(props: TouchableOpacityProps) {
+  const { btnText, iconName, style, ...otherProps } = props
+
+  return (
+    <DefaultTouchableOpacity style={[styles.btn2, style]} {...otherProps}>
+      <Ionicons name={iconName} size={30} color={'#fff'} />
     </DefaultTouchableOpacity>
   )
 }

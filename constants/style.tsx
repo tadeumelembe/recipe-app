@@ -116,7 +116,26 @@ export default StyleSheet.create({
     shadowRadius: 8,
     elevation: 17,
   },
-  btnSecondary:{
+  btn2: {
+    width: 50,
+    height: 50,
+    borderRadius: 30,
+    backgroundColor: Colors[colorScheme].tint,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 10,
+    right: horizontal_padding,
+    shadowColor: "rgba(0,0,0,0.6)",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 8,
+    elevation: 17,
+  },
+  btnSecondary: {
     backgroundColor: Colors[colorScheme].background,
 
     borderColor: 'rgba(0,0,0,.08)',
