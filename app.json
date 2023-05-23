@@ -36,6 +36,14 @@
       "eas": {
         "projectId": "833db061-bc7c-42eb-a875-4d82e780608f"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you upload photos of your recipe."
+        }
+      ]
+    ]
   }
 }
