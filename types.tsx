@@ -26,6 +26,9 @@ export type RootStackParamList = {
     navigation: NavigationProp<any, any>;
     item: IRecipeItem
   };
+  AddRecipe: undefined | {
+    navigation: NavigationProp<any, any>;
+  };
 };
 
 
@@ -39,9 +42,7 @@ export type ProfileStackParamList = {
   Root: {
     navigation: NavigationProp<any, any>;
   },
-  AddRecipe: undefined | {
-    navigation: NavigationProp<any, any>;
-  },
+  
   Settings: {
     navigation: NavigationProp<any, any>;
   },

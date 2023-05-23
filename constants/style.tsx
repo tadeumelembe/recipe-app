@@ -5,7 +5,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import Colors from "./Colors";
 import Layout from "./Layout";
 
-const horizontal_padding = 20;
+const horizontal_padding = 15;
 const colorScheme = 'light'
 
 export default StyleSheet.create({
@@ -180,4 +180,27 @@ export default StyleSheet.create({
       },
     })
   },
+  shadow:{
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+      },
+      android: {
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: -15,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+
+        elevation: 8,
+
+        // borderColor: 'rgba(0,0,0,.08)',
+        // borderWidth: 0.8,
+      },
+    })
+  }
 });

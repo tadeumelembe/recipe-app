@@ -55,6 +55,7 @@ function RootNavigator() {
       <Stack.Screen name="CookingMode" component={CookingMode} options={{ headerShown: false }} />
       <Stack.Screen name="AddRecipe" component={AddRecipe} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>

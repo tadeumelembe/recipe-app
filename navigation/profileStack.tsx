@@ -18,7 +18,6 @@ export default function ProfileStack() {
 
             <stack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
             <stack.Screen name="ChangePassword" component={ChangePassword} options={{ headerShown: false }} />
-            <stack.Screen name="AddRecipe" component={AddRecipe} options={{ headerShown: false }} />
 
         </stack.Navigator>
     );
