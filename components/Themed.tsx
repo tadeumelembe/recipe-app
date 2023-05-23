@@ -11,11 +11,13 @@ import {
   TextInput as DefaultTextInput,
   TouchableOpacity as DefaultTouchableOpacity,
   FlatList as DefaultFlatList,
-  StyleSheet
+  StyleSheet,
+  Pressable,
+  StatusBar
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CollapsibleProps, CollapsibleRef, MaterialTabBar, MaterialTabItem, TabProps, Tabs } from 'react-native-collapsible-tab-view';
-import { Children, PropsWithChildren } from 'react';
+import { Children, PropsWithChildren, forwardRef, useImperativeHandle, useLayoutEffect, useState } from 'react';
 
 import { FlashList, FlashListProps } from "@shopify/flash-list";
 import { Ionicons } from '@expo/vector-icons';
@@ -46,6 +48,9 @@ type ThemeProps = {
 
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
+export type ModalProps = ThemeProps & DefaultView['props'] & {
+  visibility: boolean
+};
 export type ScrollViewProps = ThemeProps & DefaultScrollView['props'];
 export type ImageBackgroundProps = ThemeProps & DefaultImageBackground['props'];
 export type TextInputProps = ThemeProps & DefaultTextInput['props'];
@@ -249,3 +254,86 @@ export function IoniconsIcon(props: {
 }) {
   return <Ionicons {...props} />;
 }
+
+export const Modal = forwardRef((props: ModalProps, ref) => {
+  const { children, ...otherProps } = props
+
+  const [visibility, setVisibility] = useState(false)
+
+  const localStyle = StyleSheet.create({
+    root: {
+      position: 'absolute',
+      bottom: 0,
+      top: 0,
+      left: 0,
+      right: 0,
+      flex: 1,
+      backgroundColor: '#0000',
+      zIndex: 10,
+    },
+    opacityView: {
+      flex: 1,
+      width: '100%',
+      paddingHorizontal: 0,
+      backgroundColor: 'rgba(0,0,0,.5)',
+    },
+    contentContainer: {
+      width: '100%',
+      backgroundColor: 'rgba(0,0,0,.5)',
+      maxHeight: '50%'
+    },
+    content: {
+      width: '100%',
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomRightRadius: 0,
+      borderBottomLeftRadius: 0,
+      backgroundColor: '#fff',
+      paddingBottom: 20,
+      paddingTop: 10,
+    },
+    iconContainer: {
+      alignItems: 'center',
+      backgroundColor: '#0000',
+      ...styles.horizontalPadding,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
+    modalTitle: {
+
+    }
+  })
+
+  useImperativeHandle(ref, () => ({
+    open() {
+      setVisibility(true);
+    }
+  }))
+
+  return (
+    <View style={[localStyle.root, !visibility && { display: 'none' }]}>
+      <Pressable onPress={() => setVisibility(false)} style={localStyle.opacityView} />
+
+      <View style={localStyle.contentContainer}>
+
+        <View style={localStyle.content}>
+          <View style={localStyle.iconContainer}>
+            <View />
+            <Text style={styles.textH3}>Title</Text>
+            <Ionicons name="close" size={24} color={Colors.light.text} />
+          </View>
+
+          <ScrollView>
+            <Container style={{ paddingTop: 0 }}>
+              {children}
+              <View style={{ height: 20 }} />
+
+            </Container>
+          </ScrollView>
+        </View>
+
+      </View>
+
+    </View>
+  )
+})
