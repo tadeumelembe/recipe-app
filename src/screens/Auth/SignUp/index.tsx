@@ -135,6 +135,7 @@ const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
                         btnText="Create Account"
                         onPress={handleSubmit(onSubmit)}
                         loading={loading}
+                        disabled={loading}
                     />
 
                     <View style={[{ alignItems: 'center', marginTop: 40 }]}>

@@ -16,14 +16,14 @@ const AuthHeader: React.FC<IHeader> = ({ title }) => {
 
     const insets = useSafeAreaInsets();
 
-    const initialHeaderHeight = 300
+    const initialHeaderHeight = 250
     const headerHeight = useRef(new Animated.Value(initialHeaderHeight)).current
 
     useEffect(() => {
 
         const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
             Animated.timing(headerHeight, {
-                toValue: 150,
+                toValue: 130,
                 duration: 300,
                 useNativeDriver: false
             }).start()

@@ -34,7 +34,7 @@ export default StyleSheet.create({
         ...styles.fontR,
         ...styles.textH3,
         paddingTop: 25,
-        paddingBottom: 50
+        paddingBottom: 25
     },
     inputView: {
         marginBottom: 30

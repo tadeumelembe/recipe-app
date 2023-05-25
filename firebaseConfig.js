@@ -1,6 +1,6 @@
 import * as firebase from 'firebase/app';
 import { FIREBASE_KEY, FIREBASE_MESSAGIN_ID, FIREBASE_APP_ID, FIREBASE_AUTH_DOMAIN, FIREBASE_PROJECT_ID } from "@env"
-import { getAuth, createUserWithEmailAndPassword, updateProfile }from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile }from "firebase/auth";
 
 // Optionally import the services that you want to use
 // import {...} from "firebase/auth";
@@ -29,4 +29,4 @@ if (firebase.getApps().length === 0) {
 
 const auth = getAuth(app);
 
-export { auth, createUserWithEmailAndPassword, updateProfile }; 
+export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile }; 

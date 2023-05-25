@@ -97,9 +97,9 @@ export default StyleSheet.create({
     width: '100%',
     borderBottomWidth: 1,
     borderBottomColor: '#CCCCCC',
-    fontFamily: 'nunito-regular',
+    fontFamily: 'nunito-medium',
     color: '#030F09',
-    fontSize: 16,
+    fontSize: 15,
     paddingTop: 8,
     paddingHorizontal: 5
   },

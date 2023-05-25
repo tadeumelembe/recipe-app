@@ -15,7 +15,8 @@ import {
   Pressable,
   StatusBar,
   Animated,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CollapsibleProps, CollapsibleRef, MaterialTabBar, MaterialTabItem, TabProps, Tabs } from 'react-native-collapsible-tab-view';
@@ -68,6 +69,7 @@ export type FlatListProps = ThemeProps & FlashListProps<any>;
 export type TouchableOpacityProps = ThemeProps & DefaultTouchableOpacity['props'] & {
   btnText?: string,
   iconName?: string,
+  loading?: boolean,
 };
 export type AvatarProps = ViewProps & { size?: string };
 
@@ -221,6 +223,12 @@ export function TextInput(props: TextInputProps) {
     errorBorder: {
       borderBottomWidth: 1,
       borderBottomColor: 'red',
+    },
+    errorText:{
+      ...styles.fontNunitoMedium,
+      ...styles.fontS,
+      color:'red',
+      paddingTop:2
     }
   })
   return (
@@ -238,6 +246,9 @@ export function TextInput(props: TextInputProps) {
             style={[styles.textInput, error && localStyle.errorBorder, style]}
             {...otherProps}
           />
+          {error &&
+            <Text style={localStyle.errorText}>{error.message || 'Error'}</Text>
+          }
         </DefaultView>
 
       )}
@@ -246,11 +257,15 @@ export function TextInput(props: TextInputProps) {
 }
 
 export function Button(props: TouchableOpacityProps) {
-  const { btnText, style, ...otherProps } = props
+  const { btnText, style, loading, ...otherProps } = props
 
   return (
     <DefaultTouchableOpacity style={[styles.btn1, style]} {...otherProps}>
-      <Text style={[styles.fontNunitoBold, styles.fontM, styles.btn1Text]}>{btnText}</Text>
+      {loading ?
+        <ActivityIndicator size={'small'} color={'#fff'} />
+        :
+        <Text style={[styles.fontNunitoBold, styles.fontM, styles.btn1Text]}>{btnText}</Text>
+      }
     </DefaultTouchableOpacity>
   )
 }
