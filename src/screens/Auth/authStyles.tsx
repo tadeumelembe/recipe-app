@@ -32,7 +32,7 @@ export default StyleSheet.create({
     pageTitle: {
         ...styles.fontNunitoRegular,
         ...styles.fontR,
-        ...styles.textMuted2,
+        ...styles.textH3,
         paddingTop: 25,
         paddingBottom: 50
     },

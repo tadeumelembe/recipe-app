@@ -2,7 +2,7 @@
  * Learn more about Light and Dark modes:
  * https://docs.expo.io/guides/color-schemes/
  */
-
+import { Children, PropsWithChildren, forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 import {
   Text as DefaultText,
   View as DefaultView,
@@ -13,18 +13,23 @@ import {
   FlatList as DefaultFlatList,
   StyleSheet,
   Pressable,
-  StatusBar
+  StatusBar,
+  Animated,
+  TouchableOpacity
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CollapsibleProps, CollapsibleRef, MaterialTabBar, MaterialTabItem, TabProps, Tabs } from 'react-native-collapsible-tab-view';
-import { Children, PropsWithChildren, forwardRef, useImperativeHandle, useLayoutEffect, useState } from 'react';
+
 
 import { FlashList, FlashListProps } from "@shopify/flash-list";
 import { Ionicons } from '@expo/vector-icons';
 
+import { Controller } from "react-hook-form";
+
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import styles from '../constants/style';
+import Layout from '../constants/Layout';
 
 
 export function useThemeColor(
@@ -49,16 +54,20 @@ type ThemeProps = {
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
 export type ModalProps = ThemeProps & DefaultView['props'] & {
-  visibility: boolean
+  title?: string,
 };
 export type ScrollViewProps = ThemeProps & DefaultScrollView['props'];
 export type ImageBackgroundProps = ThemeProps & DefaultImageBackground['props'];
-export type TextInputProps = ThemeProps & DefaultTextInput['props'];
+export type TextInputProps = ThemeProps & DefaultTextInput['props'] & {
+  control: object;
+  name: string;
+  rules: object;
+};
 export type TopTabBarProps = ThemeProps & CollapsibleProps;
 export type FlatListProps = ThemeProps & FlashListProps<any>;
 export type TouchableOpacityProps = ThemeProps & DefaultTouchableOpacity['props'] & {
   btnText?: string,
-  iconName?: string
+  iconName?: string,
 };
 export type AvatarProps = ViewProps & { size?: string };
 
@@ -207,13 +216,32 @@ export function ImageBackground(props: ImageBackgroundProps) {
 }
 
 export function TextInput(props: TextInputProps) {
-  const { placeholder, style, ...otherProps } = props
-
+  const { placeholder, name, rules, control, style, ...otherProps } = props
+  const localStyle = StyleSheet.create({
+    errorBorder: {
+      borderBottomWidth: 1,
+      borderBottomColor: 'red',
+    }
+  })
   return (
-    <DefaultView>
-      <Text style={[styles.fontNunitoRegular, styles.fontR, styles.textMuted]}>{placeholder}</Text>
-      <DefaultTextInput style={[styles.textInput, style]} {...otherProps} />
-    </DefaultView>
+    <Controller
+      control={control}
+      name={name}
+      rules={rules}
+      render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+
+        <DefaultView>
+          <Text style={[styles.fontNunitoRegular, styles.fontR]}>{placeholder}</Text>
+          <DefaultTextInput
+            value={value}
+            onChangeText={onChange}
+            style={[styles.textInput, error && localStyle.errorBorder, style]}
+            {...otherProps}
+          />
+        </DefaultView>
+
+      )}
+    />
   );
 }
 
@@ -256,9 +284,11 @@ export function IoniconsIcon(props: {
 }
 
 export const Modal = forwardRef((props: ModalProps, ref) => {
-  const { children, ...otherProps } = props
+  const { children, title, ...otherProps } = props
 
   const [visibility, setVisibility] = useState(false)
+  const [animatedValue, setAnimatedValue] = useState(0)
+  const animatedValueRef = useRef(animatedValue).current;
 
   const localStyle = StyleSheet.create({
     root: {
@@ -280,7 +310,7 @@ export const Modal = forwardRef((props: ModalProps, ref) => {
     contentContainer: {
       width: '100%',
       backgroundColor: 'rgba(0,0,0,.5)',
-      maxHeight: '50%'
+      maxHeight: '50%',
     },
     content: {
       width: '100%',
@@ -304,23 +334,39 @@ export const Modal = forwardRef((props: ModalProps, ref) => {
     }
   })
 
+  const modalAnimation = useRef(new Animated.Value(animatedValueRef)).current;
+
+  const heightAnimation = (endValue: number) => {
+    return Animated.timing(modalAnimation, {
+      toValue: endValue,
+      duration: 1000,
+      useNativeDriver: false,
+    }).start()
+  }
+
   useImperativeHandle(ref, () => ({
     open() {
       setVisibility(true);
     }
   }))
 
+  const close = () => {
+    setVisibility(false)
+  }
+
   return (
     <View style={[localStyle.root, !visibility && { display: 'none' }]}>
       <Pressable onPress={() => setVisibility(false)} style={localStyle.opacityView} />
 
-      <View style={localStyle.contentContainer}>
+      <View style={[localStyle.contentContainer]}>
 
         <View style={localStyle.content}>
           <View style={localStyle.iconContainer}>
             <View />
-            <Text style={styles.textH3}>Title</Text>
-            <Ionicons name="close" size={24} color={Colors.light.text} />
+            <Text style={styles.textH3}>{title}</Text>
+            <TouchableOpacity onPress={() => close()}>
+              <Ionicons name="close" size={24} color={Colors.light.text} />
+            </TouchableOpacity>
           </View>
 
           <ScrollView>

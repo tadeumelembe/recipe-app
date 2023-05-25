@@ -35,7 +35,7 @@ const Login: React.FC<IAuthPage> = ({ navigation }) => {
                         Please login to continue.
                     </Text>
 
-                    <View style={authStyles.inputView}>
+                    {/* <View style={authStyles.inputView}>
                         <TextInput
                             placeholder="Email address"
                             autoCapitalize="none"
@@ -49,7 +49,7 @@ const Login: React.FC<IAuthPage> = ({ navigation }) => {
                             autoCapitalize="none"
                             secureTextEntry
                         />
-                    </View>
+                    </View> */}
 
                     <Button
                         btnText="Login"
