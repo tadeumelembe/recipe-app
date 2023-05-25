@@ -46,9 +46,9 @@ function AppRoutes({ colorScheme }: { colorScheme: ColorSchemeName }) {
 const Routes: React.FC<any> = () => {
     const colorScheme = 'light'//useColorScheme();
 
-    const { isSigned } = useAuth();
+    const { isSigned, user } = useAuth();
 
-    return !isSigned ? <AppRoutes colorScheme={colorScheme} /> : <AuthRoutes colorScheme={colorScheme} />;
+    return isSigned ? <AppRoutes colorScheme={colorScheme} /> : <AuthRoutes colorScheme={colorScheme} />;
 
 };
 

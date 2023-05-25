@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Pressable, StyleSheet } from "react-native"
+import { Pressable, StyleSheet, TouchableOpacity } from "react-native"
 import * as ImagePicker from 'expo-image-picker';
 
 import { Container, Modal, ScrollView, Text, TextInput, View } from "../../../components/Themed"
@@ -19,17 +19,24 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
     const modalRef = useRef();
 
     const [image, setImage] = useState(null);
-    const [showModal, setShowModal] = useState(true);
-
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-
+    const pickImage = async (type: string) => {
+        let result;
+        if (type == 'camera') {
+            result = await ImagePicker.launchCameraAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+            });
+        } else {
+            result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsEditing: true,
+                aspect: [4, 3],
+                allowsMultipleSelection: true,
+                quality: 1,
+            });
+        }
         console.log(result);
 
         if (!result.canceled) {
@@ -53,7 +60,7 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
         )
     }
 
-    const openModal = () =>{
+    const openModal = () => {
         modalRef.current?.open()
     }
 
@@ -92,14 +99,15 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
 
             </ScrollView>
-            <Modal ref={modalRef} visibility={showModal}>
-                <InputContainer name={'Ingredients'} placeHolder={'Add Ingredient'} />
-                <InputContainer name={'Ingredients'} placeHolder={'Add Ingredient'} />
-                <InputContainer name={'Ingredients'} placeHolder={'Add Ingredient'} />
-                <InputContainer name={'Ingredients'} placeHolder={'Add Ingredient'} />
-                <InputContainer name={'Ingredients'} placeHolder={'Add Ingredient'} />
-                <InputContainer name={'Ingredients'} placeHolder={'Add Ingredient'} />
-
+            <Modal title="" ref={modalRef}>
+                <View style={localStyle.mediaTypePickerContainer}>
+                    <TouchableOpacity onPress={() => pickImage('camera')}>
+                        <Text style={style.textH3}>Open camera</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ marginTop: 10 }} onPress={() => pickImage('library')}>
+                        <Text style={style.textH3}>Pick from phone</Text>
+                    </TouchableOpacity>
+                </View>
             </Modal>
         </Container>
     )
@@ -157,5 +165,8 @@ const localStyle = StyleSheet.create({
         ...style.fontM,
         ...style.textMuted2,
         marginLeft: 15
+    },
+    mediaTypePickerContainer: {
+        alignItems: 'center'
     }
 })

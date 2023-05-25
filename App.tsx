@@ -11,6 +11,9 @@ import useColorScheme from './hooks/useColorScheme';
 import Routes from './navigation/routes';
 import { AuthProvider } from './src/context/authContext';
 import { View } from './components/Themed';
+import { FIREBASE_TOKEN } from "@env"
+
+console.log(FIREBASE_TOKEN)
 
 /*/ Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -45,7 +48,7 @@ export default function App() {
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) await SplashScreen.hideAsync();
-    
+
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
@@ -61,6 +64,8 @@ export default function App() {
 
       <AuthProvider>
         <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+          <StatusBar backgroundColor={'#fff'} style={'dark'} />
+
           <Routes />
         </View>
       </AuthProvider>
