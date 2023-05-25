@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 
@@ -7,19 +7,47 @@ import styles from "../../../../constants/style";
 import AuthHeader from "../../../components/Auth/AuthHeader";
 import { IAuthPage } from "../../../components/types";
 import authStyles from "../authStyles"
+import { auth, createUserWithEmailAndPassword, updateProfile } from "../../../../firebaseConfig";
+import { helpers } from "../../../utils/constants";
+
+interface IFormData {
+    name: string;
+    password: string;
+    email: string
+}
 
 const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
 
-    const { control, handleSubmit, formState: { errors } } = useForm({
+    const [loading, setLoading] = useState(false)
+
+    const { control, handleSubmit, watch } = useForm<IFormData>({
         defaultValues: {
             name: '',
             email: '',
             password: '',
         }
     });
+    const pwd = watch('password');
 
-    const onSubmit = data => {
-        console.log(data)
+    const onSubmit = (data: IFormData) => {
+        const { email, password, name } = data
+
+        createUserWithEmailAndPassword(auth, email, password).then((authUser) => {
+            console.log(authUser)
+            updateProfile(auth.currentUser, {
+                displayName: name,
+
+            }).then(() => {
+                console.log('Profile Updated')
+            }).catch((error) => {
+                console.log('Update Error', error)
+            });
+        }).catch((error) => {
+            console.log(error.code, error.message)
+            const errorCode = error.code;
+            const errorMessage = error.message;
+        }).finally(() => setLoading(false));
+
     }
 
     return (
@@ -46,7 +74,15 @@ const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
                             autoCapitalize="none"
                             control={control}
                             rules={{
-                                required: true,
+                                required: 'Name is required',
+                                minLength: {
+                                    value: 3,
+                                    message: 'Name should be at least 3 characters long',
+                                },
+                                maxLength: {
+                                    value: 24,
+                                    message: 'Name should be max 24 characters long',
+                                }
                             }}
                             name="name"
                         />
@@ -59,7 +95,8 @@ const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
                             control={control}
                             inputMode='email'
                             rules={{
-                                required: true,
+                                required: 'Email is required',
+                                pattern: { value: helpers.EMAIL_VALIDATION, message: 'Email is invalid' },
                             }}
                             name="email"
                         />
@@ -72,15 +109,32 @@ const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
                             secureTextEntry
                             control={control}
                             rules={{
-                                required: true,
+                                required: 'Password is required',
+                                min: { value: 8, message: "Password must have at least 8 characters" }
                             }}
                             name="password"
                         />
                     </View>
 
+
+                    <View style={authStyles.inputView}>
+                        <TextInput
+                            placeholder="Confirm Password"
+                            autoCapitalize="none"
+                            secureTextEntry
+                            control={control}
+                            rules={{
+                                validate: value => (value === pwd || pwd == '') || 'Password do not match',
+                            }}
+                            name="password2"
+                        />
+                    </View>
+
+
                     <Button
                         btnText="Create Account"
                         onPress={handleSubmit(onSubmit)}
+                        loading={loading}
                     />
 
                     <View style={[{ alignItems: 'center', marginTop: 40 }]}>

@@ -1,5 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { FIREBASE_KEY } from "@env"
+import * as firebase from 'firebase/app';
+import { FIREBASE_KEY, FIREBASE_MESSAGIN_ID, FIREBASE_APP_ID, FIREBASE_AUTH_DOMAIN, FIREBASE_PROJECT_ID } from "@env"
+import { getAuth, createUserWithEmailAndPassword, updateProfile }from "firebase/auth";
 
 // Optionally import the services that you want to use
 // import {...} from "firebase/auth";
@@ -9,14 +10,23 @@ import { FIREBASE_KEY } from "@env"
 // import {...} from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: {FIREBASE_KEY},
-  authDomain: 'project-id.firebaseapp.com',
-  databaseURL: 'https://project-id.firebaseio.com',
-  projectId: 'project-id',
-  storageBucket: 'project-id.appspot.com',
-  messagingSenderId: 'sender-id',
-  appId: 'app-id',
-  measurementId: 'G-measurement-id',
+    apiKey: `${FIREBASE_KEY}`,
+    authDomain: { FIREBASE_AUTH_DOMAIN },
+    databaseURL: `https://${FIREBASE_PROJECT_ID}.firebaseio.com`,
+    projectId: { FIREBASE_PROJECT_ID },
+    storageBucket: 'project-id.appspot.com',
+    messagingSenderId: { FIREBASE_MESSAGIN_ID },
+    appId: `${FIREBASE_APP_ID}`,
+    measurementId: 'G-measurement-id',
 };
 
-const app = initializeApp(firebaseConfig);
+let app;
+if (firebase.getApps().length === 0) {
+    app = firebase.initializeApp(firebaseConfig);
+} else {
+    app = firebase.getApp();
+}
+
+const auth = getAuth(app);
+
+export { auth, createUserWithEmailAndPassword, updateProfile }; 
