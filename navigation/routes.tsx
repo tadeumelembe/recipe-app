@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-import { ColorSchemeName } from 'react-native';
+import { ActivityIndicator, ColorSchemeName } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { StatusBar } from 'expo-status-bar';
@@ -15,6 +15,8 @@ import Login from '../src/screens/Auth/Login';
 import SignUp from '../src/screens/Auth/SignUp';
 
 import { AuthProvider, useAuth } from '../src/context/authContext';
+import { View } from '../components/Themed';
+import Colors from '../constants/Colors';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,7 +48,15 @@ function AppRoutes({ colorScheme }: { colorScheme: ColorSchemeName }) {
 const Routes: React.FC<any> = () => {
     const colorScheme = 'light'//useColorScheme();
 
-    const { isSigned, user } = useAuth();
+    const { isSigned, user,loading } = useAuth();
+
+    if (loading) {
+        return(
+            <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
+                <ActivityIndicator color={Colors[colorScheme].text} size={"large"} />
+            </View>
+        )
+   }
 
     return isSigned ? <AppRoutes colorScheme={colorScheme} /> : <AuthRoutes colorScheme={colorScheme} />;
 
