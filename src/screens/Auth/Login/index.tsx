@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { KeyboardAvoidingView, Platform } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 
 import { Text, View, Container, ScrollView, TextInput, Button, TextButton } from "../../../../components/Themed";
@@ -20,6 +20,7 @@ interface IFormData {
 
 const Login: React.FC<IAuthPage> = ({ navigation }) => {
     const [loading, setLoading] = useState(false)
+    const [formError, setFormError] = useState('')
 
     const { signIn } = useAuth();
 
@@ -31,20 +32,27 @@ const Login: React.FC<IAuthPage> = ({ navigation }) => {
     });
 
     const onSubmit = (data: IFormData) => {
-        console.log(data)
         const { email, password } = data
+
+        setFormError('')
         setLoading(true)
+
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
+                signIn(user)
                 console.log(user)
             })
             .catch((error) => {
-                console.log(error.code, error.message)
-
                 const errorCode = error.code;
                 const errorMessage = error.message;
+
+                const firebaseAuthErros = ['auth/user-not-found', 'auth/wrong-password', 'auth/invalid-email']
+
+                if (firebaseAuthErros.includes(error.code)) return setFormError('Invalid credentials')
+
+                setFormError('Something went wrong')
             })
             .finally(() => setLoading(false));
     }
@@ -94,6 +102,8 @@ const Login: React.FC<IAuthPage> = ({ navigation }) => {
                         />
                     </View>
 
+                    <Text style={localStyle.formWarning}>{formError}</Text>
+
                     <Button
                         btnText="Login"
                         onPress={handleSubmit(onSubmit)}
@@ -121,3 +131,13 @@ const Login: React.FC<IAuthPage> = ({ navigation }) => {
 }
 
 export default Login
+
+const localStyle = StyleSheet.create({
+    formWarning: {
+        ...styles.fontS,
+        ...styles.fontNunitoRegular,
+        color: 'red',
+        marginTop: -23,
+        marginBottom: 15
+    }
+})
