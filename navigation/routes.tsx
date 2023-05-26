@@ -11,8 +11,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Navigation from '.';
 import useColorScheme from '../hooks/useColorScheme';
 
-import Login from '../src/screens/Auth/Login';
-import SignUp from '../src/screens/Auth/SignUp';
+import Login from '../screens/Auth/Login';
+import SignUp from '../screens/Auth/SignUp';
 
 import { AuthProvider, useAuth } from '../src/context/authContext';
 import { View } from '../components/Themed';

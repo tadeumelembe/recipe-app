@@ -12,20 +12,20 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../src/screens/ModalScreen';
-import NotFoundScreen from '../src/screens/NotFoundScreen';
+import ModalScreen from '../screens/ModalScreen';
+import NotFoundScreen from '../screens/NotFoundScreen';
 
-import TabHome from '../src/screens/TabHome';
-import TabSearch from '../src/screens/TabSearch';
+import TabHome from '../screens/TabHome';
+import TabSearch from '../screens/TabSearch';
 
-import RecipeDetails from '../src/screens/RecipeDetails';
-import CookingMode from '../src/screens/CookingMode';
+import RecipeDetails from '../screens/RecipeDetails';
+import CookingMode from '../screens/CookingMode';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
 import ProfileStack from './profileStack';
-import AddRecipe from '../src/screens/AddRecipe';
+import AddRecipe from '../screens/AddRecipe';
 import RecipeStack from './recipeDetailsStack';
 
 
