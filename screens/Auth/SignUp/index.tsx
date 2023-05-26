@@ -8,7 +8,7 @@ import AuthHeader from "../../../components/Auth/AuthHeader";
 import { IAuthPage } from "../../../components/types";
 import authStyles from "../authStyles"
 import { auth, createUserWithEmailAndPassword, updateProfile } from "../../../firebaseConfig";
-import { helpers } from "../../../src/utils/constants";
+import { helpers } from "../../../utils/constants";
 
 interface IFormData {
     name: string;

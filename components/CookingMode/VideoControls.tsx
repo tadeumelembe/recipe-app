@@ -2,9 +2,9 @@ import React, { Ref, RefObject, memo, useEffect, useRef, useState } from "react"
 import { Animated, Pressable, StyleSheet } from "react-native"
 import { Ionicons, MaterialIcons } from "@expo/vector-icons"
 
-import { View } from "../../../components/Themed"
-import Colors from "../../../constants/Colors"
-import Layout from "../../../constants/Layout"
+import { View } from "../../components/Themed"
+import Colors from "../../constants/Colors"
+import Layout from "../../constants/Layout"
 
 interface IVideoControls {
     videoRef: RefObject<any>;

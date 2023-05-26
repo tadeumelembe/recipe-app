@@ -4,7 +4,7 @@ import ChangePassword from "../screens/ChangePassword";
 import TabProfile from "../screens/Profile";
 import Settings from "../screens/Settings";
 import AddRecipe from "../screens/AddRecipe";
-import { navigationNames } from "../src/utils/constants";
+import { navigationNames } from "../utils/constants";
 
 import { ProfileStackParamList, RootStackParamList } from "../types";
 

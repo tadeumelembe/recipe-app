@@ -14,7 +14,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import Login from '../screens/Auth/Login';
 import SignUp from '../screens/Auth/SignUp';
 
-import { AuthProvider, useAuth } from '../src/context/authContext';
+import { AuthProvider, useAuth } from '../contexts/authContext';
 import { View } from '../components/Themed';
 import Colors from '../constants/Colors';
 

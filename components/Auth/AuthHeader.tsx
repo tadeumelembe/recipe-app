@@ -46,7 +46,7 @@ const AuthHeader: React.FC<IHeader> = ({ title }) => {
 
     return (
         <Animated.View style={[authStyles.header, { height: headerHeight }]}>
-            <ImageBackground imageStyle={{ borderBottomRightRadius: 80 }} source={require('../../../assets/images/login-header.png')}>
+            <ImageBackground imageStyle={{ borderBottomRightRadius: 80 }} source={require('../../assets/images/login-header.png')}>
                 <View style={[authStyles.headerImageView]}>
                     <Text style={[authStyles.headerText, { paddingTop: insets.top / 2 }]}>
                         {title}

@@ -2,9 +2,9 @@ import React from "react"
 import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons';
 
-import { View, Text, Avatar, Button, ImageBackground } from "../../../components/Themed"
-import style from "../../../constants/style";
-import Colors from "../../../constants/Colors";
+import { View, Text, Avatar, Button, ImageBackground } from "../../components/Themed"
+import style from "../../constants/style";
+import Colors from "../../constants/Colors";
 import { IRecipeDetailsHeader } from "../types";
 
 

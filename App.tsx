@@ -9,7 +9,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Routes from './navigation/routes';
-import { AuthProvider } from './src/context/authContext';
+import { AuthProvider } from './contexts/authContext';
 import { View } from './components/Themed';
 
 SplashScreen.preventAutoHideAsync();

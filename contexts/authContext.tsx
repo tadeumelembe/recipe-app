@@ -1,7 +1,7 @@
 import React, { ChildContextProvider, Children, createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { IUserContext } from '../components/types'
-import { auth, onAuthStateChanged } from "../../firebaseConfig";
+import { auth, onAuthStateChanged } from "../firebaseConfig";
 import { signOut as firebaseSignOut } from "firebase/auth"
 
 interface IAuthContext {

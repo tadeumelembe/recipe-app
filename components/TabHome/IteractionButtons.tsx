@@ -2,9 +2,9 @@ import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import React, { useState, useRef, useEffect, Ref } from "react";
 import { Image, Animated, TouchableOpacity, Pressable, StyleSheet } from "react-native";
 
-import { Avatar, View, Text, IoniconsIcon, ImageBackground } from "../../../components/Themed";
-import Colors from "../../../constants/Colors";
-import style from "../../../constants/style";
+import { Avatar, View, Text, IoniconsIcon, ImageBackground } from "../../components/Themed";
+import Colors from "../../constants/Colors";
+import style from "../../constants/style";
 import { IHomeFeedCard } from "../types";
 
 

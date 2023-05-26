@@ -8,9 +8,9 @@ import styles from "../../../constants/style";
 import authStyles from "../authStyles"
 import { IAuthPage } from "../../../components/types";
 
-import { useAuth } from "../../../src/context/authContext";
+import { useAuth } from "../../../contexts/authContext";
 import { auth, signInWithEmailAndPassword } from "../../../firebaseConfig";
-import { helpers } from "../../../src/utils/constants";
+import { helpers } from "../../../utils/constants";
 
 
 interface IFormData {

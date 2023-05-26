@@ -2,9 +2,9 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 
-import { Container, IoniconsIcon, ScrollView, Text, View } from "../../components/Themed";
-import style from "../../constants/style";
-import styles from "../../constants/style";
+import { Container, IoniconsIcon, ScrollView, Text, View } from "../components/Themed";
+import style from "../constants/style";
+import styles from "../constants/style";
 import { IHead } from "./types";
 
 const Header: React.FC<IHead> = ({ navigation, type }) => {

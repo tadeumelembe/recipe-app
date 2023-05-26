@@ -3,10 +3,10 @@ import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { Text, View } from "../../../components/Themed"
-import style from "../../../constants/style";
+import { Text, View } from "../../components/Themed"
+import style from "../../constants/style";
 import { IHead } from "../types";
-import { useAuth } from "../../context/authContext";
+import { useAuth } from "../../contexts/authContext";
 
 const Header: React.FC<IHead> = ({ navigation }) => {
 

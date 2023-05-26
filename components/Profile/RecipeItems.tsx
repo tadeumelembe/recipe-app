@@ -1,8 +1,8 @@
 import React, { memo } from "react"
 import { StyleSheet, Image } from "react-native"
-import { ImageBackground, Text, View } from "../../../components/Themed"
-import Layout from "../../../constants/Layout"
-import style from "../../../constants/style"
+import { ImageBackground, Text, View } from "../../components/Themed"
+import Layout from "../../constants/Layout"
+import style from "../../constants/style"
 import { IProfileRecipeItem } from "../types"
 
 const cardWidth = (Layout.window.width - 15) * 40 / 100
