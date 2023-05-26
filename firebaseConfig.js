@@ -1,6 +1,8 @@
 import * as firebase from 'firebase/app';
 import { FIREBASE_KEY, FIREBASE_MESSAGIN_ID, FIREBASE_APP_ID, FIREBASE_AUTH_DOMAIN, FIREBASE_PROJECT_ID } from "@env"
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile }from "firebase/auth";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, initializeAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getReactNativePersistence } from "firebase/auth/react-native"
 
 // Optionally import the services that you want to use
 // import {...} from "firebase/auth";
@@ -27,6 +29,10 @@ if (firebase.getApps().length === 0) {
     app = firebase.getApp();
 }
 
-const auth = getAuth(app);
 
-export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile }; 
+const auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(AsyncStorage),
+});
+
+
+export { auth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile }; 
