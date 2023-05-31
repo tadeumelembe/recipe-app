@@ -26,6 +26,10 @@ The Recipe App is an open-source project that aims to provide users with a platf
 
 **Server:** Firebase
 
+## Acknowledgements
+
+ - [UI Template](https://www.invisionapp.com/free-resources/detail/scratch-recipe-ui-kit)
+
 
 ## Run Locally
 
