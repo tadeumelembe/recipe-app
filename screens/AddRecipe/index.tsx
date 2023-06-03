@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { Pressable, StyleSheet, TouchableOpacity } from "react-native"
+import { Image, Pressable, StyleSheet, TouchableOpacity } from "react-native"
 import * as ImagePicker from 'expo-image-picker';
 import { useForm, Controller } from "react-hook-form";
+import { ref as firebaseRef, getDownloadURL, uploadBytes, uploadBytesResumable } from "firebase/storage";
 
-import { Container, Modal, ScrollView, Text, TextInput, View } from "../../components/Themed"
+import { Button, Container, Modal, ScrollView, Text, TextInput, View } from "../../components/Themed"
 import style from "../../constants/style"
 import { RootStackScreenProps } from "../../types"
 import Header from "../../components/Head"
 import Colors from "../../constants/Colors"
 import { Ionicons } from "@expo/vector-icons"
+import { getBlobFromUri } from "../../utils/helpers";
+import { storage } from "../../firebaseConfig";
 
 interface IInputContainer {
     name: string;
@@ -16,17 +19,24 @@ interface IInputContainer {
     onPress: () => void
 }
 
+const initialRecipeForm = {
+    coverImage: {},
+    galleryImages: []
+}
+
+interface IRecipeForm {
+    coverImage: object;
+    galleryImages: Array<object>
+}
+
 const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => {
     const modalRef = useRef();
 
-    const [form, setForm] = useState({});
-    const [image, setImage] = useState(null);
+    const [form, setForm] = useState<IRecipeForm>(JSON.parse(JSON.stringify(initialRecipeForm)));
 
     const { control, handleSubmit, watch } = useForm<IFormData>({
         defaultValues: {
             name: '',
-            email: '',
-            password: '',
         }
     });
 
@@ -51,9 +61,24 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
         console.log(result);
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            return result.assets;
         }
+
+        return false
     };
+
+
+    const handleCoverImage = async (type: string) => {
+        const result = await pickImage(type);
+
+        if (!result) return
+
+        let newForm = { ...form }
+        newForm.coverImage = result[0]
+
+        setForm({ ...newForm })
+        console.log(form, newForm)
+    }
 
     useEffect(() => {
         const status = ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -88,8 +113,17 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
                     <Text style={style.textH1}>New Recipe</Text>
                     <View style={localStyle.recipeNameView}>
-                        <Pressable onPress={() => openModal()} style={localStyle.cover}>
-                            <Ionicons name="add" size={20} color={Colors.light.text} />
+                        <Pressable onPress={() => openModal()} style={[localStyle.cover, form.coverImage?.uri && {borderWidth:0}]}>
+                            {form.coverImage?.uri ?
+                                <Image
+                                    resizeMode="cover"
+                                    style={localStyle.coverImage}
+                                    source={{ uri: form.coverImage?.uri }}
+                                />
+                                :
+                                <Ionicons name="add" size={20} color={Colors.light.text} />
+                            }
+
                         </Pressable>
                         <View style={localStyle.recipeNameInputView}>
                             <TextInput
@@ -119,6 +153,24 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
                     <InputContainer name={'How to Cook'} placeHolder={'Add Directions'} />
 
                     <InputContainer name={'Additional Info'} placeHolder={'Add Info'} />
+
+                    <View style={localStyle.categorySection}>
+                        <Text style={[style.textMuted2, style.fontNunitoRegular, style.fontR]}>Save to</Text>
+                        <View style={localStyle.categoryRow}>
+                            <View style={localStyle.categoryCard}>
+                                <Text>Save to</Text>
+
+                            </View>
+                            <View style={{ width: '45%' }}>
+                                <Button
+                                    btnText="Draft"
+                                    btnSecondary={true}
+                                />
+                            </View>
+                        </View>
+                    </View>
+
+                    <Button btnText="Post to feed" style={{ marginTop: 20 }} />
                     <View style={{ height: 50 }} />
 
                 </Container>
@@ -128,10 +180,10 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
             </ScrollView>
             <Modal title="" ref={modalRef}>
                 <View style={localStyle.mediaTypePickerContainer}>
-                    <TouchableOpacity onPress={() => pickImage('camera')}>
+                    <TouchableOpacity onPress={() => handleCoverImage('camera')}>
                         <Text style={style.textH3}>Open camera</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ marginTop: 10 }} onPress={() => pickImage('library')}>
+                    <TouchableOpacity style={{ marginTop: 10 }} onPress={() => handleCoverImage('library')}>
                         <Text style={style.textH3}>Pick from phone</Text>
                     </TouchableOpacity>
                 </View>
@@ -181,7 +233,7 @@ const localStyle = StyleSheet.create({
     inputContainer: {
         ...style.card,
         backgroundColor: '#fff',
-        elevation: 3,
+        elevation: 8,
         zIndex: 999,
         padding: 15,
         marginTop: 20,
@@ -195,5 +247,80 @@ const localStyle = StyleSheet.create({
     },
     mediaTypePickerContainer: {
         alignItems: 'center'
+    },
+    categorySection: {
+        marginTop: 20
+    },
+    categoryRow: {
+        flexDirection: 'row',
+        flex: 1,
+        gap: 15,
+        marginTop: 10
+    },
+    coverImage:{
+...style.strechImage,
+borderRadius:8
+    },
+    categoryCard: {
+        ...style.card,
+        elevation: 6,
+        padding: 5,
+        backgroundColor: '#fff',
+        flexGrow: 1
     }
 })
+
+const handleFireabseUplaod = async (uri: string) => {
+    const blob = await getBlobFromUri(uri)
+
+    const storageRef = firebaseRef(storage, "images/recipes/" + Date.now().toString());
+
+    const metadata = {
+        contentType: 'image/jpeg',
+    };
+
+    const uploadTask = uploadBytesResumable(storageRef, blob);
+
+    // 'file' comes from the Blob or File API
+    uploadTask.on('state_changed',
+        (snapshot) => {
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+                case 'paused':
+                    console.log('Upload is paused');
+                    break;
+                case 'running':
+                    console.log('Upload is running');
+                    break;
+            }
+        },
+        (error) => {
+            switch (error.code) {
+                case 'storage/unauthorized':
+                    // User doesn't have permission to access the object
+                    break;
+                case 'storage/canceled':
+                    // User canceled the upload
+                    break;
+
+                // ...
+
+                case 'storage/unknown':
+                    // Unknown error occurred, inspect error.serverResponse
+                    break;
+            }
+            blob.close()
+        },
+        () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                console.log('File available at', downloadURL);
+            });
+            blob.close()
+        }
+    );
+}

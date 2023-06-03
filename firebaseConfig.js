@@ -3,7 +3,7 @@ import { FIREBASE_KEY, FIREBASE_MESSAGIN_ID, FIREBASE_APP_ID, FIREBASE_AUTH_DOMA
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, initializeAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getReactNativePersistence } from "firebase/auth/react-native"
-
+import { getStorage } from 'firebase/storage';
 // Optionally import the services that you want to use
 // import {...} from "firebase/auth";
 // import {...} from "firebase/database";
@@ -16,7 +16,7 @@ const firebaseConfig = {
     authDomain: { FIREBASE_AUTH_DOMAIN },
     databaseURL: `https://${FIREBASE_PROJECT_ID}.firebaseio.com`,
     projectId: { FIREBASE_PROJECT_ID },
-    storageBucket: 'project-id.appspot.com',
+    storageBucket: `${FIREBASE_PROJECT_ID}.appspot.com`,
     messagingSenderId: { FIREBASE_MESSAGIN_ID },
     appId: `${FIREBASE_APP_ID}`,
     measurementId: 'G-measurement-id',
@@ -34,5 +34,7 @@ const auth = initializeAuth(app, {
     persistence: getReactNativePersistence(AsyncStorage),
 });
 
+const storage = getStorage(app)
 
-export { auth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile }; 
+
+export { auth, storage, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile }; 
