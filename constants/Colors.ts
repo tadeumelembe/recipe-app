@@ -15,6 +15,7 @@ export default {
     avatarBackground:'#ccc',
     borderSeparator: 'rgba(0, 0, 0, 0.2)',
     lightBlack: 'rgba(0, 0, 0, 0.05)',
+    shadow:'rgba(0,0,0,.5)'
   },
   dark: {
     text: '#fff',

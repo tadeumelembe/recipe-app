@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { KeyboardAvoidingView, Platform } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 
 import { Text, View, Container, ScrollView, TextInput, Button, TextButton } from "../../../components/Themed";
@@ -19,6 +19,7 @@ interface IFormData {
 const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
 
     const [loading, setLoading] = useState(false)
+    const [formError, setFormError] = useState('')
 
     const { control, handleSubmit, watch } = useForm<IFormData>({
         defaultValues: {
@@ -31,6 +32,8 @@ const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
 
     const onSubmit = (data: IFormData) => {
         const { email, password, name } = data
+        setFormError('')
+        setLoading(true)
 
         createUserWithEmailAndPassword(auth, email, password).then((authUser) => {
             console.log(authUser)
@@ -44,15 +47,18 @@ const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
             });
         }).catch((error) => {
             console.log(error.code, error.message)
+
             const errorCode = error.code;
             const errorMessage = error.message;
+
+            setFormError('Something went wrong')
         }).finally(() => setLoading(false));
 
     }
 
     return (
         <KeyboardAvoidingView
-            style={{ flex: 1 }}
+            style={{ flex: 1 }} 
             behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         >
 
@@ -130,6 +136,7 @@ const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
                         />
                     </View>
 
+                    <Text style={localStyle.formWarning}>{formError}</Text>
 
                     <Button
                         btnText="Create Account"
@@ -157,3 +164,13 @@ const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
 }
 
 export default SignUp
+
+const localStyle = StyleSheet.create({
+    formWarning: {
+        ...styles.fontS,
+        ...styles.fontNunitoRegular,
+        color: 'red',
+        marginTop: -23,
+        marginBottom: 15
+    }
+})

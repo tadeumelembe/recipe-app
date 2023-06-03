@@ -68,6 +68,7 @@ export type TopTabBarProps = ThemeProps & CollapsibleProps;
 export type FlatListProps = ThemeProps & FlashListProps<any>;
 export type TouchableOpacityProps = ThemeProps & DefaultTouchableOpacity['props'] & {
   btnText?: string,
+  btnSecondary?: boolean,
   iconName?: string,
   loading?: boolean,
 };
@@ -257,14 +258,14 @@ export function TextInput(props: TextInputProps) {
 }
 
 export function Button(props: TouchableOpacityProps) {
-  const { btnText, style, loading, ...otherProps } = props
+  const { btnText, style, loading, btnSecondary, ...otherProps } = props
 
   return (
-    <DefaultTouchableOpacity style={[styles.btn1, style]} {...otherProps}>
+    <DefaultTouchableOpacity style={[btnSecondary == true ? styles.btnSecondary : styles.btn, style]} {...otherProps}>
       {loading ?
         <ActivityIndicator size={'small'} color={'#fff'} />
         :
-        <Text style={[styles.fontNunitoBold, styles.fontM, styles.btn1Text]}>{btnText}</Text>
+        <Text style={[styles.fontNunitoBold, styles.fontM, btnSecondary ? styles.btnSecondaryText : styles.btn1Text]}>{btnText}</Text>
       }
     </DefaultTouchableOpacity>
   )
@@ -274,7 +275,7 @@ export function ButtonRounded(props: TouchableOpacityProps) {
   const { btnText, iconName, style, ...otherProps } = props
 
   return (
-    <DefaultTouchableOpacity style={[styles.btn2, style]} {...otherProps}>
+    <DefaultTouchableOpacity style={[styles.btnRounded, style]} {...otherProps}>
       <Ionicons name={iconName} size={30} color={'#fff'} />
     </DefaultTouchableOpacity>
   )

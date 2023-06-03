@@ -42,7 +42,6 @@ const Login: React.FC<IAuthPage> = ({ navigation }) => {
                 // Signed in 
                 const user = userCredential.user;
                 signIn(user)
-                console.log(user)
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -52,7 +51,7 @@ const Login: React.FC<IAuthPage> = ({ navigation }) => {
 
                 if (firebaseAuthErros.includes(error.code)) return setFormError('Invalid credentials')
 
-                setFormError('Something went wrong')
+                setFormError('Something went wrong, trey again')
             })
             .finally(() => setLoading(false));
     }

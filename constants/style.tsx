@@ -103,7 +103,7 @@ export default StyleSheet.create({
     paddingTop: 8,
     paddingHorizontal: 5
   },
-  btn1: {
+  btn: {
     width: '100%',
     height: 45,
     borderRadius: 8,
@@ -120,7 +120,27 @@ export default StyleSheet.create({
     shadowRadius: 8,
     elevation: 17,
   },
-  btn2: {
+  btnSecondary: {
+    width: '100%',
+    height: 45,
+    borderRadius: 8,
+    backgroundColor: Colors[colorScheme].background,
+    borderColor: Colors[colorScheme].tint,
+    borderWidth: 2,
+
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    shadowColor: "rgba(0,0,0,0.6)",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 8,
+    elevation: 7,
+  },
+  btnRounded: {
     width: 50,
     height: 50,
     borderRadius: 30,
@@ -139,14 +159,11 @@ export default StyleSheet.create({
     shadowRadius: 8,
     elevation: 17,
   },
-  btnSecondary: {
-    backgroundColor: Colors[colorScheme].background,
-
-    borderColor: 'rgba(0,0,0,.08)',
-    borderWidth: 2,
-  },
   btn1Text: {
     color: '#fff',
+  },
+  btnSecondaryText: {
+    color: Colors[colorScheme].tint,
   },
   btnTextLink: {
     color: Colors[colorScheme].tint
@@ -160,12 +177,12 @@ export default StyleSheet.create({
     borderRadius: 10,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: Colors[colorScheme].shadow,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
       },
       android: {
-        shadowColor: "#000",
+        shadowColor: Colors[colorScheme].shadow,
         shadowOffset: {
           width: 0,
           height: 1,
@@ -180,7 +197,11 @@ export default StyleSheet.create({
       },
     })
   },
-  shadow:{
+  strechImage: {
+    width: '100%',
+    height: '100%'
+  },
+  shadow: {
     ...Platform.select({
       ios: {
         shadowColor: '#000',
