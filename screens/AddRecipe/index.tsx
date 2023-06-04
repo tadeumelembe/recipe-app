@@ -2,99 +2,51 @@ import { useEffect, useRef, useState } from "react";
 import { Image, Pressable, StyleSheet, TouchableOpacity } from "react-native"
 import * as ImagePicker from 'expo-image-picker';
 import { useForm, Controller } from "react-hook-form";
-import { ref as firebaseRef, getDownloadURL, uploadBytes, uploadBytesResumable } from "firebase/storage";
+import { ref as firebaseRef, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { Ionicons } from "@expo/vector-icons"
 
 import { Button, Container, Modal, ScrollView, Text, TextInput, View } from "../../components/Themed"
 import style from "../../constants/style"
 import { RootStackScreenProps } from "../../types"
 import Header from "../../components/Head"
 import Colors from "../../constants/Colors"
-import { Ionicons } from "@expo/vector-icons"
 import { getBlobFromUri } from "../../utils/helpers";
 import { storage } from "../../firebaseConfig";
-
-interface IInputContainer {
-    name: string;
-    placeHolder: string;
-    onPress: () => void
-}
-
-const initialRecipeForm = {
-    coverImage: {},
-    galleryImages: []
-}
-
-interface IRecipeForm {
-    coverImage: object;
-    galleryImages: Array<object>
-}
+import { initialRecipeForm } from "../../constants/initialData";
+import { IRecipeForm } from "../../components/types";
+import CardContent from "../../components/AddRecipe/CardContent";
+import { pickImage } from "../../utils/constants";
 
 const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => {
     const modalRef = useRef();
 
     const [form, setForm] = useState<IRecipeForm>(JSON.parse(JSON.stringify(initialRecipeForm)));
 
-    const { control, handleSubmit, watch } = useForm<IFormData>({
+    const { control, handleSubmit, watch } = useForm({
         defaultValues: {
             name: '',
         }
     });
 
-    const pickImage = async (type: string) => {
-        let result;
-        if (type == 'camera') {
-            result = await ImagePicker.launchCameraAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.All,
-                allowsEditing: true,
-                aspect: [4, 3],
-                quality: 1,
-            });
-        } else {
-            result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.All,
-                allowsEditing: true,
-                aspect: [4, 3],
-                allowsMultipleSelection: true,
-                quality: 1,
-            });
-        }
-        console.log(result);
-
-        if (!result.canceled) {
-            return result.assets;
-        }
-
-        return false
-    };
-
 
     const handleCoverImage = async (type: string) => {
         const result = await pickImage(type);
 
-        if (!result) return
+        if (!result) return;
 
         let newForm = { ...form }
         newForm.coverImage = result[0]
 
         setForm({ ...newForm })
-        console.log(form, newForm)
+    }
+
+    const handleGalleryImages = async () => {
+        openModal()
     }
 
     useEffect(() => {
         const status = ImagePicker.requestMediaLibraryPermissionsAsync();
     }, [])
-
-    function InputContainer(props: IInputContainer) {
-        return (
-            <View style={localStyle.inputContainer}>
-                <Text style={style.textH3}>{props.name}</Text>
-                <Pressable style={localStyle.pressableArea}>
-                    <Ionicons name="add" size={20} color={Colors.light.text} />
-                    <Text style={localStyle.placeHolder}>{props.placeHolder}</Text>
-                </Pressable>
-            </View>
-        )
-    }
 
     const openModal = () => {
         modalRef.current?.open()
@@ -113,7 +65,7 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
                     <Text style={style.textH1}>New Recipe</Text>
                     <View style={localStyle.recipeNameView}>
-                        <Pressable onPress={() => openModal()} style={[localStyle.cover, form.coverImage?.uri && {borderWidth:0}]}>
+                        <Pressable onPress={() => openModal()} style={[localStyle.cover, form.coverImage?.uri && { borderWidth: 0 }]}>
                             {form.coverImage?.uri ?
                                 <Image
                                     resizeMode="cover"
@@ -146,13 +98,13 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
                         </View>
                     </View>
 
-                    <InputContainer name={'Gallery'} onPress={pickImage} placeHolder={'Upload Images or Open Camera'} />
+                    <CardContent name={'Gallery'} onPress={() => handleGalleryImages()} placeHolder={'Upload Images or Open Camera'} />
 
-                    <InputContainer name={'Ingredients'} placeHolder={'Add Ingredient'} />
+                    <CardContent name={'Ingredients'} placeHolder={'Add Ingredient'} />
 
-                    <InputContainer name={'How to Cook'} placeHolder={'Add Directions'} />
+                    <CardContent name={'How to Cook'} placeHolder={'Add Directions'} />
 
-                    <InputContainer name={'Additional Info'} placeHolder={'Add Info'} />
+                    <CardContent name={'Additional Info'} placeHolder={'Add Info'} />
 
                     <View style={localStyle.categorySection}>
                         <Text style={[style.textMuted2, style.fontNunitoRegular, style.fontR]}>Save to</Text>
@@ -178,14 +130,19 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
 
             </ScrollView>
-            <Modal title="" ref={modalRef}>
+
+            <Modal resizable={true} title="Upload cover" ref={modalRef}>
                 <View style={localStyle.mediaTypePickerContainer}>
-                    <TouchableOpacity onPress={() => handleCoverImage('camera')}>
-                        <Text style={style.textH3}>Open camera</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ marginTop: 10 }} onPress={() => handleCoverImage('library')}>
-                        <Text style={style.textH3}>Pick from phone</Text>
-                    </TouchableOpacity>
+                    <Button
+                        btnText="Open Camera"
+                        onPress={() => handleCoverImage('camera')}
+                    />
+                    <Button
+                        btnText="Pick from phone"
+                        onPress={() => handleCoverImage('library')}
+                        btnSecondary={true}
+                        style={{ marginTop: 10 }}
+                    />
                 </View>
             </Modal>
         </Container>
@@ -246,7 +203,7 @@ const localStyle = StyleSheet.create({
         marginLeft: 15
     },
     mediaTypePickerContainer: {
-        alignItems: 'center'
+        alignItems: 'center',
     },
     categorySection: {
         marginTop: 20
@@ -257,9 +214,9 @@ const localStyle = StyleSheet.create({
         gap: 15,
         marginTop: 10
     },
-    coverImage:{
-...style.strechImage,
-borderRadius:8
+    coverImage: {
+        ...style.strechImage,
+        borderRadius: 8
     },
     categoryCard: {
         ...style.card,

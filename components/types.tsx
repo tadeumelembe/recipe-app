@@ -66,3 +66,10 @@ export interface IRecipeDetailsHeader {
 }
 /*End RecipeDetails Types **/
 
+
+/** Add/edit recipes*/
+export interface IRecipeForm {
+    coverImage: object;
+    galleryImages: Array<object>
+}
+/** End */
