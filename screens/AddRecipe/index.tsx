@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Image, Pressable, StyleSheet, TouchableOpacity } from "react-native"
 import * as ImagePicker from 'expo-image-picker';
 import { useForm, Controller } from "react-hook-form";
@@ -16,11 +16,13 @@ import { initialRecipeForm } from "../../constants/initialData";
 import { IRecipeForm } from "../../components/types";
 import CardContent from "../../components/AddRecipe/CardContent";
 import { pickImage } from "../../utils/constants";
+import CameraLibraryModal from "../../components/CameraLibraryModal";
 
 const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => {
     const modalRef = useRef();
 
     const [form, setForm] = useState<IRecipeForm>(JSON.parse(JSON.stringify(initialRecipeForm)));
+    const [modalContent, setModalContent] = useState('');
 
     const { control, handleSubmit, watch } = useForm({
         defaultValues: {
@@ -38,19 +40,52 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
         newForm.coverImage = result[0]
 
         setForm({ ...newForm })
+        modalRef.current?.close()
     }
 
-    const handleGalleryImages = async () => {
-        openModal()
+    const handleGalleryImages = async (type: string) => {
+
+        const result = await pickImage(type);
+
+        if (form.galleryImages?.length >= 4) return alert('No more pics');
+
+        if (!result) return;
+
+        const totalImages = result.length + form.galleryImages?.length
+        console.log(totalImages)
+        let newForm = { ...form }
+
+        let conactImages = newForm.galleryImages.concat(result)
+        newForm.galleryImages = conactImages
+        setForm({ ...newForm })
+        console.log(newForm)
+        modalRef.current?.close()
+
     }
 
     useEffect(() => {
         const status = ImagePicker.requestMediaLibraryPermissionsAsync();
     }, [])
 
-    const openModal = () => {
+    const openModal = (content: string) => {
+        switch (content) {
+            case 'camera':
+                setModalContent('camera')
+                break;
+
+            case 'gallery':
+                setModalContent('gallery')
+                break;
+
+            default:
+                break;
+        }
         modalRef.current?.open()
     }
+
+
+    const productId = 1
+
 
     return (
         <Container style={{ paddingHorizontal: 0 }}>
@@ -65,7 +100,7 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
                     <Text style={style.textH1}>New Recipe</Text>
                     <View style={localStyle.recipeNameView}>
-                        <Pressable onPress={() => openModal()} style={[localStyle.cover, form.coverImage?.uri && { borderWidth: 0 }]}>
+                        <Pressable onPress={() => openModal('camera')} style={[localStyle.cover, form.coverImage?.uri && { borderWidth: 0 }]}>
                             {form.coverImage?.uri ?
                                 <Image
                                     resizeMode="cover"
@@ -89,8 +124,8 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
                                         message: 'Name should be at least 3 characters long',
                                     },
                                     maxLength: {
-                                        value: 24,
-                                        message: 'Name should be max 24 characters long',
+                                        value: 15,
+                                        message: 'Name should be max 15 characters long',
                                     }
                                 }}
                                 name="name"
@@ -98,13 +133,28 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
                         </View>
                     </View>
 
-                    <CardContent name={'Gallery'} onPress={() => handleGalleryImages()} placeHolder={'Upload Images or Open Camera'} />
+                    <CardContent
+                        name={'Gallery'}
+                        type={'gallery'}
+                        items={form.galleryImages}
+                        onPress={() => openModal('gallery')}
+                        placeHolder={'Upload Images or Open Camera'}
+                    />
 
-                    <CardContent name={'Ingredients'} placeHolder={'Add Ingredient'} />
+                    <CardContent
+                        name={'Ingredients'}
+                        placeHolder={'Add Ingredient'}
+                    />
 
-                    <CardContent name={'How to Cook'} placeHolder={'Add Directions'} />
+                    <CardContent
+                        name={'How to Cook'}
+                        placeHolder={'Add Directions'}
+                    />
 
-                    <CardContent name={'Additional Info'} placeHolder={'Add Info'} />
+                    <CardContent
+                        name={'Additional Info'}
+                        placeHolder={'Add Info'}
+                    />
 
                     <View style={localStyle.categorySection}>
                         <Text style={[style.textMuted2, style.fontNunitoRegular, style.fontR]}>Save to</Text>
@@ -122,7 +172,7 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
                         </View>
                     </View>
 
-                    <Button btnText="Post to feed" style={{ marginTop: 20 }} />
+                    <Button onPress={() => setModalContent(Math.random())} btnText="Post to feed" style={{ marginTop: 20 }} />
                     <View style={{ height: 50 }} />
 
                 </Container>
@@ -132,18 +182,18 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
             </ScrollView>
 
             <Modal resizable={true} title="Upload cover" ref={modalRef}>
-                <View style={localStyle.mediaTypePickerContainer}>
-                    <Button
-                        btnText="Open Camera"
-                        onPress={() => handleCoverImage('camera')}
+                {modalContent == 'camera' &&
+                    <CameraLibraryModal
+                        openCamera={() => handleCoverImage('camera')}
+                        openLibrary={() => handleCoverImage('library')}
                     />
-                    <Button
-                        btnText="Pick from phone"
-                        onPress={() => handleCoverImage('library')}
-                        btnSecondary={true}
-                        style={{ marginTop: 10 }}
+                }
+                {modalContent == 'gallery' &&
+                    <CameraLibraryModal
+                        openCamera={() => handleGalleryImages('camera')}
+                        openLibrary={() => handleGalleryImages('library')}
                     />
-                </View>
+                }
             </Modal>
         </Container>
     )
@@ -224,7 +274,7 @@ const localStyle = StyleSheet.create({
         padding: 5,
         backgroundColor: '#fff',
         flexGrow: 1
-    }
+    },
 })
 
 const handleFireabseUplaod = async (uri: string) => {

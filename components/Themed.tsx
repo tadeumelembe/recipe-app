@@ -2,7 +2,7 @@
  * Learn more about Light and Dark modes:
  * https://docs.expo.io/guides/color-schemes/
  */
-import { Children, PropsWithChildren, forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
+import { Children, PropsWithChildren, forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 import {
   Text as DefaultText,
   View as DefaultView,
@@ -55,7 +55,8 @@ type ThemeProps = {
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
 export type ModalProps = ThemeProps & DefaultView['props'] & {
-  title?: string,
+  title?: string;
+  resizable?: boolean;
 };
 export type ScrollViewProps = ThemeProps & DefaultScrollView['props'];
 export type ImageBackgroundProps = ThemeProps & DefaultImageBackground['props'];
@@ -225,11 +226,11 @@ export function TextInput(props: TextInputProps) {
       borderBottomWidth: 1,
       borderBottomColor: 'red',
     },
-    errorText:{
+    errorText: {
       ...styles.fontNunitoMedium,
       ...styles.fontS,
-      color:'red',
-      paddingTop:2
+      color: 'red',
+      paddingTop: 2
     }
   })
   return (
@@ -300,9 +301,14 @@ export function IoniconsIcon(props: {
 }
 
 export const Modal = forwardRef((props: ModalProps, ref) => {
-  const { children, title, ...otherProps } = props
+  const { children, resizable, title, ...otherProps } = props
+
+  const maxHeight = Layout.window.height
+  const maxModalHeight = Layout.window.height * 0.9
 
   const [visibility, setVisibility] = useState(false)
+  const [shouldHide, setShouldHide] = useState(false)
+  const [contentHeight, setContentHeight] = useState(0)
   const [animatedValue, setAnimatedValue] = useState(0)
   const animatedValueRef = useRef(animatedValue).current;
 
@@ -326,7 +332,8 @@ export const Modal = forwardRef((props: ModalProps, ref) => {
     contentContainer: {
       width: '100%',
       backgroundColor: 'rgba(0,0,0,.5)',
-      maxHeight: '50%',
+    //  height: contentHeight
+    maxHeight:'55%'
     },
     content: {
       width: '100%',
@@ -361,33 +368,81 @@ export const Modal = forwardRef((props: ModalProps, ref) => {
   }
 
   useImperativeHandle(ref, () => ({
-    open() {
-      setVisibility(true);
-    }
+    open,
+    close
   }))
 
   const close = () => {
     setVisibility(false)
   }
 
+  const open = () => {
+    setVisibility(true)
+  }
+
+  useEffect(() => {
+    if (contentHeight) return
+  }, [contentHeight])
+
+  useEffect(() => {
+    setContentHeight(maxHeight * 0.3)
+  }, [])
+
+  useEffect(() => {
+    if (!visibility) return setContentHeight(maxHeight * 0.3)
+  }, [visibility])
+
+  const resizeHeight = (pageY: number) => {
+    if (!resizable) return
+    const minHeight = maxHeight * 0.03
+    const positionY = maxHeight - pageY
+
+    if (positionY <= minHeight) {
+      return setShouldHide(true)
+    }
+
+    setContentHeight(positionY)
+  }
+
+  const handleRelease = (pageY: number) => {
+    if (!resizable) return
+
+    const positionY = maxHeight - pageY
+    const minHeight = maxHeight * 0.05
+    const setMaxHeight = maxHeight * 0.60
+
+    if (positionY <= minHeight) setVisibility(false)
+
+    if (positionY >= setMaxHeight) setContentHeight(maxModalHeight)
+
+  }
+
   return (
     <View style={[localStyle.root, !visibility && { display: 'none' }]}>
       <Pressable onPress={() => setVisibility(false)} style={localStyle.opacityView} />
 
-      <View style={[localStyle.contentContainer]}>
+      <View style={[localStyle.contentContainer, !resizable && { maxHeight: '50%' }]}>
 
         <View style={localStyle.content}>
-          <View style={localStyle.iconContainer}>
+          <View
+            style={localStyle.iconContainer}
+            onMoveShouldSetResponder={() => true}
+            onResponderMove={(evt) => {
+              resizeHeight(evt.nativeEvent.pageY)
+            }}
+            onResponderRelease={(evt) => handleRelease(evt.nativeEvent.pageY)}
+          >
             <View />
             <Text style={styles.textH3}>{title}</Text>
             <TouchableOpacity onPress={() => close()}>
               <Ionicons name="close" size={24} color={Colors.light.text} />
             </TouchableOpacity>
           </View>
-
-          <ScrollView>
-            <Container style={{ paddingTop: 0 }}>
+          
+          <ScrollView style={{ backgroundColor: '#fff', height: 'auto' }}>
+            <Container style={{ paddingTop: 10 }}>
               {children}
+
               <View style={{ height: 20 }} />
 
             </Container>
