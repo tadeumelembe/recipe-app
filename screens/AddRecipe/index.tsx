@@ -17,12 +17,15 @@ import { IRecipeForm } from "../../components/types";
 import CardContent from "../../components/AddRecipe/CardContent";
 import { pickImage } from "../../utils/constants";
 import CameraLibraryModal from "../../components/CameraLibraryModal";
+import EditGallery from "../../components/AddRecipe/EditGallery";
 
 const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => {
     const modalRef = useRef();
+    const modalGalleryRef = useRef();
 
     const [form, setForm] = useState<IRecipeForm>(JSON.parse(JSON.stringify(initialRecipeForm)));
     const [modalContent, setModalContent] = useState('');
+    const [mdoalTitle, setModalTitle] = useState('');
 
     const { control, handleSubmit, watch } = useForm({
         defaultValues: {
@@ -47,45 +50,62 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
         const result = await pickImage(type);
 
-        if (form.galleryImages?.length >= 4) return alert('No more pics');
+        const previousGalleryLength = form.galleryImages?.length
+
+        if (previousGalleryLength >= 4) {
+            alert('No more than 4 images');
+            if (previousGalleryLength >= 1) return modalGalleryRef.current.open()
+        }
 
         if (!result) return;
 
-        const totalImages = result.length + form.galleryImages?.length
+        const totalImages = result.length + previousGalleryLength
         console.log(totalImages)
-        let newForm = { ...form }
 
-        let conactImages = newForm.galleryImages.concat(result)
-        newForm.galleryImages = conactImages
-        setForm({ ...newForm })
-        console.log(newForm)
+        let concactImages = form.galleryImages.concat(result).slice(0, 4)
+
+        setForm({
+            ...form,
+            galleryImages: concactImages
+        })
+
         modalRef.current?.close()
-
+        if (previousGalleryLength >= 1) modalGalleryRef.current.open()
     }
+
+    const handleGalleryRemove = (index: number) => {
+        setForm({
+            ...form,
+            galleryImages: form.galleryImages.filter(function (obj, i) { return i != index })
+        })
+    }
+
+    useEffect(()=>{
+        if (form.galleryImages.length == 0) return modalGalleryRef.current.close()
+    },[form.galleryImages])
 
     useEffect(() => {
         const status = ImagePicker.requestMediaLibraryPermissionsAsync();
     }, [])
 
-    const openModal = (content: string) => {
+    const openModal = useCallback((content: string) => {
         switch (content) {
             case 'camera':
                 setModalContent('camera')
                 break;
 
-            case 'gallery':
-                setModalContent('gallery')
+            case 'gallery-pick-camera':
+                setModalContent('gallery-pick-camera')
                 break;
+
+            case 'edit-gallery':
+                return modalGalleryRef.current?.open()
 
             default:
                 break;
         }
         modalRef.current?.open()
-    }
-
-
-    const productId = 1
-
+    }, [])
 
     return (
         <Container style={{ paddingHorizontal: 0 }}>
@@ -137,7 +157,8 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
                         name={'Gallery'}
                         type={'gallery'}
                         items={form.galleryImages}
-                        onPress={() => openModal('gallery')}
+                        onPress={openModal}
+                        onPressEdit={openModal}
                         placeHolder={'Upload Images or Open Camera'}
                     />
 
@@ -181,20 +202,31 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
             </ScrollView>
 
-            <Modal resizable={true} title="Upload cover" ref={modalRef}>
+            <Modal resizable={true} title={mdoalTitle} ref={modalRef}>
                 {modalContent == 'camera' &&
                     <CameraLibraryModal
                         openCamera={() => handleCoverImage('camera')}
                         openLibrary={() => handleCoverImage('library')}
                     />
                 }
-                {modalContent == 'gallery' &&
+                {modalContent == 'gallery-pick-camera' &&
                     <CameraLibraryModal
                         openCamera={() => handleGalleryImages('camera')}
                         openLibrary={() => handleGalleryImages('library')}
                     />
                 }
+
             </Modal>
+
+            <Modal resizable={true} title={"Edit gallery"} ref={modalGalleryRef}>
+                <EditGallery
+                    items={form.galleryImages}
+                    openCamera={openModal}
+                    handleGalleryRemove={handleGalleryRemove}
+                    thisModalRef={modalGalleryRef.current}
+                />
+            </Modal>
+
         </Container>
     )
 }
