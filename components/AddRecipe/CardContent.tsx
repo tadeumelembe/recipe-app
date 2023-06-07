@@ -11,11 +11,12 @@ interface IInputContainer {
     type: string;
     items?: Array<any>;
     placeHolder: string;
-    onPress: () => void
+    onPress: (e:string) => void
+    onPressEdit: (e:string) => void
 }
 
 const CardContent: React.FC<IInputContainer> = (props) => {
-    const { name, type, items, placeHolder, onPress } = props
+    const { name, type, items,onPressEdit, placeHolder, onPress } = props
 
     const itemsEmpty = (items?.length == 0)
     console.log(itemsEmpty)
@@ -24,14 +25,14 @@ const CardContent: React.FC<IInputContainer> = (props) => {
             <View style={localStyle.topHead}>
                 <Text style={style.textH3}>{name}</Text>
                 <Pressable onPress={() => {
-                    if (!itemsEmpty) return onPress()
+                    if (!itemsEmpty) return onPressEdit(`edit-${type}`)
                 }}
                 >
                     <SimpleLineIcons name="pencil" size={20} color={itemsEmpty ? 'black' : Colors.light.tint} />
                 </Pressable>
             </View>
             {itemsEmpty &&
-                <Pressable style={localStyle.pressableArea} onPress={onPress}>
+                <Pressable style={localStyle.pressableArea} onPress={()=>onPress(`${type}-pick-camera`)}>
                     <Ionicons name="add" size={20} color={Colors.light.text} />
                     <Text style={localStyle.placeHolder}>{placeHolder}</Text>
                 </Pressable>
@@ -43,12 +44,12 @@ const CardContent: React.FC<IInputContainer> = (props) => {
 
                         <View style={localStyle.gallerySection}>
                             {items?.map((element, index) => {
-                                console.log(element.uri)
+                                console.log(items.length)
                                 return (
-                                    <View style={{ width: (index > 0) ? 'auto' : '100%', flex: (index > 0) ? 1 : 0 }}>
+                                    <View style={{ width: (index > 0) ? '33%' : '100%', flex: (index > 0) ? 1 : 0 }}>
                                         <Image
                                             resizeMode="cover"
-                                            style={index == 0 ? localStyle.mainImage : localStyle.squareImage}
+                                            style={index == 0 ? localStyle.mainImage : (items.length > 1 && items.length <4) ? localStyle.secondRowmTempImage : localStyle.squareImage}
                                             source={{ uri: element?.uri }}
                                         />
                                     </View>
@@ -62,7 +63,7 @@ const CardContent: React.FC<IInputContainer> = (props) => {
                             {items?.map((element, index) => {
                                 console.log(element.uri)
                                 return (
-                                    <View style={{ width: (index > 0) ? 'auto' : '100%', flex: (index > 0) ? 1 : 0 }}>
+                                    <View style={{ width: (index > 0) ? 'auto' : '33%', flex: (index > 0) ? 1 : 0 }}>
                                         <Image
                                             resizeMode="cover"
                                             style={[index == 0 && localStyle.mainImage, (items.length > 0 && items.length <= 3) && {width:'33%'}]}
@@ -116,6 +117,10 @@ const localStyle = StyleSheet.create({
     },
     mainImage: {
         height: 125,
+        width: '100%'
+    },
+    secondRowmTempImage: {
+        height: 100,
         width: '100%'
     },
     squareImage: {

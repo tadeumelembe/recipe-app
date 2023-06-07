@@ -29,7 +29,7 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
             </View>
             <FlatList
                 data={data}
-                contentContainerStyle={localStyles.fatlistContainer}
+                contentContainerStyle={localStyles.flatlistContainer}
                 keyExtractor={(item) => item.id}
                 estimatedItemSize={1000}
                 renderItem={renderItem}
@@ -38,7 +38,6 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
                     <View style={{ marginTop: 15 }} />
                 }
             />
-
         </Container>
     )
 }
@@ -52,7 +51,7 @@ const localStyles = StyleSheet.create({
         width: '100%',
         paddingTop: 15,
     },
-    fatlistContainer: {
+    flatlistContainer: {
         ...style.horizontalPadding,
     }
 })

@@ -25,7 +25,7 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
     const [form, setForm] = useState<IRecipeForm>(JSON.parse(JSON.stringify(initialRecipeForm)));
     const [modalContent, setModalContent] = useState('');
-    const [mdoalTitle, setModalTitle] = useState('');
+    const [modalTitle, setModalTitle] = useState('');
 
     const { control, handleSubmit, watch } = useForm({
         defaultValues: {
@@ -202,7 +202,7 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
             </ScrollView>
 
-            <Modal resizable={true} title={mdoalTitle} ref={modalRef}>
+            <Modal resizable={true} title={modalTitle} ref={modalRef}>
                 {modalContent == 'camera' &&
                     <CameraLibraryModal
                         openCamera={() => handleCoverImage('camera')}
