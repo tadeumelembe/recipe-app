@@ -11,6 +11,7 @@ import {
   TextInput as DefaultTextInput,
   TouchableOpacity as DefaultTouchableOpacity,
   FlatList as DefaultFlatList,
+  Modal as DefaultModal,
   StyleSheet,
   Pressable,
   StatusBar,
@@ -327,13 +328,13 @@ export const Modal = forwardRef((props: ModalProps, ref) => {
       flex: 1,
       width: '100%',
       paddingHorizontal: 0,
-      backgroundColor: 'rgba(0,0,0,.5)',
+      backgroundColor: 'rgba(0,0,0,.3)',
     },
     contentContainer: {
       width: '100%',
-      backgroundColor: 'rgba(0,0,0,.5)',
-    //  height: contentHeight
-    maxHeight:'55%'
+      backgroundColor: 'rgba(0,0,0,.3)',
+      //  height: contentHeight
+      maxHeight: '55%'
     },
     content: {
       width: '100%',
@@ -418,7 +419,13 @@ export const Modal = forwardRef((props: ModalProps, ref) => {
   }
 
   return (
-    <View style={[localStyle.root, !visibility && { display: 'none' }]}>
+    <DefaultModal
+      transparent={true}
+      visible={visibility}
+      style={[localStyle.root]}
+      animationType="fade"
+
+    >
       <Pressable onPress={() => setVisibility(false)} style={localStyle.opacityView} />
 
       <View style={[localStyle.contentContainer, !resizable && { maxHeight: '50%' }]}>
@@ -438,7 +445,7 @@ export const Modal = forwardRef((props: ModalProps, ref) => {
               <Ionicons name="close" size={24} color={Colors.light.text} />
             </TouchableOpacity>
           </View>
-          
+
           <ScrollView style={{ backgroundColor: '#fff', height: 'auto' }}>
             <Container style={{ paddingTop: 10 }}>
               {children}
@@ -451,6 +458,6 @@ export const Modal = forwardRef((props: ModalProps, ref) => {
 
       </View>
 
-    </View>
+    </DefaultModal>
   )
 })
