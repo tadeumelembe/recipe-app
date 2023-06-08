@@ -18,14 +18,11 @@ export const pickImage = async (type: string) => {
         result = await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3],
             quality: 1,
         });
     } else {
         result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
             allowsMultipleSelection: true,
             quality: 1,
         });

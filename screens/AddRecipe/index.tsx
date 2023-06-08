@@ -18,10 +18,12 @@ import CardContent from "../../components/AddRecipe/CardContent";
 import { pickImage } from "../../utils/constants";
 import CameraLibraryModal from "../../components/CameraLibraryModal";
 import EditGallery from "../../components/AddRecipe/EditGallery";
+import EditIngredients from "../../components/AddRecipe/EditIngredients";
 
 const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => {
     const modalRef = useRef();
     const modalGalleryRef = useRef();
+    const modalIngredientsRef = useRef();
 
     const [form, setForm] = useState<IRecipeForm>(JSON.parse(JSON.stringify(initialRecipeForm)));
     const [modalContent, setModalContent] = useState('');
@@ -49,7 +51,6 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
     const handleGalleryImages = async (type: string) => {
 
         const result = await pickImage(type);
-
         const previousGalleryLength = form.galleryImages?.length
 
         if (previousGalleryLength >= 4) {
@@ -80,15 +81,15 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
         })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         if (form.galleryImages.length == 0) return modalGalleryRef.current.close()
-    },[form.galleryImages])
+    }, [form.galleryImages])
 
     useEffect(() => {
         const status = ImagePicker.requestMediaLibraryPermissionsAsync();
     }, [])
 
-    const openModal = useCallback((content: string) => {
+    const handleOpenModal = useCallback((content: string) => {
         switch (content) {
             case 'camera':
                 setModalContent('camera')
@@ -98,6 +99,8 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
                 setModalContent('gallery-pick-camera')
                 break;
 
+            case 'edit-ingredients':
+                return modalIngredientsRef.current?.open()
             case 'edit-gallery':
                 return modalGalleryRef.current?.open()
 
@@ -120,7 +123,7 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
                     <Text style={style.textH1}>New Recipe</Text>
                     <View style={localStyle.recipeNameView}>
-                        <Pressable onPress={() => openModal('camera')} style={[localStyle.cover, form.coverImage?.uri && { borderWidth: 0 }]}>
+                        <Pressable onPress={() => handleOpenModal('camera')} style={[localStyle.cover, form.coverImage?.uri && { borderWidth: 0 }]}>
                             {form.coverImage?.uri ?
                                 <Image
                                     resizeMode="cover"
@@ -157,14 +160,18 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
                         name={'Gallery'}
                         type={'gallery'}
                         items={form.galleryImages}
-                        onPress={openModal}
-                        onPressEdit={openModal}
+                        onPress={handleOpenModal}
                         placeHolder={'Upload Images or Open Camera'}
                     />
 
                     <CardContent
                         name={'Ingredients'}
+                        type={'ingredients'}
+                        items={form.ingredients}
+                        onPress={handleOpenModal}
+                       
                         placeHolder={'Add Ingredient'}
+
                     />
 
                     <CardContent
@@ -202,7 +209,7 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
             </ScrollView>
 
-            <Modal resizable={true} title={modalTitle} ref={modalRef}>
+            <Modal resizable={true} title={"Upload image"} ref={modalRef}>
                 {modalContent == 'camera' &&
                     <CameraLibraryModal
                         openCamera={() => handleCoverImage('camera')}
@@ -221,8 +228,19 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
             <Modal resizable={true} title={"Edit gallery"} ref={modalGalleryRef}>
                 <EditGallery
                     items={form.galleryImages}
-                    openCamera={openModal}
+                    openCamera={handleOpenModal}
                     handleGalleryRemove={handleGalleryRemove}
+                    thisModalRef={modalGalleryRef.current}
+                />
+            </Modal>
+
+            <Modal resizable={true} title={"Edit ingredients"} ref={modalIngredientsRef}>
+                <EditIngredients
+                    items={form.ingredients}
+                    openCamera={handleOpenModal}
+                    handleGalleryRemove={handleGalleryRemove}
+                    setForm={setForm}
+                    form={form}
                     thisModalRef={modalGalleryRef.current}
                 />
             </Modal>

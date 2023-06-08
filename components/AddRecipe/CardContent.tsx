@@ -19,20 +19,25 @@ const CardContent: React.FC<IInputContainer> = (props) => {
     const { name, type, items,onPressEdit, placeHolder, onPress } = props
 
     const itemsEmpty = (items?.length == 0)
-    console.log(itemsEmpty)
+
+    const handleOnPress = () =>{
+        if(type == 'gallery') return onPress(`${type}-pick-camera`)
+        if(type == 'ingredients') return onPress(`edit-${type}`)
+        
+    }
     return (
         <View style={localStyle.inputContainer}>
             <View style={localStyle.topHead}>
                 <Text style={style.textH3}>{name}</Text>
                 <Pressable onPress={() => {
-                    if (!itemsEmpty) return onPressEdit(`edit-${type}`)
+                    if (!itemsEmpty) return onPress(`edit-${type}`)
                 }}
                 >
                     <SimpleLineIcons name="pencil" size={20} color={itemsEmpty ? 'black' : Colors.light.tint} />
                 </Pressable>
             </View>
             {itemsEmpty &&
-                <Pressable style={localStyle.pressableArea} onPress={()=>onPress(`${type}-pick-camera`)}>
+                <Pressable style={localStyle.pressableArea} onPress={()=>handleOnPress()}>
                     <Ionicons name="add" size={20} color={Colors.light.text} />
                     <Text style={localStyle.placeHolder}>{placeHolder}</Text>
                 </Pressable>
@@ -58,17 +63,11 @@ const CardContent: React.FC<IInputContainer> = (props) => {
                         </View>
                     }
                     {type === 'ingredients' &&
-
-                        <View style={localStyle.gallerySection}>
-                            {items?.map((element, index) => {
-                                console.log(element.uri)
+                        <View style={localStyle.ingredientSection}>
+                            {items?.map(element => {
                                 return (
-                                    <View style={{ width: (index > 0) ? 'auto' : '33%', flex: (index > 0) ? 1 : 0 }}>
-                                        <Image
-                                            resizeMode="cover"
-                                            style={[index == 0 && localStyle.mainImage, (items.length > 0 && items.length <= 3) && {width:'33%'}]}
-                                            source={{ uri: element?.uri }}
-                                        />
+                                    <View style={localStyle.ingredientWrap}>
+                                       <Text>{element}</Text>
                                     </View>
                                 )
                             })}
@@ -132,5 +131,20 @@ const localStyle = StyleSheet.create({
         flexWrap: 'wrap',
         marginTop: 15,
         alignItems: 'flex-start'
+    },
+    ingredientSection: {
+        flexDirection: 'row',
+        gap: 7,
+        flexWrap: 'wrap',
+        marginTop: 15,
+        alignItems: 'flex-start'
+    },
+    ingredientWrap:{
+        backgroundColor:Colors.light.lightBlack,
+        borderRadius:8,
+        paddingHorizontal:5,
+        paddingVertical:2,
+        alignItems:'center',
+        justifyContent:'center'
     }
 })

@@ -242,7 +242,9 @@ export function TextInput(props: TextInputProps) {
       render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
 
         <DefaultView>
-          <Text style={[styles.fontNunitoRegular, styles.fontR]}>{placeholder}</Text>
+          {placeholder &&
+            <Text style={[styles.fontNunitoRegular, styles.fontR]}>{placeholder}</Text>
+          }
           <DefaultTextInput
             value={value}
             onChangeText={onChange}

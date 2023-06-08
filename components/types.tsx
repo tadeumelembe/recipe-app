@@ -70,6 +70,7 @@ export interface IRecipeDetailsHeader {
 /** Add/edit recipes*/
 export interface IRecipeForm {
     coverImage: object;
-    galleryImages: Array<object>
+    galleryImages: Array<object>;
+    ingredients:Array<string>;
 }
 /** End */

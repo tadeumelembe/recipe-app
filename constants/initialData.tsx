@@ -1,4 +1,5 @@
 export const initialRecipeForm = {
     coverImage: {},
-    galleryImages: []
+    galleryImages: [],
+    ingredients:[]
 }
