@@ -27,7 +27,6 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
     const [form, setForm] = useState<IRecipeForm>(JSON.parse(JSON.stringify(initialRecipeForm)));
     const [modalContent, setModalContent] = useState('');
-    const [modalTitle, setModalTitle] = useState('');
 
     const { control, handleSubmit, watch } = useForm({
         defaultValues: {
