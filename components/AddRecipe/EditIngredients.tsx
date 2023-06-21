@@ -1,10 +1,10 @@
-import React, { Dispatch, Ref, SetStateAction, useEffect, useState } from "react";
-import { Image, NativeSyntheticEvent, Pressable, StyleSheet, TextInputKeyPressEventData, TouchableOpacity } from "react-native";
+import React, { Dispatch, Ref, SetStateAction, useState } from "react";
+import { Pressable, StyleSheet, } from "react-native";
 
 import { FlatList, ScrollView, Text, TextButton, TextInput, View } from "../Themed";
 import style from "../../constants/style";
 import { ImagePickerResult } from "expo-image-picker";
-import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import { Feather, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import { useForm } from "react-hook-form";
 import { IRecipeForm } from "../types";
@@ -25,7 +25,7 @@ const EditIngredients = (props: IEditIngredients) => {
     const [selectedIngredient, setSelectedIngredient] = useState<string | null>('')
     const [isEditing, setIsEditing] = useState(false)
 
-    const reversedItems = items.reverse();
+    const reversedItems = Array.from(items).reverse();
 
     const handleUplaodModal = () => {
         openCamera(`gallery-pick-camera`)
@@ -33,7 +33,6 @@ const EditIngredients = (props: IEditIngredients) => {
     }
 
     const removeFromGallery = () => {
-        console.log(selectedImage)
         if (selectedImage == null) return
         return handleGalleryRemove(selectedImage)
     }
@@ -62,9 +61,10 @@ const EditIngredients = (props: IEditIngredients) => {
 
     const handleEditIngredient = (data: object) => {
         const { ingredient } = data
+        let lastPosition = items.length - 1
 
         let newIngredients = { ...form }
-        newIngredients.ingredients[selectedItem] = ingredient
+        newIngredients.ingredients[lastPosition - selectedItem] = ingredient
 
         setForm({ ...newIngredients })
         resetField('ingredient')
@@ -95,47 +95,54 @@ const EditIngredients = (props: IEditIngredients) => {
                         message: 'Ingredient should be at least 3 characters long',
                     },
                     maxLength: {
-                        value: 15,
-                        message: 'Ingredient should be max 15 characters long',
+                        value: 30,
+                        message: 'Ingredient should be max 30 characters long',
                     }
                 }}
                 name="ingredient"
                 onSubmitEditing={handleSubmit(handleAddIngredient)}
             />
 
-            <ScrollView
+            <View
                 style={localStyle.ingredientsSection}
             >
                 {reversedItems.map((item, index) => {
+                    console.log(reversedItems)
+                    console.log(items)
                     return (
-                        <View key={index} style={{ marginBottom: 20 }}>
-                                <Pressable style={[localStyle.ingredientRow]} onPress={() => handleSetEdit(index, item)}>
-                                    {(isEditing && selectedItem == index) ?
-                                        <TextInput
-                                            control={controlEdit}
-                                            style={{ paddingTop: 0, flex: 1, width: '100%', paddingLeft: 0, borderBottomColor: Colors.light.tint }}
-                                            rules={{
-                                                required: 'Required is required',
-                                                minLength: {
-                                                    value: 3,
-                                                    message: 'Ingredient should be at least 3 characters long',
-                                                },
-                                                maxLength: {
-                                                    value: 15,
-                                                    message: 'Ingredient should be max 15 characters long',
-                                                }
-                                            }}
-                                            name="ingredient"
-                                            onSubmitEditing={handleSubmitEdit(handleEditIngredient)}
-                                        /> :
-                                        <Text style={localStyle.ingredientName}>{item}</Text>
-                                    }
+                        <View key={index} style={{ marginBottom: 20, width: '100%' }}>
+                            <Pressable style={[localStyle.ingredientRow]} onPress={() => handleSetEdit(index, item)}>
+                                {(isEditing && selectedItem == index) ?
+                                    <TextInput
+                                        control={controlEdit}
+                                        style={{ paddingTop: 0, flex: 1, width: '100%', paddingLeft: 0, borderBottomColor: Colors.light.tint }}
+                                        rules={{
+                                            required: 'Required is required',
+                                            minLength: {
+                                                value: 3,
+                                                message: 'Ingredient should be at least 3 characters long',
+                                            },
+                                            maxLength: {
+                                                value: 30,
+                                                message: 'Ingredient should be max 30 characters long',
+                                            }
+                                        }}
+                                        name="ingredient"
+                                        onSubmitEditing={handleSubmitEdit(handleEditIngredient)}
+                                    /> :
+                                    <Text style={localStyle.ingredientName}>{item}</Text>
+                                }
+                                <View style={{ flexDirection: 'row', gap: 15, }}>
                                     <SimpleLineIcons name="pencil" size={22} color={'black'} />
-                                </Pressable>
+                                    <Pressable>
+                                        <Feather name="x" size={26} color="black" />
+                                    </Pressable>
+                                </View>
+                            </Pressable>
                         </View>
                     )
                 })}
-            </ScrollView>
+            </View>
 
         </View>
     )
@@ -153,12 +160,15 @@ const localStyle = StyleSheet.create({
     },
     ingredientsSection: {
         marginTop: 15,
+        width: '100%'
     },
     pressableItem: {
         marginRight: 10,
         padding: 3
     },
     ingredientRow: {
+        width: '100%',
+
         flexDirection: 'row',
         justifyContent: 'space-between',
     },

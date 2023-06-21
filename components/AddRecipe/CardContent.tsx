@@ -67,7 +67,7 @@ const CardContent: React.FC<IInputContainer> = (props) => {
                             {items?.map(element => {
                                 return (
                                     <View style={localStyle.ingredientWrap}>
-                                       <Text>{element}</Text>
+                                       <Text style={[style.fontNunitoRegular,style.fontR]}>{element}</Text>
                                     </View>
                                 )
                             })}
@@ -79,7 +79,7 @@ const CardContent: React.FC<IInputContainer> = (props) => {
     )
 }
 
-export default memo(CardContent);
+export default CardContent;
 
 const localStyle = StyleSheet.create({
     inputContainer: {
