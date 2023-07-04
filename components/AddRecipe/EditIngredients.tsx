@@ -100,6 +100,7 @@ const EditIngredients = (props: IEditIngredients) => {
                     }
                 }}
                 name="ingredient"
+                onFocus={() => setIsEditing(false)}
                 onSubmitEditing={handleSubmit(handleAddIngredient)}
             />
 
@@ -113,29 +114,33 @@ const EditIngredients = (props: IEditIngredients) => {
                         <View key={index} style={{ marginBottom: 20, width: '100%' }}>
                             <Pressable style={[localStyle.ingredientRow]} onPress={() => handleSetEdit(index, item)}>
                                 {(isEditing && selectedItem == index) ?
-                                    <TextInput
-                                        control={controlEdit}
-                                        style={{ paddingTop: 0, flex: 1, width: '100%', paddingLeft: 0, borderBottomColor: Colors.light.tint }}
-                                        rules={{
-                                            required: 'Required is required',
-                                            minLength: {
-                                                value: 3,
-                                                message: 'Ingredient should be at least 3 characters long',
-                                            },
-                                            maxLength: {
-                                                value: 30,
-                                                message: 'Ingredient should be max 30 characters long',
-                                            }
-                                        }}
-                                        name="ingredient"
-                                        onSubmitEditing={handleSubmitEdit(handleEditIngredient)}
-                                    /> :
+                                    <View style={{flex:1, paddingRight:30, borderBottomColor: Colors.light.tint }}>
+                                        <TextInput
+                                            control={controlEdit}
+                                            style={{ paddingTop: 0, flexGrow: 1, width: '100%', paddingLeft: 0, borderBottomColor: Colors.light.tint }}
+                                            rules={{
+                                                required: 'Required is required',
+                                                minLength: {
+                                                    value: 3,
+                                                    message: 'Ingredient should be at least 3 characters long',
+                                                },
+                                                maxLength: {
+                                                    value: 30,
+                                                    message: 'Ingredient should be max 30 characters long',
+                                                }
+                                            }}
+                                            autoCapitalize='sentences'
+                                            name="ingredient"
+                                            onSubmitEditing={handleSubmitEdit(handleEditIngredient)}
+                                        />
+                                    </View>
+                                    :
                                     <Text style={localStyle.ingredientName}>{item}</Text>
                                 }
                                 <View style={{ flexDirection: 'row', gap: 15, }}>
-                                    <SimpleLineIcons name="pencil" size={22} color={'black'} />
+                                    <SimpleLineIcons name="pencil" size={22} color={(isEditing && selectedItem == index) ? Colors.light.tint : Colors.light.textMuted2} />
                                     <Pressable>
-                                        <Feather name="x" size={26} color="black" />
+                                        <Feather name="x" size={26} color={Colors.light.textMuted2} />
                                     </Pressable>
                                 </View>
                             </Pressable>
@@ -171,6 +176,7 @@ const localStyle = StyleSheet.create({
 
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems:'center'
     },
     ingredientName: {
         ...style.fontR,
