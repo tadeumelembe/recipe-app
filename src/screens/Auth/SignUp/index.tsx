@@ -1,22 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
-import { useForm, Controller } from "react-hook-form";
 
 import { Text, View, Container, ScrollView, TextInput, Button, TextButton } from "../../../components/Themed";
 import styles from "../../../constants/style";
 import AuthHeader from "../../../components/Auth/AuthHeader";
 import { IAuthPage } from "../../../components/types";
 import authStyles from "../authStyles"
-import { auth, createUserWithEmailAndPassword, updateProfile } from "../../../../firebaseConfig";
 import { helpers } from "../../../utils/constants";
-import { authService } from "../../../services/auth/authService";
 import { useSignUpForm } from "./hooks/useSignUpForm";
-
-interface IFormData {
-    name: string;
-    password: string;
-    email: string
-}
 
 const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
 
@@ -28,7 +19,7 @@ const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
         handleSubmit,
         watch
     } = useSignUpForm()
-    
+
     const pwd = watch('password');
 
     return (
@@ -105,7 +96,7 @@ const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
                             secureTextEntry
                             control={control}
                             rules={{
-                                validate: (value:string) => (value === pwd || pwd == '') || 'Password do not match',
+                                validate: (value: string) => (value === pwd || pwd == '') || 'Password do not match',
                             }}
                             name="password2"
                         />

@@ -1,7 +1,13 @@
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../../firebaseConfig";
 
-async function create(user: any) {
+interface IUser {
+    email: string;
+    password: string;
+    name?: string
+}
+
+async function create(user: IUser) {
     return await createUserWithEmailAndPassword(auth, user.email, user.password).then(async (authUser) => {
 
         await updateProfile(authUser.user, {
@@ -12,6 +18,11 @@ async function create(user: any) {
     })
 }
 
+async function login(user: IUser) {
+    return await signInWithEmailAndPassword(auth, user.email, user.password)
+}
+
 export const authService = {
-    create
+    create,
+    login
 }

@@ -11,6 +11,7 @@ import { IAuthPage } from "../../../components/types";
 import { useAuth } from "../../../contexts/authContext";
 import { auth, signInWithEmailAndPassword } from "../../../../firebaseConfig";
 import { helpers } from "../../../utils/constants";
+import { useSignInForm } from "./hooks/useSignInForm";
 
 
 interface IFormData {
@@ -19,40 +20,14 @@ interface IFormData {
 }
 
 const Login: React.FC<IAuthPage> = ({ navigation }) => {
-    const [loading, setLoading] = useState(false)
-    const [formError, setFormError] = useState('')
 
-    const { signIn } = useAuth();
-
-    const { control, handleSubmit } = useForm<IFormData>({
-        defaultValues: {
-            email: '',
-            password: '',
-        }
-    });
-
-    const onSubmit = (data: IFormData) => {
-        const { email, password } = data
-
-        setFormError('')
-        setLoading(true)
-
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                signIn(userCredential.user)
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-
-                const firebaseAuthErros = ['auth/user-not-found', 'auth/wrong-password', 'auth/invalid-email']
-
-                if (firebaseAuthErros.includes(error.code)) return setFormError('Invalid credentials')
-
-                setFormError('Something went wrong, trey again')
-            })
-            .finally(() => setLoading(false));
-    }
+    const {
+        handleSubmit,
+        loading,
+        formError,
+        control,
+        submitForm
+    } = useSignInForm()
 
     return (
         <KeyboardAvoidingView
@@ -103,7 +78,7 @@ const Login: React.FC<IAuthPage> = ({ navigation }) => {
 
                     <Button
                         btnText="Login"
-                        onPress={handleSubmit(onSubmit)}
+                        onPress={handleSubmit(submitForm)}
                         loading={loading}
                         disabled={loading}
 
