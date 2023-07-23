@@ -75,3 +75,8 @@ export interface IRecipeForm {
     ingredients:Array<string>;
 }
 /** End */
+
+export interface IModalRef {
+    close: () => void;
+    open: () => void;
+}
