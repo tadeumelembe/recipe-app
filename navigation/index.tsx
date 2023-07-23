@@ -12,8 +12,6 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../src/constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../src/screens/ModalScreen';
-import NotFoundScreen from '../src/screens/NotFoundScreen';
 
 import TabHome from '../src/screens/TabHome';
 import TabSearch from '../src/screens/TabSearch';
@@ -54,11 +52,7 @@ function RootNavigator() {
       <Stack.Screen name="RecipeScreen" component={RecipeStack} options={{ headerShown: false }} />
       <Stack.Screen name="CookingMode" component={CookingMode} options={{ headerShown: false }} />
       <Stack.Screen name="AddRecipe" component={AddRecipe} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
 
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
     </Stack.Navigator>
   );
 }
