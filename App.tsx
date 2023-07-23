@@ -9,8 +9,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Routes from './navigation/routes';
-import { AuthProvider } from './contexts/authContext';
-import { View } from './components/Themed';
+import { AuthProvider } from './src/contexts/authContext';
+import { View } from './src/components/Themed';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -35,7 +35,6 @@ export default function App() {
 
   if (!isLoadingComplete)
     return null;
-
 
   return (
     <SafeAreaProvider>

@@ -1,10 +1,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import ChangePassword from "../screens/ChangePassword";
-import TabProfile from "../screens/Profile";
-import Settings from "../screens/Settings";
-import AddRecipe from "../screens/AddRecipe";
-import { navigationNames } from "../utils/constants";
+import ChangePassword from "../src/screens/ChangePassword";
+import TabProfile from "../src/screens/Profile";
+import Settings from "../src/screens/Settings";
+import AddRecipe from "../src/screens/AddRecipe";
+import { navigationNames } from "../src/utils/constants";
 
 import { ProfileStackParamList, RootStackParamList } from "../types";
 

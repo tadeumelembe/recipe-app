@@ -11,12 +11,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Navigation from '.';
 import useColorScheme from '../hooks/useColorScheme';
 
-import Login from '../screens/Auth/Login';
-import SignUp from '../screens/Auth/SignUp';
+import Login from '../src/screens/Auth/Login';
+import SignUp from '../src/screens/Auth/SignUp';
 
-import { AuthProvider, useAuth } from '../contexts/authContext';
-import { View } from '../components/Themed';
-import Colors from '../constants/Colors';
+import { AuthProvider, useAuth } from '../src/contexts/authContext';
+import { View } from '../src/components/Themed';
+import Colors from '../src/constants/Colors';
 
 const Stack = createNativeStackNavigator();
 

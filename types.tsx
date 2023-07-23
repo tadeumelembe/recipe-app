@@ -6,7 +6,7 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigationProp, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { IRecipeItem } from './components/types';
+import { IRecipeItem } from './src/components/types';
 
 declare global {
   namespace ReactNavigation {

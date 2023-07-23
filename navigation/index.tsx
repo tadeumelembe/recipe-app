@@ -10,22 +10,22 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 
-import Colors from '../constants/Colors';
+import Colors from '../src/constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
-import NotFoundScreen from '../screens/NotFoundScreen';
+import ModalScreen from '../src/screens/ModalScreen';
+import NotFoundScreen from '../src/screens/NotFoundScreen';
 
-import TabHome from '../screens/TabHome';
-import TabSearch from '../screens/TabSearch';
+import TabHome from '../src/screens/TabHome';
+import TabSearch from '../src/screens/TabSearch';
 
-import RecipeDetails from '../screens/RecipeDetails';
-import CookingMode from '../screens/CookingMode';
+import RecipeDetails from '../src/screens/RecipeDetails';
+import CookingMode from '../src/screens/CookingMode';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
 import ProfileStack from './profileStack';
-import AddRecipe from '../screens/AddRecipe';
+import AddRecipe from '../src/screens/AddRecipe';
 import RecipeStack from './recipeDetailsStack';
 
 

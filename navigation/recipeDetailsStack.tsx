@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import CookingMode from "../screens/CookingMode";
-import RecipeDetails from "../screens/RecipeDetails";
+import CookingMode from "../src/screens/CookingMode";
+import RecipeDetails from "../src/screens/RecipeDetails";
 
 const stack = createNativeStackNavigator();
 
