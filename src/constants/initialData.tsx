@@ -1,5 +1,5 @@
 export const initialRecipeForm = {
-    coverImage: {},
+    coverImage: '',
     galleryImages: [],
     video: '',
     ingredients:[]

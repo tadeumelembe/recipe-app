@@ -14,29 +14,21 @@ interface IEditGallery {
     form: IRecipeForm,
     thisModalRef: Ref<any>;
     handleGalleryRemove: (index: number) => void
+    handleRemoveVideo: () => void
 }
 
 const EditDirections = (props: IEditGallery) => {
-    const { items, openCamera, setForm, handleGalleryRemove, form, thisModalRef } = props;
-
-    const [selectedImage, setSelectedImage] = useState<number | null>(null)
+    const { items, handleRemoveVideo, openCamera, handleGalleryRemove, form, thisModalRef } = props;
 
     const handleUplaodModal = () => {
         openCamera(`directions`)
-    }
-
-    const removeVideo = () => {
-        setForm({
-            ...form,
-            video: ''
-        })
     }
 
     return (
         <View style={localStyle.root}>
             {form.video ?
                 <>
-                    <TouchableOpacity onPress={() => removeVideo()} style={localStyle.removeIconContainer}>
+                    <TouchableOpacity onPress={() => handleRemoveVideo()} style={localStyle.removeIconContainer}>
                         <Ionicons name="trash-outline" size={19} color="white" />
                     </TouchableOpacity>
                     <View style={localStyle.videoContainer}>
@@ -59,18 +51,7 @@ const EditDirections = (props: IEditGallery) => {
             <View style={localStyle.directionsContainer}>
                 <Text style={localStyle.subtitle}>Directions</Text>
 
-                <ScrollView
-                    horizontal={true}
-                    style={localStyle.imageSection}
-                >
-                    {items.map((item, index) => {
-                        return (
-                            <Pressable style={[localStyle.pressableImage, selectedImage == index && localStyle.selectedImage]} onPress={() => setSelectedImage(index)}>
-                                <Image style={localStyle.image} resizeMode="cover" source={{ uri: item?.uri }} />
-                            </Pressable>
-                        )
-                    })}
-                </ScrollView>
+
             </View>
 
 
@@ -97,25 +78,16 @@ const localStyle = StyleSheet.create({
     imageSection: {
         marginTop: 15
     },
-    videoContainer:{
-        height:300,
-        width:'100%',
-        backgroundColor:'#000'
+    videoContainer: {
+        height: 300,
+        width: '100%',
+        backgroundColor: '#000'
     },
     image: {
         aspectRatio: 1,
         width: '100%',
         alignSelf: 'center',
         maxHeight: 300,
-    },
-    selectedImage: {
-        borderWidth: 2,
-        borderColor: Colors.light.tint,
-        borderRadius: 4
-    },
-    pressableImage: {
-        marginRight: 10,
-        padding: 3
     },
     removeIconContainer: {
         position: 'absolute',

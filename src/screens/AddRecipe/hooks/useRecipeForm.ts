@@ -2,18 +2,38 @@ import { Ref, useEffect, useState } from "react";
 import { IModalRef, IRecipeForm } from "../../../components/types";
 import { initialRecipeForm } from "../../../constants/initialData";
 import { pickImage, pickVideo } from "../../../utils/constants";
+import { recipeService } from "../../../services/recipe/recipeService";
 
 interface IUseRecipeForm {
     modalRef: any//Ref<IModalRef | null | undefined>;
-    modalGalleryRef:any// Ref<IModalRef | null | undefined>;
+    modalGalleryRef: any// Ref<IModalRef | null | undefined>;
 }
 
-export const useRecipeForm = (props: IUseRecipeForm) => {
+interface IUseRecipeFormReturn {
+    handleCoverImage: (type: string) => Promise<void>,
+    form: IRecipeForm,
+    setForm: React.Dispatch<React.SetStateAction<IRecipeForm>>,
+    handleDirectionsVideo: (type: string) => Promise<void>;
+    handleGalleryImages: (type: string) => Promise<void>;
+    handleGalleryRemove: (index: number) => void;
+    handleRemoveVideo: () => void,
+    loading: boolean
+}
+
+const initialRecipeFiles = {
+    coverImage: {},
+    galleryImages: [],
+    video: {}
+}
+
+export const useRecipeForm = (props: IUseRecipeForm): IUseRecipeFormReturn => {
 
     const { modalRef, modalGalleryRef } = props
 
-
     const [form, setForm] = useState<IRecipeForm>(JSON.parse(JSON.stringify(initialRecipeForm)));
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const [formFiles, setFormFiles] = useState<IRecipeForm>(JSON.parse(JSON.stringify(initialRecipeFiles)));
 
     useEffect(() => {
         if (form.galleryImages.length == 0) return modalGalleryRef.current?.close()
@@ -41,6 +61,13 @@ export const useRecipeForm = (props: IUseRecipeForm) => {
         console.log(result[0])
         setForm({ ...newForm })
         modalRef.current?.close()
+    }
+
+    const handleRemoveVideo = () => {
+        setForm({
+            ...form,
+            video: ''
+        })
     }
 
     const handleGalleryImages = async (type: string) => {
@@ -76,12 +103,33 @@ export const useRecipeForm = (props: IUseRecipeForm) => {
         })
     }
 
+    const submitRecipeForm = async () => {
+        setLoading(true)
+        const params = {
+            name: 'Matapa com caranguejo',
+            ingredients: [
+                'Tomate',
+                'Cebola',
+                '1kg Matapa',
+                '2kg Caranguejo'
+            ],
+            coverImage: 'https://www.tvm.co.mz/images/358298.jpg'
+        }
+        const respnse = await recipeService.create(params)
+        console.log('finised')
+        setLoading(false)
+
+    }
+
     return {
         handleCoverImage,
         form,
         setForm,
         handleDirectionsVideo,
         handleGalleryImages,
-        handleGalleryRemove
+        handleGalleryRemove,
+        handleRemoveVideo,
+        loading,
+        submitRecipeForm
     }
 }

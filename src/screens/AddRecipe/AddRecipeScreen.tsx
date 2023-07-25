@@ -47,10 +47,12 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
         handleDirectionsVideo,
         handleGalleryImages,
         handleGalleryRemove,
+        handleRemoveVideo,
         form,
-        setForm
+        setForm,
+        loading,
+        submitRecipeForm
     } = useRecipeForm({ modalRef, modalGalleryRef })
-
 
     const handleOpenModal = useCallback((content: string) => {
         switch (content) {
@@ -157,6 +159,7 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
                         placeHolder={'Add Info'}
                     />
 
+                    {/** Category
                     <View style={localStyle.categorySection}>
                         <Text style={[style.textMuted2, style.fontNunitoRegular, style.fontR]}>Save to</Text>
                         <View style={localStyle.categoryRow}>
@@ -164,16 +167,24 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
                                 <Text>Save to</Text>
 
                             </View>
-                            <View style={{ width: '45%' }}>
-                                <Button
-                                    btnText="Draft"
-                                    btnSecondary={true}
-                                />
-                            </View>
                         </View>
                     </View>
+                    */}
+                    <View style={[style.row, { gap: 10, marginVertical: 20 }]}>
+                        <Button
+                            btnText="Draft"
+                            style={{ flex: 1 }}
+                            btnSecondary={true}
+                            disabled={loading}
+                        />
+                        <Button
+                            disabled={loading}
+                            loading={loading}
+                            onPress={handleSubmit(submitRecipeForm)} btnText="Post" style={{ flex: 1 }}
+                        />
 
-                    <Button onPress={() => setModalContent(Math.random())} btnText="Post to feed" style={{ marginTop: 20 }} />
+                    </View>
+
                     <View style={{ height: 50 }} />
 
                 </Container>
@@ -182,60 +193,62 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
             </ScrollView>
 
-            <Modal resizable={true} title={"Upload image"} ref={modalRef}>
-                {modalContent == 'camera' &&
-                    <CameraLibraryModal
-                        openCamera={() => handleCoverImage('camera')}
-                        openLibrary={() => handleCoverImage('library')}
+            <>
+                <Modal resizable={true} title={"Upload image"} ref={modalRef}>
+                    {modalContent == 'camera' &&
+                        <CameraLibraryModal
+                            openCamera={() => handleCoverImage('camera')}
+                            openLibrary={() => handleCoverImage('library')}
+                        />
+                    }
+                    {modalContent == 'gallery-pick-camera' &&
+                        <CameraLibraryModal
+                            openCamera={() => handleGalleryImages('camera')}
+                            openLibrary={() => handleGalleryImages('library')}
+                        />
+                    }
+
+                    {modalContent == 'directions' &&
+                        <CameraLibraryModal
+                            openCamera={() => handleDirectionsVideo('camera')}
+                            openLibrary={() => handleDirectionsVideo('library')}
+                        />
+                    }
+
+                </Modal>
+
+                <Modal resizable={true} title={"Edit gallery"} ref={modalGalleryRef}>
+                    <EditGallery
+                        items={form.galleryImages}
+                        openCamera={handleOpenModal}
+                        handleGalleryRemove={handleGalleryRemove}
+                        thisModalRef={modalGalleryRef.current}
                     />
-                }
-                {modalContent == 'gallery-pick-camera' &&
-                    <CameraLibraryModal
-                        openCamera={() => handleGalleryImages('camera')}
-                        openLibrary={() => handleGalleryImages('library')}
+                </Modal>
+
+                <Modal resizable={true} title={"Edit ingredients"} ref={modalIngredientsRef}>
+                    <EditIngredients
+                        items={form.ingredients}
+                        openCamera={handleOpenModal}
+                        handleGalleryRemove={handleGalleryRemove}
+                        setForm={setForm}
+                        form={form}
+                        thisModalRef={modalGalleryRef.current}
                     />
-                }
+                </Modal>
 
-                {modalContent == 'directions' &&
-                    <CameraLibraryModal
-                        openCamera={() => handleDirectionsVideo('camera')}
-                        openLibrary={() => handleDirectionsVideo('library')}
+                <Modal resizable={true} title={"Edit directions"} ref={modalDirectionsRef}>
+                    <EditDirections
+                        items={form.ingredients}
+                        openCamera={handleOpenModal}
+                        handleGalleryRemove={handleGalleryRemove}
+                        setForm={setForm}
+                        form={form}
+                        handleRemoveVideo={handleRemoveVideo}
+                        thisModalRef={modalGalleryRef.current}
                     />
-                }
-
-            </Modal>
-
-            <Modal resizable={true} title={"Edit gallery"} ref={modalGalleryRef}>
-                <EditGallery
-                    items={form.galleryImages}
-                    openCamera={handleOpenModal}
-                    handleGalleryRemove={handleGalleryRemove}
-                    thisModalRef={modalGalleryRef.current}
-                />
-            </Modal>
-
-            <Modal resizable={true} title={"Edit ingredients"} ref={modalIngredientsRef}>
-                <EditIngredients
-                    items={form.ingredients}
-                    openCamera={handleOpenModal}
-                    handleGalleryRemove={handleGalleryRemove}
-                    setForm={setForm}
-                    form={form}
-                    thisModalRef={modalGalleryRef.current}
-                />
-            </Modal>
-
-            <Modal resizable={true} title={"Edit directions"} ref={modalDirectionsRef}>
-                <EditDirections
-                    items={form.ingredients}
-                    openCamera={handleOpenModal}
-                    handleGalleryRemove={handleGalleryRemove}
-                    setForm={setForm}
-                    form={form}
-                    thisModalRef={modalGalleryRef.current}
-                />
-            </Modal>
-
+                </Modal>
+            </>
         </Container>
     )
 }
