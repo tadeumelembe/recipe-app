@@ -23,6 +23,7 @@
       "bundleIdentifier": "com.recipereels"
     },
     "android": {
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -43,7 +44,9 @@
         {
           "photosPermission": "The app accesses your photos to let you upload photos of your recipe."
         }
-      ]
+      ],
+      "expo-asset",
+      "expo-font"
     ]
   }
 }

@@ -85,6 +85,7 @@ const EditIngredients = (props: IEditIngredients) => {
     return (
         <View style={localStyle.root}>
 
+            <View style={{flexDirection:'row',alignItems:'center'}}>
             <TextInput
                 control={control}
                 placeholder="Write ingredient"
@@ -102,14 +103,14 @@ const EditIngredients = (props: IEditIngredients) => {
                 name="ingredient"
                 onFocus={() => setIsEditing(false)}
                 onSubmitEditing={handleSubmit(handleAddIngredient)}
+                rightIcon={<Pressable onPress={handleSubmit(handleAddIngredient)}><Ionicons name="send-outline" size={24} color="black" /></Pressable>}
             />
+            </View>
 
             <View
                 style={localStyle.ingredientsSection}
             >
                 {reversedItems.map((item, index) => {
-                    console.log(reversedItems)
-                    console.log(items)
                     return (
                         <View key={index} style={{ marginBottom: 20, width: '100%' }}>
                             <Pressable style={[localStyle.ingredientRow]} onPress={() => handleSetEdit(index, item)}>

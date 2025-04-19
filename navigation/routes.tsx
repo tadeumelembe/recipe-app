@@ -23,10 +23,7 @@ const Stack = createNativeStackNavigator();
 
 function AuthRoutes({ colorScheme }: { colorScheme: ColorSchemeName }) {
     return (
-        <NavigationContainer
-        //linking={LinkingConfiguration}
-        //theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-        >
+        <NavigationContainer>
             <Stack.Navigator initialRouteName='Welcome' screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="SignIn" component={Login} />
                 <Stack.Screen name="SignUp" component={SignUp} />

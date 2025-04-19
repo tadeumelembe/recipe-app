@@ -11,7 +11,7 @@ const RecipeItem: React.FC<IProfileRecipeItem> = ({ item }) => {
     return (
         <View style={localStyle.card}>
             <Image
-                source={`${item.image}`}
+                source={`${item.image}` as any}
                 style={localStyle.image}
             />
             <View style={localStyle.nameSection}>

@@ -28,7 +28,7 @@ export function useSignInForm(): IUseSignUpFormReturn {
 
     const { control, handleSubmit } = useForm<IFormData>({
         defaultValues: {
-            email: '',
+            email: 'tadeumelembe@gmail.com',
             password: '',
         }
     });
@@ -42,12 +42,14 @@ export function useSignInForm(): IUseSignUpFormReturn {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-
+                console.log(errorCode, errorMessage)
                 const firebaseAuthErros = ['auth/user-not-found', 'auth/wrong-password', 'auth/invalid-email']
 
                 if (firebaseAuthErros.includes(error.code)) return setFormError('Invalid credentials')
 
                 setFormError('Something went wrong, trey again')
+                setLoading(false)
+            }).finally(() => {
                 setLoading(false)
             })
     }

@@ -9,12 +9,10 @@ interface IUser {
 
 async function create(user: IUser) {
     return await createUserWithEmailAndPassword(auth, user.email, user.password).then(async (authUser) => {
-
         await updateProfile(authUser.user, {
             displayName: user.name,
 
         })
-
     })
 }
 

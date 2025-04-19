@@ -6,7 +6,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 import { Button, Container, ImageBackground, ScrollView, Text, View } from "../../components/Themed";
-import { RootStackScreenProps } from "../../types";
+import { RootStackScreenProps } from "../../../types";
 import style from "../../constants/style";
 import Layout from "../../constants/Layout";
 
@@ -118,7 +118,7 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                             videoRef={videoRef}
                             videoDetails={videoDetails}
                             showControls={showControls}
-                            isFullScreen={isFullScreen}
+                            isFullScreen={false}
                             isPaused={isPaused}
                             isVideoReady={isVideoReady}
                             status={status}
@@ -132,7 +132,7 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                         ref={videoRef}
                         style={localStyles.video}
                         source={{
-                            uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4', //'https://scontent-mia3-1.cdninstagram.com/o1/v/t16/f1/m51/D54083C46596B02B22B6D6299F6AE08D_video_dashinit.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uNDgwLnN0b3J5LmJhc2VsaW5lIn0&_nc_ht=scontent-mia3-1.cdninstagram.com&_nc_cat=108&vs=1490071194853724_2838398618&_nc_vs=HBkcFQIYRGlnX3hwdl9wZXJtYW5lbnQvRDU0MDgzQzQ2NTk2QjAyQjIyQjZENjI5OUY2QUUwOERfdmlkZW9fZGFzaGluaXQubXA0FQACyAEAKAAYABsBiAd1c2Vfb2lsATEVAAAmpM7Iqf3D3D8VAigCQzMsF0Ahqn752yLRGBJkYXNoX2Jhc2VsaW5lXzJfdjERAHXoBwA%3D&ccb=9-4&oh=00_AfCmatZ1Z4OPZjn-OV8eWsonm-MjPJSQG-FEWy_R7nL6yw&oe=6466B331&_nc_sid=b32767',
+                            uri: 'https://video.wixstatic.com/video/889e9f_af2de088b3d2403fa53ba669948dc349/1080p/mp4/file.mp4',
                         }}
                         resizeMode={'contain'}
                         onError={(e) => {

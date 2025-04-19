@@ -91,6 +91,7 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
 
             <ScrollView
                 contentContainerStyle={localStyle.scrollView}
+                keyboardShouldPersistTaps={'handled'}
             >
                 <Container style={{ paddingTop: 15 }}>
 

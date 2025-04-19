@@ -1,4 +1,4 @@
-import React, { ChildContextProvider, Children, createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 
 import { IUserContext } from '../components/types'
 import { auth } from "../../firebaseConfig";
@@ -14,7 +14,7 @@ interface IAuthContext {
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext)
 
-export const AuthProvider: React.FC<Element> = ({ children }) => {
+export function AuthProvider({ children }:React.PropsWithChildren){
     const [user, setUser] = useState<IUserContext | null>(null)
     const [loading, setLoading] = useState<boolean>(true)
 
@@ -57,11 +57,9 @@ export const AuthProvider: React.FC<Element> = ({ children }) => {
         }), [user, loading]
     )
 
-
-    //return {user};
     return (
         <AuthContext.Provider value={memorizedValues}>
-            {children}
+            {children as ReactNode}
         </AuthContext.Provider>
     );
 }

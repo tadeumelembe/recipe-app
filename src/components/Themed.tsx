@@ -65,6 +65,7 @@ export type TextInputProps = ThemeProps & DefaultTextInput['props'] & {
   control: object;
   name: string;
   rules: object;
+  rightIcon?: React.ReactNode;
 };
 export type TopTabBarProps = ThemeProps & CollapsibleProps;
 export type FlatListProps = ThemeProps & FlashListProps<any>;
@@ -221,7 +222,7 @@ export function ImageBackground(props: ImageBackgroundProps) {
 }
 
 export function TextInput(props: TextInputProps) {
-  const { placeholder, name, rules, control, style, ...otherProps } = props
+  const { placeholder, name, rules, control,rightIcon, style, ...otherProps } = props
   const localStyle = StyleSheet.create({
     errorBorder: {
       borderBottomWidth: 1,
@@ -245,12 +246,15 @@ export function TextInput(props: TextInputProps) {
           {placeholder &&
             <Text style={[styles.fontNunitoRegular, styles.fontR]}>{placeholder}</Text>
           }
-          <DefaultTextInput
-            value={value}
-            onChangeText={onChange}
-            style={[styles.textInput, error && localStyle.errorBorder, style]}
-            {...otherProps}
-          />
+          <View style={[styles.textInput,error && localStyle.errorBorder,{flexDirection:'row',alignItems:'center'}]}>
+            <DefaultTextInput
+              value={value}
+              onChangeText={onChange}
+              style={[{flex:1},  style]}
+              {...otherProps}
+            />
+            {rightIcon && rightIcon}
+          </View>
           {error &&
             <Text style={localStyle.errorText}>{error.message || 'Error'}</Text>
           }
@@ -448,7 +452,7 @@ export const Modal = forwardRef((props: ModalProps, ref) => {
             </TouchableOpacity>
           </View>
 
-          <ScrollView style={{ backgroundColor: '#fff', height: 'auto' }}>
+          <ScrollView keyboardShouldPersistTaps="handled" style={{ backgroundColor: '#fff', height: 'auto' }}>
             <Container style={{ paddingTop: 10 }}>
               {children}
 
