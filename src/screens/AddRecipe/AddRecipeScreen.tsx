@@ -7,7 +7,6 @@ import { Ionicons } from "@expo/vector-icons"
 
 import { Button, Container, Modal, ScrollView, Text, TextInput, View } from "../../components/Themed"
 import style from "../../constants/style"
-import { RootStackScreenProps } from "../../../types"
 import Header from "../../components/Head"
 import Colors from "../../constants/Colors"
 import { getBlobFromUri } from "../../utils/helpers";
@@ -24,7 +23,7 @@ import { useRecipeForm } from "./hooks/useRecipeForm";
 
 
 
-const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => {
+const AddRecipe = () => {
     // React 19 requires an explicit initial value for useRef, and RefObject
     // (not Ref) is what exposes .current to callers.
     const modalRef = useRef<IModalRef | null>(null);
@@ -88,7 +87,7 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
     return (
         <Container style={{ paddingHorizontal: 0 }}>
             <View style={style.horizontalPadding}>
-                <Header type={'back'} navigation={navigation} />
+                <Header type={'back'} />
             </View>
 
             <ScrollView

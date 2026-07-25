@@ -2,18 +2,19 @@ import React from "react"
 import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 import { Text, View } from "../Themed"
 import style from "../../constants/style";
-import { IHead } from "../types";
 import { useAuth } from "../../contexts/authContext";
 
-const Header: React.FC<IHead> = ({ navigation }) => {
+const Header: React.FC = () => {
 
+    const router = useRouter()
     const { signOut } = useAuth()
     return (
         <View style={localStyle.root}>
-            <Pressable onPress={() => navigation.goBack()} style={localStyle.buttonSection}>
+            <Pressable onPress={() => router.back()} style={localStyle.buttonSection}>
                 <MaterialIcons name="arrow-back-ios" size={20} color="black" />
                 <Text style={localStyle.backText}>Back</Text>
             </Pressable>

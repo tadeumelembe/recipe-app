@@ -1,26 +1,26 @@
 import React, { useRef, useState } from "react";
 import { StyleSheet, TouchableOpacity, Animated, SafeAreaView, StatusBar } from "react-native";
 import { Ionicons, Octicons } from "@expo/vector-icons";
-import { NavigationProp } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import { Tabs, MaterialTabBar, TabBarProps } from 'react-native-collapsible-tab-view'
 
 
 import { Container, ScrollView, View, Text, FlatList, ButtonRounded } from "../../components/Themed";
 import Header from "../../components/Profile/Header";
-import { ProfileStackScreenProps, RootTabScreenProps } from "../../../types";
 import style from "../../constants/style";
 import Colors from "../../constants/Colors";
 
 import Recipe from "./Recipe";
 import Saved from "./Saved";
 
-const TabProfile = ({ navigation }: ProfileStackScreenProps<'Root'>) => {
+const TabProfile = () => {
+    const router = useRouter()
     const [activeTabIndex, setActiveTabIndex] = useState<number>(0)
     const headerHeight = 190;
 
 
     function Head() {
-        return <Header headerHeight={headerHeight} navigation={navigation} />
+        return <Header headerHeight={headerHeight} />
     }
 
     return (
@@ -34,14 +34,14 @@ const TabProfile = ({ navigation }: ProfileStackScreenProps<'Root'>) => {
                 headerHeight={headerHeight}
                 renderHeader={Head}>
                 <Tabs.Tab name="Recipe" label={'Recipe'}>
-                    <Recipe navigation={navigation} />
+                    <Recipe />
                 </Tabs.Tab>
                 <Tabs.Tab name="Saved" label={'Saved'}>
-                    <Saved navigation={navigation} />
+                    <Saved />
                 </Tabs.Tab>
             </Tabs.Container>
 
-            <ButtonRounded iconName="add" onPress={() => navigation.navigate('AddRecipe')} />
+            <ButtonRounded iconName="add" onPress={() => router.push('/add-recipe')} />
         </Container>
     )
 }

@@ -6,14 +6,13 @@ import RecipeItem from "../../../components/Profile/RecipeItems"
 
 import { View } from "../../../components/Themed"
 import style from "../../../constants/style"
-import { IRecipeItem, IRecipeTab } from "../../../components/types"
 import { data } from "../data"
 
 
-const Recipe: React.FC<IRecipeTab> = ({ navigation }) => {
+const Recipe: React.FC = () => {
 
     function renderItem({ item }: any) {
-        return <RecipeItem navigation={navigation} item={item} />;
+        return <RecipeItem item={item} />;
     }
 
     return (

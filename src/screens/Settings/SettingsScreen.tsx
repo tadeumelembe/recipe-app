@@ -5,14 +5,15 @@ import { Container, ScrollView, Text, View } from "../../components/Themed";
 import style from "../../constants/style";
 import Header from "../../components/Settings/Haader";
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from "expo-router";
 import Colors from "../../constants/Colors";
-import { ProfileStackScreenProps } from "../../../types";
 
 type ISwitchButton = DefaultView['props'] & {
     label: string
 }
-const Settings = ({ navigation }: ProfileStackScreenProps<'Settings'>) => {
+const Settings = () => {
 
+    const router = useRouter();
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled((previousState: Boolean) => !previousState);
 
@@ -34,7 +35,7 @@ const Settings = ({ navigation }: ProfileStackScreenProps<'Settings'>) => {
 
     return (
         <Container>
-            <Header navigation={navigation} />
+            <Header />
 
             <ScrollView style={{ marginTop: 40 }}>
                 <Text style={style.textH1}>Settings</Text>
@@ -66,7 +67,7 @@ const Settings = ({ navigation }: ProfileStackScreenProps<'Settings'>) => {
                 </>
                 <View style={style.borderSeparator} />
 
-                <Pressable onPress={() => navigation.navigate('ChangePassword')} style={[localStyle.switchButton, { marginTop: 25 }]} >
+                <Pressable onPress={() => router.push('/profile/change-password')} style={[localStyle.switchButton, { marginTop: 25 }]} >
                     <Text style={localStyle.switchLabel}>Change Password</Text>
                     <MaterialIcons name="arrow-forward-ios" size={20} color="#030F09" />
                 </Pressable>

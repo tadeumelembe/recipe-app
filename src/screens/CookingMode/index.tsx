@@ -2,11 +2,10 @@ import React, { useEffect, useState, useCallback } from "react";
 import { ActivityIndicator, StatusBar, View as RNView, Pressable, StyleSheet, } from "react-native";
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEvent } from 'expo';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useLocalSearchParams, useNavigation } from 'expo-router';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 import { Button, Container, ImageBackground, ScrollView, Text, View } from "../../components/Themed";
-import { RootStackScreenProps } from "../../../types";
 import style from "../../constants/style";
 import Layout from "../../constants/Layout";
 
@@ -19,9 +18,14 @@ const videoContainerHeight = 200
 
 const VIDEO_URI = 'https://video.wixstatic.com/video/889e9f_af2de088b3d2403fa53ba669948dc349/1080p/mp4/file.mp4'
 
-const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>) => {
+const CookingMode = () => {
 
-    const { item } = route.params
+    const navigation = useNavigation()
+
+    // Search params arrive as strings; `image` is the asset module id the recipe
+    // details screen resolved via require().
+    const { title, image } = useLocalSearchParams<{ id: string, title: string, image: string }>()
+    const item = { title, image: Number(image) }
 
     const [isPaused, setIsPaused] = useState(true);
     const [isFullScreen, setIsFullScreen] = useState(false);
@@ -85,7 +89,7 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
             <ScrollView contentContainerStyle={{ flex: 1 }}>
                 {!isFullScreen &&
                     <View style={style.horizontalPadding}>
-                        <Header navigation={navigation} type='back' />
+                        <Header type='back' />
 
                         <Text style={localStyles.pageTitle}>Cooking Mode</Text>
 

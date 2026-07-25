@@ -1,15 +1,17 @@
 import React from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
 
 import { Text, View, Container, ScrollView, TextInput, Button, TextButton } from "../../../components/Themed";
 import styles from "../../../constants/style";
 import AuthHeader from "../../../components/Auth/AuthHeader";
-import { IAuthPage } from "../../../components/types";
 import authStyles from "../authStyles"
 import { helpers } from "../../../utils/constants";
 import { useSignUpForm } from "./hooks/useSignUpForm";
 
-const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
+const SignUp: React.FC = () => {
+
+    const router = useRouter()
 
     const {
         loading,
@@ -118,7 +120,7 @@ const SignUp: React.FC<IAuthPage> = ({ navigation }) => {
 
                         <TextButton
                             btnText="Sign In here"
-                            onPress={() => navigation.goBack()}
+                            onPress={() => router.back()}
 
                         />
 

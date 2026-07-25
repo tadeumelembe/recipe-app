@@ -1,13 +1,12 @@
 import React, { useRef, useState } from "react";
 import { StyleSheet, TouchableOpacity, Animated, SafeAreaView, StatusBar } from "react-native";
 import { Ionicons, Octicons } from "@expo/vector-icons";
-import { NavigationProp } from "@react-navigation/native";
+import { useLocalSearchParams } from "expo-router";
 import { Tabs, MaterialTabBar, TabBarProps, MaterialTabItem } from 'react-native-collapsible-tab-view'
 
 
 import { Container, ScrollView, View, Text, FlatList, TopTabBar } from "../../components/Themed";
 import Header from "../../components/Profile/Header";
-import { RootStackScreenProps, RootTabScreenProps } from "../../types";
 import style from "../../constants/style";
 import Colors from "../../constants/Colors";
 import Layout from "../../constants/Layout";
@@ -15,21 +14,22 @@ import HeaderRecipe from "../../components/RecipeDetails/Header";
 
 const headeHeight = Layout.window.height * 35 / 100
 
-const RecipeDetails = ({ navigation, route }: RootStackScreenProps<'RecipeDetails'>) => {
+const RecipeDetails = () => {
     const [activeTabIndex, setActiveTabIndex] = useState<number>(0)
     const headerHeight = headeHeight;
-    //const { recipe_id } = route.params
+    const { id } = useLocalSearchParams<{ id: string }>()
 
+    // Placeholder until the recipe is fetched by `id`.
     const item = {
         created_at: "50min ago",
-        id: "3",
+        id,
         image: 21,
         profile_name: "Itan",
         title: "Vanilla Pud",
       }
 
     function Head() {
-        return (<HeaderRecipe item={item} navigation={navigation} headerHeight={headeHeight} />)
+        return (<HeaderRecipe item={item} headerHeight={headeHeight} />)
     }
 
     return (

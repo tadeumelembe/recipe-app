@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
+import { useRouter } from "expo-router";
 
 import { Text, View, Container, ScrollView, TextInput, Button, TextButton } from "../../../components/Themed";
 import AuthHeader from "../../../components/Auth/AuthHeader";
 import styles from "../../../constants/style";
 import authStyles from "../authStyles"
-import { IAuthPage } from "../../../components/types";
 
 import { useAuth } from "../../../contexts/authContext";
 import { auth, signInWithEmailAndPassword } from "../../../../firebaseConfig";
@@ -19,7 +19,9 @@ interface IFormData {
     email: string
 }
 
-const Login: React.FC<IAuthPage> = ({ navigation }) => {
+const Login: React.FC = () => {
+
+    const router = useRouter()
 
     const {
         handleSubmit,
@@ -91,7 +93,7 @@ const Login: React.FC<IAuthPage> = ({ navigation }) => {
 
                         <TextButton
                             btnText="Create New Account"
-                            onPress={() => navigation.navigate('SignUp')}
+                            onPress={() => router.push('/sign-up')}
 
                         />
 

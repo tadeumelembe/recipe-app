@@ -3,7 +3,6 @@ import { ListRenderItemInfo, StyleSheet } from "react-native";
 import { Container, FlatList, ScrollView, View } from "../../components/Themed";
 import style from "../../constants/style";
 
-import { RootTabScreenProps } from "../../../types";
 import Header from "../../components/Head";
 import FeedCard from "../../components/TabHome/FeedCard";
 import { IHomeItem } from "../../components/types";
@@ -15,17 +14,17 @@ interface data {
     profile_name: string
 }
 
-export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
+export default function TabHome() {
 
     function renderItem({ item }: ListRenderItemInfo<IHomeItem>) {
-        return <FeedCard navigation={navigation} item={item} />;
+        return <FeedCard item={item} />;
     }
 
 
     return (
         <Container style={localStyles.root}>
             <View style={style.horizontalPadding}>
-                <Header navigation={navigation} />
+                <Header />
             </View>
             <FlatList
                 data={data}

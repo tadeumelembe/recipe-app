@@ -1,6 +1,7 @@
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { Image, Pressable, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
 
 import { Avatar, View, Text, IoniconsIcon, ImageBackground } from "../Themed";
 import Colors from "../../constants/Colors";
@@ -10,10 +11,11 @@ import InteractionButtons from "./IteractionButtons";
 
 
 
-const FeedCard: React.FC<IHomeFeedCard> = ({ navigation, item }) => {
-    
+const FeedCard: React.FC<IHomeFeedCard> = ({ item }) => {
+    const router = useRouter();
+
     return (
-        <Pressable onPress={() => navigation.navigate('RecipeScreen', { recipe_id: item.id })} style={localStyle.root}>
+        <Pressable onPress={() => router.push(`/recipe/${item.id}`)} style={localStyle.root}>
             {item.image ?
                 <ImageBackground
                     source={item.image}

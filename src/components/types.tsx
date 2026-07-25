@@ -1,7 +1,4 @@
-import { NavigationProp } from "@react-navigation/native";
-
 export interface IHead {
-    navigation: NavigationProp<any, any>,
     type?: string | null | undefined;
 }
 
@@ -12,7 +9,6 @@ export interface IUserContext {
 }
 
 export interface IHomeFeedCard {
-    navigation: NavigationProp<any, any>,
     item: IHomeItem
 }
 
@@ -26,10 +22,6 @@ export interface IHomeItem {
 }
 
 
-export interface IAuthPage {
-    navigation: NavigationProp<any, any>,
-}
-
 export interface IRecipeItem {
     name: string;
     image: string;
@@ -39,12 +31,7 @@ export interface IRecipeItem {
 /* ---------------------------- */
 /* Begin Profile Types **/
 export interface IProfileHeader {
-    navigation: NavigationProp<any, any>;
     headerHeight: number;
-}
-
-export interface IRecipeTab {
-    navigation: NavigationProp<any, any>,
 }
 
 export interface IProfileRecipeItem {
@@ -53,7 +40,6 @@ export interface IProfileRecipeItem {
         image: string;
         id: number;
     };
-    navigation: NavigationProp<any, any>;
 }
 /*End Profile Types **/
 
@@ -61,7 +47,11 @@ export interface IProfileRecipeItem {
 /* ---------------------------- */
 /* Begin RecipeDetails Types **/
 export interface IRecipeDetailsHeader {
-    navigation: NavigationProp<any, any>;
+    item: {
+        id: string;
+        title: string;
+        image: number;
+    };
     headerHeight: number;
 }
 /*End RecipeDetails Types **/

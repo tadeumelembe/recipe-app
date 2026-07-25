@@ -1,6 +1,7 @@
 import React from "react"
 import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 import { View, Text, Avatar, Button } from "../Themed"
 import style from "../../constants/style";
@@ -9,13 +10,14 @@ import { IProfileHeader } from "../types";
 
 
 
-const HeaderProfile: React.FC<IProfileHeader> = ({ navigation, headerHeight }) => {
+const HeaderProfile: React.FC<IProfileHeader> = ({ headerHeight }) => {
+    const router = useRouter()
     const isOther = false
     return (
         <View style={[localStyle.root, { minHeight: headerHeight }]}>
             {isOther ?
                 <View style={localStyle.topHead}>
-                    <Pressable onPress={() => navigation.goBack()} style={localStyle.buttonSection}>
+                    <Pressable onPress={() => router.back()} style={localStyle.buttonSection}>
                         <MaterialIcons name="arrow-back-ios" size={20} color="black" />
                         <Text style={localStyle.backText}>Back</Text>
                     </Pressable>
@@ -28,7 +30,7 @@ const HeaderProfile: React.FC<IProfileHeader> = ({ navigation, headerHeight }) =
                 <View style={localStyle.topHead}>
                     <Text style={localStyle.title}>My Kitchen</Text>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={localStyle.settingSection}>
+                    <TouchableOpacity onPress={() => router.push('/profile/settings')} style={localStyle.settingSection}>
                         <Ionicons name="settings-outline" size={22} color="black" />
                         <Text style={localStyle.settingsText}>Settings</Text>
                     </TouchableOpacity>
