@@ -15,20 +15,14 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       Root: {
         screens: {
-          TabOne: {
-            screens: {
-              TabOneScreen: 'one',
-            },
-          },
-          TabTwo: {
-            screens: {
-              TabTwoScreen: 'two',
-            },
-          },
+          TabHome: 'home',
+          TabSearch: 'search',
+          TabProfile: 'profile',
         },
       },
-      Modal: 'modal',
-      NotFound: '*',
+      RecipeScreen: 'recipe',
+      CookingMode: 'cooking-mode',
+      AddRecipe: 'add-recipe',
     },
   },
 };

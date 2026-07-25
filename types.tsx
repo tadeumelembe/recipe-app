@@ -16,8 +16,7 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
-  Modal: undefined;
-  NotFound: undefined;
+  RecipeScreen: undefined;
   RecipeDetails: {
     navigation: NavigationProp<any, any>;
     recipe_id: number

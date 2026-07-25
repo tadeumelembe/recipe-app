@@ -16,13 +16,13 @@ export const pickImage = async (type: string) => {
     let result;
     if (type == 'camera') {
         result = await ImagePicker.launchCameraAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            mediaTypes: ['images'],
             allowsEditing: true,
             quality: 1,
         });
     } else {
         result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            mediaTypes: ['images'],
             allowsMultipleSelection: true,
             quality: 1,
         });
@@ -37,13 +37,13 @@ export const pickVideo = async (type: string) => {
     let result;
     if (type == 'camera') {
         result = await ImagePicker.launchCameraAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+            mediaTypes: ['videos'],
             allowsEditing: true,
             quality: 1,
         });
     } else {
         result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+            mediaTypes: ['videos'],
             quality: 1,
         });
     }

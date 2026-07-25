@@ -7,12 +7,13 @@ import { ImagePickerResult } from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import { IRecipeForm } from "../types";
+import { IModalRef } from "../types";
 
 interface IEditGallery {
     items: Array<any>;
     openCamera: (e: string) => void;
     form: IRecipeForm,
-    thisModalRef: Ref<any>;
+    thisModalRef: IModalRef | null;
     handleGalleryRemove: (index: number) => void
     handleRemoveVideo: () => void
 }

@@ -20,7 +20,7 @@ const Recipe: React.FC<IRecipeTab> = ({ navigation }) => {
         <View style={{ flex: 1 }}>
             <Tabs.FlatList
                 data={data}
-                contentConatinerStyle={localStyles.flatListConatinerStyle}
+                contentContainerStyle={localStyles.flatListConatinerStyle}
                 keyExtractor={(item: any) => item.id}
                 style={localStyles.flatListStyle}
                 renderItem={renderItem}

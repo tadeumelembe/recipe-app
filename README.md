@@ -36,13 +36,13 @@ The Recipe App is an open-source project that aims to provide users with a platf
 Clone the project
 
 ```bash
-  git clone https://github.com/tadeumelembe/best-cooking-app.git
+  git clone https://github.com/tadeumelembe/recipe-app.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd best-cooking-app
+  cd recipe-app
 ```
 
 Install dependencies

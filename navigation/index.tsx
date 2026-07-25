@@ -87,10 +87,10 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabHome"
         component={TabHome}
-        options={({ navigation }: RootTabScreenProps<'TabHome'>) => ({
+        options={{
           title: 'Search',
           tabBarIcon: ({ color }) => <TabBarIconAlt name="home" color={color} />,
-        })}
+        }}
       />
       <BottomTab.Screen
         name="TabProfile"

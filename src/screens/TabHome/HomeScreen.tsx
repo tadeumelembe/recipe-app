@@ -31,7 +31,6 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
                 data={data}
                 contentContainerStyle={localStyles.flatlistContainer}
                 keyExtractor={(item) => item.id}
-                estimatedItemSize={1000}
                 renderItem={renderItem}
                 // ItemSeparatorComponent={(({highlighted}) => (<View style={{borderTopColor:'rgba(0,0,0,.05)',borderWidth:0.,marginBottom:20}} />))}
                 ListFooterComponent={

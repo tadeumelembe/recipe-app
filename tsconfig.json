@@ -1,11 +1,15 @@
 {
   "extends": "./node_modules/expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "types": [
+      "jest",
+      "node",
+      "@testing-library/react-native"
+    ]
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx",
-    "jest-setup-js"
+    "**/*.tsx"
   ]
 }

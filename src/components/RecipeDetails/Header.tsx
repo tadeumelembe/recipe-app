@@ -28,7 +28,7 @@ const HeaderRecipee: React.FC<IRecipeDetailsHeader> = ({ navigation, item, heade
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate('CookingMode', { item: item })} style={[localStyle.buttonSection, localStyle.playButton]}>
-                            <Ionicons name="md-play-outline" size={24} color="white" />
+                            <Ionicons name="play-outline" size={24} color="white" />
                             <Text style={localStyle.playText}>Cook now</Text>
                         </TouchableOpacity>
                     </View>

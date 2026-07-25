@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef, RefObject, useCallback } from "react";
-import { ActivityIndicator, StatusBar, Animated, BackHandler, Pressable, StyleSheet, } from "react-native";
-import { ResizeMode, AVPlaybackStatus, AVPlaybackStatusSuccess, VideoReadyForDisplayEvent } from 'expo-av';
-import Video from 'react-native-video';
+import React, { useEffect, useState, useCallback } from "react";
+import { ActivityIndicator, StatusBar, View as RNView, Pressable, StyleSheet, } from "react-native";
+import { useVideoPlayer, VideoView } from 'expo-video';
+import { useEvent } from 'expo';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
@@ -17,27 +17,41 @@ import VideoControls from "../../components/CookingMode/VideoControls";
 const headeHeight = Layout.window.height * 35 / 100
 const videoContainerHeight = 200
 
+const VIDEO_URI = 'https://video.wixstatic.com/video/889e9f_af2de088b3d2403fa53ba669948dc349/1080p/mp4/file.mp4'
+
 const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>) => {
 
     const { item } = route.params
 
-    const videoRef = useRef<RefObject<any>>(null);
-    const [status, setStatus] = useState<AVPlaybackStatusSuccess>({});
-    const [isVideoLoading, setIsVideoLoading] = useState(true);
-    const [isVideoReady, setIsVideoReady] = useState(false);
-    const [videoError, setVideoError] = useState('');
-    const [controlsWidth, setControlsWidth] = useState(0);
-    const [videoDetails, setVideoDetails] = useState<VideoReadyForDisplayEvent>({});
     const [isPaused, setIsPaused] = useState(true);
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [showControls, setShowControls] = useState(false);
 
-    useFocusEffect(() => {
-
-        return () => {
-            //   StatusBar.setHidden(false);
-        }
+    const player = useVideoPlayer(VIDEO_URI, (player) => {
+        player.loop = true;
+        // Replaces react-native-video's progressUpdateIntervalMillis={200}.
+        player.timeUpdateEventInterval = 0.2;
     });
+
+    const { currentTime } = useEvent(player, 'timeUpdate', {
+        currentTime: player.currentTime,
+        currentLiveTimestamp: null,
+        currentOffsetFromLive: null,
+        bufferedPosition: 0,
+    });
+    const { status, error } = useEvent(player, 'statusChange', { status: player.status });
+
+    const isVideoReady = status === 'readyToPlay'
+    const isVideoLoading = status === 'loading'
+    const videoError = error?.message ?? ''
+
+    useFocusEffect(
+        useCallback(() => {
+            return () => {
+                StatusBar.setHidden(false);
+            }
+        }, [])
+    );
 
     useEffect(
         () =>
@@ -49,34 +63,22 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
         [navigation, isFullScreen]
     );
 
-
     useEffect(() => {
-        if (isFullScreen) {
-            StatusBar.setHidden(true);
-
-            if (videoDetails?.naturalSize?.width > videoDetails?.naturalSize?.height) {
-
-            }
-        } else {
-
-            StatusBar.setHidden(false);
-        }
+        StatusBar.setHidden(isFullScreen);
     }, [isFullScreen])
 
-    const memorizedChangeControls = useCallback(status => handleChangeControls(status), []);
-    const memorizedChangeFullScreen = useCallback(status => handleChangeIsFullScreen(status), []);
-    const memorizedChangePausd = useCallback(status => handleChangeIsPaused(status), []);
+    // isPaused is the source of truth for the custom controls; mirror it onto the player.
+    useEffect(() => {
+        if (isPaused) {
+            player.pause()
+        } else {
+            player.play()
+        }
+    }, [isPaused, player])
 
-    function handleChangeControls(status: any) {
-        setShowControls(status)
-    }
-
-    function handleChangeIsFullScreen(status: boolean) {
-        setIsFullScreen(status)
-    }
-    function handleChangeIsPaused(status: boolean) {
-        setIsPaused(status)
-    }
+    useEffect(() => {
+        if (isVideoReady) setShowControls(true)
+    }, [isVideoReady])
 
     return (
         <Container style={[localStyles.root, isFullScreen && { paddingTop: 0 }]}>
@@ -91,7 +93,7 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                     </View>
                 }
 
-                <Animated.View style={isFullScreen ? localStyles.videoContainerFullscreen : localStyles.videoContainer}>
+                <RNView style={isFullScreen ? localStyles.videoContainerFullscreen : localStyles.videoContainer}>
 
                     {isVideoLoading &&
                         <View style={localStyles.videoLoader}>
@@ -107,7 +109,7 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
                         </View>
                     }
 
-                    {videoError &&
+                    {!!videoError &&
                         <View style={localStyles.videoError}>
                             <Text style={localStyles.videoErrorInfo}>Ocorreu um erro</Text>
                         </View>
@@ -115,49 +117,28 @@ const CookingMode = ({ navigation, route }: RootStackScreenProps<'CookingMode'>)
 
                     {(isVideoReady && !videoError) &&
                         <VideoControls
-                            videoRef={videoRef}
-                            videoDetails={videoDetails}
+                            player={player}
+                            currentTime={currentTime}
+                            duration={player.duration}
                             showControls={showControls}
                             isFullScreen={false}
                             isPaused={isPaused}
                             isVideoReady={isVideoReady}
-                            status={status}
-                            handleChangeControls={memorizedChangeControls}
-                            handleChangeIsFullScreen={memorizedChangeFullScreen}
-                            handleChangeIsPaused={memorizedChangePausd}
+                            handleChangeControls={setShowControls}
+                            handleChangeIsFullScreen={setIsFullScreen}
+                            handleChangeIsPaused={setIsPaused}
                         />
                     }
 
-                    <Video
-                        ref={videoRef}
+                    <VideoView
                         style={localStyles.video}
-                        source={{
-                            uri: 'https://video.wixstatic.com/video/889e9f_af2de088b3d2403fa53ba669948dc349/1080p/mp4/file.mp4',
-                        }}
-                        resizeMode={'contain'}
-                        onError={(e) => {
-                            setVideoError(e)
-                            setIsVideoLoading(false)
-                            console.log(e)
-                        }}
-                        repeat={true}
-                        paused={isPaused}
-                        onLoad={(e: any) => {
-                            setIsVideoLoading(false)
-                            setShowControls(true)
-                            setVideoDetails(e)
-                            setIsVideoReady(true)
-
-                        }}
-                        onProgress={(status: any) => { setStatus(() => status) }}
-                        onReadyForDisplay={(e: any) => {
-                            setShowControls(true)
-                            setIsVideoReady(true)
-                        }}
-                        progressUpdateIntervalMillis={200}
+                        player={player}
+                        contentFit="contain"
+                        nativeControls={false}
+                        fullscreenOptions={{ enable: true }}
                     />
 
-                </Animated.View>
+                </RNView>
 
                 {!isFullScreen &&
                     <View style={localStyles.steps}>

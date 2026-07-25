@@ -8,11 +8,12 @@ import { Feather, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import { useForm } from "react-hook-form";
 import { IRecipeForm } from "../types";
+import { IModalRef } from "../types";
 
 interface IEditIngredients {
     items: Array<any>;
     openCamera: (e: string) => void;
-    thisModalRef: Ref<any>;
+    thisModalRef: IModalRef | null;
     handleGalleryRemove: (index: number) => void;
     setForm: Dispatch<SetStateAction<IRecipeForm>>;
     form: IRecipeForm;
@@ -29,7 +30,7 @@ const EditIngredients = (props: IEditIngredients) => {
 
     const handleUplaodModal = () => {
         openCamera(`gallery-pick-camera`)
-        thisModalRef.close()
+        thisModalRef?.close()
     }
 
     const removeFromGallery = () => {

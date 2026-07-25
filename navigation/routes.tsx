@@ -24,7 +24,7 @@ const Stack = createNativeStackNavigator();
 function AuthRoutes({ colorScheme }: { colorScheme: ColorSchemeName }) {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName='Welcome' screenOptions={{ headerShown: false }}>
+            <Stack.Navigator initialRouteName='SignIn' screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="SignIn" component={Login} />
                 <Stack.Screen name="SignUp" component={SignUp} />
             </Stack.Navigator>
@@ -37,7 +37,7 @@ function AppRoutes({ colorScheme }: { colorScheme: ColorSchemeName }) {
     return (
         <SafeAreaProvider>
             <Navigation colorScheme={colorScheme} />
-            <StatusBar backgroundColor={'#fff'} style={'dark'} />
+            <StatusBar style={'dark'} />
         </SafeAreaProvider>
     );
 }

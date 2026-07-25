@@ -1,35 +1,37 @@
-import React, { Ref, RefObject, memo, useEffect, useRef, useState } from "react"
+import React, { Dispatch, SetStateAction, memo, useEffect, useRef, useState } from "react"
 import { Animated, Pressable, StyleSheet } from "react-native"
 import { Ionicons, MaterialIcons } from "@expo/vector-icons"
+import type { VideoPlayer } from "expo-video"
 
 import { View } from "../Themed"
 import Colors from "../../constants/Colors"
 import Layout from "../../constants/Layout"
 
 interface IVideoControls {
-    videoRef: RefObject<any>;
-    videoDetails: any;
-    handleHideControlsTimeout: () => void;
+    player: VideoPlayer;
+    currentTime: number;
+    duration: number;
     isVideoReady: boolean;
     showControls: boolean;
-    handleChangeControls: (e: any) => boolean;
+    handleChangeControls: Dispatch<SetStateAction<boolean>>;
     isPaused: boolean;
-    status: any;
     isFullScreen: boolean;
-    handleChangeIsFullScreen: (e: any) => boolean;
-    handleChangeIsPaused: (e: any) => boolean
+    handleChangeIsFullScreen: Dispatch<SetStateAction<boolean>>;
+    handleChangeIsPaused: Dispatch<SetStateAction<boolean>>;
 }
+
+const SLIDER_TRACK_WIDTH = Layout.window.width - 30
 
 const VideoControls = (props: IVideoControls) => {
 
     const {
-        videoRef,
-        videoDetails,
+        player,
+        currentTime,
+        duration,
         showControls,
         isPaused,
         isFullScreen,
         isVideoReady,
-        status,
         handleChangeControls,
         handleChangeIsFullScreen,
         handleChangeIsPaused
@@ -37,18 +39,16 @@ const VideoControls = (props: IVideoControls) => {
 
     const [isManuallySliding, setIsManuallySliding] = useState(false);
     const [sliderPositionState, setSliderPositionState] = useState<number>(0);
-    const sliderPositionRef = useRef<any>();
+    const sliderPositionRef = useRef<number>(0);
     sliderPositionRef.current = sliderPositionState;
 
-    const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
-    const currenttimeout = useRef<any>();
+    const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout>>();
+    const currenttimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
     currenttimeout.current = timeoutId
 
-    const sliderPosition = useRef(new Animated.Value(sliderPositionRef.current)).current
     const sliderScale = useRef(new Animated.Value(1)).current
     const controllersOpacity = useRef(new Animated.Value(1)).current
 
-    console.log('VideoControls')
     useEffect(() => {
         let opacity = showControls ? 1 : 0
         Animated.timing(controllersOpacity, {
@@ -66,15 +66,16 @@ const VideoControls = (props: IVideoControls) => {
     }, [showControls, isPaused])
 
     useEffect(() => {
-        if (isManuallySliding || !isVideoReady) return;
-        let timePercentage = (status.currentTime * 100) / videoDetails.duration
+        if (isManuallySliding || !isVideoReady || !duration) return;
+        let timePercentage = (currentTime * 100) / duration
 
-        let position = (timePercentage * (Layout.window.width - 30)) / 100
-        animateSlider(position, 200, false)
-    }, [status])
+        let position = (timePercentage * SLIDER_TRACK_WIDTH) / 100
+        animateSlider(position)
+    }, [currentTime, duration, isManuallySliding, isVideoReady])
+
+    useEffect(() => () => clearTimeout(currenttimeout.current), [])
 
     function handleSliderRelease(position: number) {
-        console.log(position)
         handleHideControlsTimeout()
         Animated.timing(sliderScale, {
             toValue: 1,
@@ -86,12 +87,13 @@ const VideoControls = (props: IVideoControls) => {
     }
 
     function handleVideoSeekPosition(position: number) {
-        let positionPercentage = (position * 100) / (Layout.window.width - 30)
-        console.log(positionPercentage)
+        if (!duration) return;
 
-        let timeToSeek = (positionPercentage * videoDetails.duration) / 100
+        let positionPercentage = (position * 100) / SLIDER_TRACK_WIDTH
+        let timeToSeek = (positionPercentage * duration) / 100
 
-        videoRef?.current?.seek(timeToSeek)
+        // expo-video seeks by assigning currentTime, replacing videoRef.seek().
+        player.currentTime = timeToSeek
     }
 
     function handleHideControlsTimeout() {
@@ -108,17 +110,10 @@ const VideoControls = (props: IVideoControls) => {
         setTimeoutId(timeOut)
     }
 
-    const animateSlider = (position: number, animationDuration = 0, nativeDriver = true) => {
-        let maximumSliderPosition = Layout.window.width - 30
-
-        if (position > maximumSliderPosition || position < 0) return;
+    const animateSlider = (position: number) => {
+        if (position > SLIDER_TRACK_WIDTH || position < 0) return;
 
         setSliderPositionState(position)
-        // Animated.timing(sliderPosition, {
-        //     toValue: position,
-        //     duration: animationDuration,
-        //     useNativeDriver: nativeDriver
-        // }).start()
     }
 
     return (

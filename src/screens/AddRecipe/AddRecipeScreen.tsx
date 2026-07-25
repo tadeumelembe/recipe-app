@@ -25,10 +25,12 @@ import { useRecipeForm } from "./hooks/useRecipeForm";
 
 
 const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => {
-    const modalRef: Ref<IModalRef | null | undefined> = useRef();
-    const modalGalleryRef: Ref<IModalRef | null | undefined> = useRef();
-    const modalIngredientsRef: Ref<IModalRef | null | undefined> = useRef();
-    const modalDirectionsRef: Ref<IModalRef | null | undefined> = useRef();
+    // React 19 requires an explicit initial value for useRef, and RefObject
+    // (not Ref) is what exposes .current to callers.
+    const modalRef = useRef<IModalRef | null>(null);
+    const modalGalleryRef = useRef<IModalRef | null>(null);
+    const modalIngredientsRef = useRef<IModalRef | null>(null);
+    const modalDirectionsRef = useRef<IModalRef | null>(null);
 
     useEffect(() => {
         const status = ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -243,7 +245,6 @@ const AddRecipe = ({ navigation, route }: RootStackScreenProps<'AddRecipe'>) => 
                         items={form.ingredients}
                         openCamera={handleOpenModal}
                         handleGalleryRemove={handleGalleryRemove}
-                        setForm={setForm}
                         form={form}
                         handleRemoveVideo={handleRemoveVideo}
                         thisModalRef={modalGalleryRef.current}
