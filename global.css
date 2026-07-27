@@ -1,0 +1,65 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+
+@import "nativewind/theme";
+
+@theme {
+  /* Scratch UI Kit — Colors & Layers Style (figma.com/design/7In7SxOETUXY7Oq5jGL2Sv, node 0:97) */
+  --color-primary: #30be76;
+  --color-primary-soft: #d6f2e4; /* primary at 20% opacity, flattened onto white */
+  --color-success: #30be76;
+  --color-danger: #f84971;
+  --color-warning: #f8b449;
+  --color-gray-50: #f7f8fa;
+  --color-gray-100: #e5e5e5;
+  --color-gray-200: #cccccc;
+  --color-gray-300: #a8a8a8;
+  --color-gray-400: #979797;
+  --color-gray-500: #767676;
+  --color-gray-600: #606060;
+  --color-gray-900: #030f09;
+  --color-overlay: rgba(40, 41, 40, 0.4); /* image scrims, opacity flattened */
+
+  --shadow-card: 0px 6px 20px 0px rgba(13, 51, 32, 0.1);
+
+  /* Scratch UI Kit — Typography (figma.com/design/7In7SxOETUXY7Oq5jGL2Sv, node 0:70) */
+  /* Weight lives in the font family (see app/_layout.tsx useFonts), never paired with font-weight */
+  --font-nunito-regular: "nunito-regular";
+  --font-nunito-medium: "nunito-medium";
+  --font-nunito-semibold: "nunito-semibold";
+  --font-nunito-bold: "nunito-bold";
+
+  --text-h1: 40px;
+  --text-h1--line-height: 44px;
+  --text-h1--letter-spacing: -0.5px;
+
+  --text-h2: 32px;
+  --text-h2--line-height: 32px;
+
+  --text-h3: 24px;
+  --text-h3--line-height: 32px;
+
+  --text-h4: 20px;
+  --text-h4--line-height: 24px;
+
+  --text-h5: 16px;
+  --text-h5--line-height: 20px;
+
+  --text-card-item: 18px;
+  --text-card-item--line-height: 32px;
+
+  --text-lead: 16px;
+  --text-lead--line-height: 22px;
+
+  --text-body: 14px;
+  --text-body--line-height: 22px;
+
+  --text-button: 16px;
+  --text-button--line-height: 20px;
+  --text-button--letter-spacing: 0.32px;
+
+  --text-caption: 12px;
+  --text-caption--line-height: 16px;
+  --text-caption--letter-spacing: 0.4px;
+}

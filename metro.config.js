@@ -1,4 +1,5 @@
 const { getDefaultConfig } = require("expo/metro-config");
+const { withNativewind } = require("nativewind/metro");
 
 module.exports = (() => {
   const config = getDefaultConfig(__dirname);
@@ -15,5 +16,5 @@ module.exports = (() => {
     sourceExts: [...resolver.sourceExts, "svg"],
   };
 
-  return config;
+  return withNativewind(config);
 })();

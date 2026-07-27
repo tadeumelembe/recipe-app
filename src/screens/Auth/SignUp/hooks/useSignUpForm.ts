@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Control, UseFormHandleSubmit, UseFormWatch, useForm } from "react-hook-form";
 import { authService } from "../../../../services/auth/authService";
+import { useAuth } from "../../../../contexts/authContext";
 
 interface IFormData {
     name: string;
@@ -22,6 +23,7 @@ interface IUseSignUpFormReturn {
 }
 
 export function useSignUpForm(): IUseSignUpFormReturn {
+    const { signIn } = useAuth()
     const [loading, setLoading] = useState(false)
     const [formError, setFormError] = useState('')
 
@@ -38,7 +40,10 @@ export function useSignUpForm(): IUseSignUpFormReturn {
         setFormError('')
         setLoading(true)
 
-        await authService.create(data).catch(error => {
+        await authService.create(data).then(authUser => {
+            // Replaces the nameless user the auth listener stored on sign-up.
+            signIn(authUser)
+        }).catch(error => {
 
             const errorCode = error.code;
             const errorMessage = error.message;

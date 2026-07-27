@@ -1,9 +1,8 @@
 import React, { Ref, useState } from "react";
 import { Image, Pressable, StyleSheet, TouchableOpacity } from "react-native";
 
-import { FlatList, ScrollView, Text, TextButton, View } from "../Themed";
+import {  Text, View } from "../Themed";
 import style from "../../constants/style";
-import { ImagePickerResult } from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import { IRecipeForm } from "../types";

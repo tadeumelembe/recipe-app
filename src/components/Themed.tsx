@@ -32,6 +32,7 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../../hooks/useColorScheme';
 import styles from '../constants/style';
 import Layout from '../constants/Layout';
+import { getInitials } from '../utils/helpers';
 
 
 export function useThemeColor(
@@ -75,7 +76,7 @@ export type TouchableOpacityProps = ThemeProps & DefaultTouchableOpacity['props'
   iconName?: string,
   loading?: boolean,
 };
-export type AvatarProps = ViewProps & { size?: string };
+export type AvatarProps = ViewProps & { size?: string; name?: string | null };
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
@@ -159,7 +160,7 @@ export function TopTabBar(props: TopTabBarProps) {
 
 export function Avatar(props: AvatarProps) {
 
-  const { style, size, ...otherProps } = props;
+  const { style, size, name, ...otherProps } = props;
   let width = 30
   let height = 30
 
@@ -195,11 +196,28 @@ export function Avatar(props: AvatarProps) {
       break;
   }
 
+  const initials = getInitials(name)
+
   return <DefaultView
-    style={[{ ...styles.avatar, width: width, height: height }, style]}
+    style={[{ ...styles.avatar, width: width, height: height }, avatarStyles.content, style]}
     {...otherProps}
-  />
+  >
+    {!!initials &&
+      <DefaultText style={[avatarStyles.initials, { fontSize: width / 2.5 }]}>{initials}</DefaultText>
+    }
+  </DefaultView>
 }
+
+const avatarStyles = StyleSheet.create({
+  content: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  initials: {
+    ...styles.fontNunitoBold,
+    color: '#fff',
+  }
+})
 
 export function Container(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;

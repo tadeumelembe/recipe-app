@@ -8,12 +8,16 @@ interface IUser {
 }
 
 async function create(user: IUser) {
-    return await createUserWithEmailAndPassword(auth, user.email, user.password).then(async (authUser) => {
-        await updateProfile(authUser.user, {
-            displayName: user.name,
+    const { user: authUser } = await createUserWithEmailAndPassword(auth, user.email, user.password)
 
-        })
+    await updateProfile(authUser, {
+        displayName: user.name,
     })
+
+    // onAuthStateChanged already fired when the account was created, back when
+    // displayName was still null, and updateProfile does not re-trigger it. The
+    // caller has to push the named user into the auth context itself.
+    return authUser
 }
 
 async function login(user: IUser) {

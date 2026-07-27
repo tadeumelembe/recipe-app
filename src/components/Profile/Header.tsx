@@ -7,12 +7,18 @@ import { View, Text, Avatar, Button } from "../Themed"
 import style from "../../constants/style";
 import Colors from "../../constants/Colors";
 import { IProfileHeader } from "../types";
+import { useAuth } from "../../contexts/authContext";
 
 
 
 const HeaderProfile: React.FC<IProfileHeader> = ({ headerHeight }) => {
     const router = useRouter()
+    const { user } = useAuth()
     const isOther = false
+
+    // displayName is null for accounts created before it was set, so fall back
+    // to the part of the email before the @.
+    const displayName = user?.name || user?.email?.split('@')[0] || ''
     return (
         <View style={[localStyle.root, { minHeight: headerHeight }]}>
             {isOther ?
@@ -37,12 +43,12 @@ const HeaderProfile: React.FC<IProfileHeader> = ({ headerHeight }) => {
                 </View>
             }
             <View style={localStyle.profileInfoSection}>
-                <Avatar size="xl" />
+                <Avatar size="xl" name={displayName} />
 
                 <View style={localStyle.nameSection}>
                     <View>
-                        <Text style={localStyle.profileName}>Nick Evans</Text>
-                        <Text style={localStyle.secondaryText}>Nick Evans</Text>
+                        <Text numberOfLines={1} style={localStyle.profileName}>{displayName}</Text>
+                        <Text numberOfLines={1} style={localStyle.secondaryText}>{user?.email}</Text>
                     </View>
 
                     <View style={localStyle.statsSection}>
@@ -78,6 +84,7 @@ const localStyle = StyleSheet.create({
         width: '100%'
     },
     nameSection: {
+        flex: 1,
         marginLeft: 15,
         justifyContent: 'space-evenly'
     },
