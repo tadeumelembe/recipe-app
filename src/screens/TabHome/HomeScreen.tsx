@@ -1,6 +1,7 @@
 import React from "react";
 import { ListRenderItemInfo, StyleSheet } from "react-native";
-import { Container, FlatList, ScrollView, View } from "../../components/Themed";
+import { FlatList, View } from "../../components/Themed";
+import { Screen } from "../../presentation/components/ui/Screen";
 import style from "../../constants/style";
 
 import Header from "../../components/Head";
@@ -22,7 +23,7 @@ export default function TabHome() {
 
 
     return (
-        <Container style={localStyles.root}>
+        <Screen style={localStyles.root}>
             <View style={style.horizontalPadding}>
                 <Header />
             </View>
@@ -36,7 +37,7 @@ export default function TabHome() {
                     <View style={{ marginTop: 15 }} />
                 }
             />
-        </Container>
+        </Screen>
     )
 }
 

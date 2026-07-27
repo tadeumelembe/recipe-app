@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "expo-router";
 
-import { Text, View, Container, ScrollView, TextInput, Button, TextButton } from "../../../components/Themed";
+import { Text, View, TextInput, Button, TextButton } from "../../../components/Themed";
+import { Screen } from "../../../presentation/components/ui/Screen";
 import AuthHeader from "../../../components/Auth/AuthHeader";
 import styles from "../../../constants/style";
 import authStyles from "../authStyles"
@@ -32,75 +33,64 @@ const Login: React.FC = () => {
     } = useSignInForm()
 
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        >
-            <ScrollView
-                style={authStyles.scrollView}
-                keyboardShouldPersistTaps={'handled'}
-            >
+        <Screen edges={[]} scrollable header={<AuthHeader title={'Recipe Rells'} />}>
+            <View style={[styles.horizontalPadding, { flex: 1 }]}>
 
-                <AuthHeader title={'Recipe Rells'} />
+                <Text style={authStyles.pageTitle}>
+                    Please login to continue.
+                </Text>
 
-                <Container style={{ flex: 1 }}>
+                <View style={authStyles.inputView}>
+                    <TextInput
+                        placeholder="Email address"
+                        autoCapitalize="none"
+                        control={control}
+                        rules={{
+                            required: 'Email is required',
+                            pattern: { value: helpers.EMAIL_VALIDATION, message: 'Email is invalid' },
+                        }}
+                        name="email"
+                    />
+                </View>
 
-                    <Text style={authStyles.pageTitle}>
-                        Please login to continue.
+                <View style={authStyles.inputView}>
+                    <TextInput
+                        placeholder="Password"
+                        autoCapitalize="none"
+                        secureTextEntry
+                        control={control}
+                        rules={{
+                            required: 'Password is required',
+                            min: { value: 8, message: "Password must have at least 8 characters" }
+                        }}
+                        name="password"
+                    />
+                </View>
+
+                <Text style={localStyle.formWarning}>{formError}</Text>
+
+                <Button
+                    btnText="Login"
+                    onPress={handleSubmit(submitForm)}
+                    loading={loading}
+                    disabled={loading}
+
+                />
+
+                <View style={[{ alignItems: 'center', marginTop: 40 }]}>
+                    <Text style={[styles.fontR, styles.fontNunitoMedium, styles.textMuted]}>
+                        New to xxxx?
                     </Text>
 
-                    <View style={authStyles.inputView}>
-                        <TextInput
-                            placeholder="Email address"
-                            autoCapitalize="none"
-                            control={control}
-                            rules={{
-                                required: 'Email is required',
-                                pattern: { value: helpers.EMAIL_VALIDATION, message: 'Email is invalid' },
-                            }}
-                            name="email"
-                        />
-                    </View>
-
-                    <View style={authStyles.inputView}>
-                        <TextInput
-                            placeholder="Password"
-                            autoCapitalize="none"
-                            secureTextEntry
-                            control={control}
-                            rules={{
-                                required: 'Password is required',
-                                min: { value: 8, message: "Password must have at least 8 characters" }
-                            }}
-                            name="password"
-                        />
-                    </View>
-
-                    <Text style={localStyle.formWarning}>{formError}</Text>
-
-                    <Button
-                        btnText="Login"
-                        onPress={handleSubmit(submitForm)}
-                        loading={loading}
-                        disabled={loading}
+                    <TextButton
+                        btnText="Create New Account"
+                        onPress={() => router.push('/sign-up')}
 
                     />
 
-                    <View style={[{ alignItems: 'center', marginTop: 40 }]}>
-                        <Text style={[styles.fontR, styles.fontNunitoMedium, styles.textMuted]}>
-                            New to xxxx?
-                        </Text>
-
-                        <TextButton
-                            btnText="Create New Account"
-                            onPress={() => router.push('/sign-up')}
-
-                        />
-
-                    </View>
-                </Container>
-            </ScrollView>
-        </KeyboardAvoidingView>
+                </View>
+            </View>
+        </Screen>
     )
 }
 

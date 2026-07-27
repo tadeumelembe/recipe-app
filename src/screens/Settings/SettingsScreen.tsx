@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Pressable, StyleSheet, View as DefaultView, Switch } from "react-native";
 
-import { Container, ScrollView, Text, View } from "../../components/Themed";
+import { ScrollView, Text, View } from "../../components/Themed";
+import { Screen } from "../../presentation/components/ui/Screen";
 import style from "../../constants/style";
 import Header from "../../components/Settings/Haader";
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
@@ -34,7 +35,7 @@ const Settings = () => {
     }
 
     return (
-        <Container>
+        <Screen style={style.horizontalPadding}>
             <Header />
 
             <ScrollView style={{ marginTop: 40 }}>
@@ -74,7 +75,7 @@ const Settings = () => {
 
             </ScrollView>
 
-        </Container>
+        </Screen>
     )
 }
 

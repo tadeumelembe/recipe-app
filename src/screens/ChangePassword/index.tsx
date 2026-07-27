@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Pressable, StyleSheet, View as DefaultView, Switch } from "react-native";
 
-import { Container, ScrollView, Text, View } from "../../components/Themed";
+import { Text, View } from "../../components/Themed";
+import { Screen } from "../../presentation/components/ui/Screen";
 import style from "../../constants/style";
 import Header from "../../components/Settings/Haader";
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
@@ -13,7 +14,7 @@ type ISwitchButton = DefaultView['props'] & {
 const ChangePassword = () => {
 
     return (
-        <Container>
+        <Screen style={style.horizontalPadding}>
             <Header />
 
 
@@ -21,7 +22,7 @@ const ChangePassword = () => {
 
 
 
-        </Container>
+        </Screen>
     )
 }
 
