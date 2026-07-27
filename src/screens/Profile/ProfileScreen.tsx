@@ -5,7 +5,8 @@ import { useRouter } from "expo-router";
 import { Tabs, MaterialTabBar, TabBarProps } from 'react-native-collapsible-tab-view'
 
 
-import { Container, ScrollView, View, Text, FlatList, ButtonRounded } from "../../components/Themed";
+import { View, Text, FlatList, ButtonRounded } from "../../components/Themed";
+import { Screen } from "../../presentation/components/ui/Screen";
 import Header from "../../components/Profile/Header";
 import style from "../../constants/style";
 import Colors from "../../constants/Colors";
@@ -24,7 +25,7 @@ const TabProfile = () => {
     }
 
     return (
-        <Container style={localStyles.root}>
+        <Screen style={localStyles.root}>
             <Tabs.Container
                 lazy={true}
                 onIndexChange={setActiveTabIndex}
@@ -42,7 +43,7 @@ const TabProfile = () => {
             </Tabs.Container>
 
             <ButtonRounded iconName="add" onPress={() => router.push('/add-recipe')} />
-        </Container>
+        </Screen>
     )
 }
 

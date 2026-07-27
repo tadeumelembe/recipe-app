@@ -5,7 +5,8 @@ import { useEvent } from 'expo';
 import { useFocusEffect, useLocalSearchParams, useNavigation } from 'expo-router';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
-import { Button, Container, ImageBackground, ScrollView, Text, View } from "../../components/Themed";
+import { Button, ImageBackground, ScrollView, Text, View } from "../../components/Themed";
+import { Screen } from "../../presentation/components/ui/Screen";
 import style from "../../constants/style";
 import Layout from "../../constants/Layout";
 
@@ -85,7 +86,7 @@ const CookingMode = () => {
     }, [isVideoReady])
 
     return (
-        <Container style={[localStyles.root, isFullScreen && { paddingTop: 0 }]}>
+        <Screen edges={isFullScreen ? [] : ['top']} style={localStyles.root}>
             <ScrollView contentContainerStyle={{ flex: 1 }}>
                 {!isFullScreen &&
                     <View style={style.horizontalPadding}>
@@ -153,7 +154,7 @@ const CookingMode = () => {
                 }
 
             </ScrollView>
-        </Container>
+        </Screen>
 
     )
 }

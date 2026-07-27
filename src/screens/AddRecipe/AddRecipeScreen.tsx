@@ -5,7 +5,8 @@ import { useForm, Controller } from "react-hook-form";
 import { ref as firebaseRef, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { Ionicons } from "@expo/vector-icons"
 
-import { Button, Container, Modal, ScrollView, Text, TextInput, View } from "../../components/Themed"
+import { Button, Modal, ScrollView, Text, TextInput, View } from "../../components/Themed"
+import { Screen } from "../../presentation/components/ui/Screen"
 import style from "../../constants/style"
 import Header from "../../components/Head"
 import Colors from "../../constants/Colors"
@@ -85,7 +86,7 @@ const AddRecipe = () => {
     }, [])
 
     return (
-        <Container style={{ paddingHorizontal: 0 }}>
+        <Screen style={{ paddingHorizontal: 0 }}>
             <View style={style.horizontalPadding}>
                 <Header type={'back'} />
             </View>
@@ -94,7 +95,7 @@ const AddRecipe = () => {
                 contentContainerStyle={localStyle.scrollView}
                 keyboardShouldPersistTaps={'handled'}
             >
-                <Container style={{ paddingTop: 15 }}>
+                <View style={[style.horizontalPadding, { paddingTop: 15, flex: 1 }]}>
 
                     <Text style={style.textH1}>New Recipe</Text>
                     <View style={localStyle.recipeNameView}>
@@ -189,7 +190,7 @@ const AddRecipe = () => {
 
                     <View style={{ height: 50 }} />
 
-                </Container>
+                </View>
 
 
 
@@ -250,7 +251,7 @@ const AddRecipe = () => {
                     />
                 </Modal>
             </>
-        </Container>
+        </Screen>
     )
 }
 
