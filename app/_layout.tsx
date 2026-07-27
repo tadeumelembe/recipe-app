@@ -3,6 +3,7 @@ import '../global.css';
 import { useEffect, useState } from 'react';
 import { AppState, StyleSheet, Text } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -11,6 +12,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { View } from '../src/components/Themed';
 import { AuthProvider, useAuth } from '../src/contexts/authContext';
+import { queryClient } from '../src/presentation/queryClient';
 import { usePreventScreenCapture } from 'expo-screen-capture';
 
 // The signed-out routes are the fallback: when `isSigned` is false the guarded
@@ -54,16 +56,18 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <AuthProvider>
-        <RootLayoutNav fontsLoaded={fontsLoaded} />
-      </AuthProvider>
-      {isOverlayVisible && (
-        <View style={StyleSheet.absoluteFill}>
-          <View style={styles.overlay}>
-            <Text style={styles.overlayText}>Maximo</Text>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <RootLayoutNav fontsLoaded={fontsLoaded} />
+        </AuthProvider>
+        {isOverlayVisible && (
+          <View style={StyleSheet.absoluteFill}>
+            <View style={styles.overlay}>
+              <Text style={styles.overlayText}>Maximo</Text>
+            </View>
           </View>
-        </View>
-      )}
+        )}
+      </QueryClientProvider>
     </SafeAreaProvider>
   );
 }

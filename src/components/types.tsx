@@ -44,18 +44,6 @@ export interface IProfileRecipeItem {
 /*End Profile Types **/
 
 
-/* ---------------------------- */
-/* Begin RecipeDetails Types **/
-export interface IRecipeDetailsHeader {
-    item: {
-        id: string;
-        title: string;
-        image: number;
-    };
-    headerHeight: number;
-}
-/*End RecipeDetails Types **/
-
 
 /** Add/edit recipes*/
 export interface IRecipeForm {

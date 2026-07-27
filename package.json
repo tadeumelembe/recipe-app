@@ -21,17 +21,22 @@
       "tsx",
       "js",
       "jsx",
+      "mjs",
       "json",
       "node"
     ],
+    "transform": {
+      "\\.mjs$": "babel-jest"
+    },
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-native-collapsible-tab-view|@shopify/flash-list))"
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-native-collapsible-tab-view|@shopify/flash-list|firebase|@firebase/.*))"
     ]
   },
   "dependencies": {
     "@expo/vector-icons": "^15.1.1",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@shopify/flash-list": "2.0.2",
+    "@tanstack/react-query": "^5.101.4",
     "expo": "^57.0.8",
     "expo-asset": "~57.0.7",
     "expo-constants": "~57.0.7",
