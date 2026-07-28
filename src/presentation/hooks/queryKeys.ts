@@ -5,6 +5,7 @@ export const queryKeys = {
         detail: (id: string) => [...queryKeys.recipes.all, "detail", id] as const,
     },
     users: {
+        detail: (id: string) => ["users", id, "detail"] as const,
         saved: (id: string) => ["users", id, "saved"] as const,
     },
 };

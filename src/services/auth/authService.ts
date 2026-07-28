@@ -1,5 +1,6 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../../firebaseConfig";
+import { firebaseUserRepository } from "../../data/repositories/FirebaseUserRepository";
 
 interface IUser {
     email: string;
@@ -12,6 +13,16 @@ async function create(user: IUser) {
 
     await updateProfile(authUser, {
         displayName: user.name,
+    })
+
+    // The feed and other cooks' views read author info from this Firestore
+    // doc, not from Firebase Auth (the client SDK can't look up another
+    // user's Auth profile by uid).
+    await firebaseUserRepository.create({
+        id: authUser.uid,
+        name: user.name ?? null,
+        email: user.email,
+        avatarUrl: null,
     })
 
     // onAuthStateChanged already fired when the account was created, back when
