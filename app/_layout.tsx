@@ -100,7 +100,7 @@ function RootLayoutNav({ fontsLoaded }: { fontsLoaded: boolean }) {
 
         <Stack.Protected guard={!isSigned}>
           <Stack.Screen name="sign-in" />
-          <Stack.Screen name="sign-up" />
+          <Stack.Screen name="sign-up" options={{ presentation: "modal" }} />
         </Stack.Protected>
       </Stack>
     </View>

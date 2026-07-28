@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
-import { Text, View, TextInput, Button, TextButton } from "../src/components/Themed";
+import { Text, View, TextInput, TextButton } from "../src/components/Themed";
 import { Screen } from "../src/presentation/components/ui/Screen";
 import AuthHeader from "../src/components/Auth/AuthHeader";
 import styles from "../src/constants/style";
@@ -10,6 +10,7 @@ import authStyles from "../src/constants/authStyles"
 
 import { helpers } from "../src/utils/constants";
 import { useSignInForm } from "../src/hooks/useSignInForm";
+import { Button } from "../src/presentation/components/ui/Button";
 
 export default function Login() {
 
@@ -61,7 +62,7 @@ export default function Login() {
                 <Text style={localStyle.formWarning}>{formError}</Text>
 
                 <Button
-                    btnText="Login"
+                    title="Login"
                     onPress={handleSubmit(submitForm)}
                     loading={loading}
                     disabled={loading}
