@@ -2,9 +2,10 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
-import { Text, View, Button, TextButton } from "../src/components/Themed";
+import { Text, View, TextButton } from "../src/components/Themed";
 import { Screen } from "../src/presentation/components/ui/Screen";
 import { Input } from "../src/presentation/components/ui/Input";
+import { Button } from "../src/presentation/components/ui/Button";
 import styles from "../src/constants/style";
 import AuthHeader from "../src/components/Auth/AuthHeader";
 import authStyles from "../src/constants/authStyles"
@@ -94,7 +95,7 @@ export default function SignUp() {
                 <Text style={localStyle.formWarning}>{formError}</Text>
 
                 <Button
-                    btnText="Create Account"
+                    title="Create Account"
                     onPress={handleSubmit(submitForm)}
                     loading={loading}
                     disabled={loading}
