@@ -31,42 +31,35 @@
   --font-nunito-bold: "nunito-bold";
 
   --text-h1: 40px;
-  --text-h1--line-height: 44px;
+   /*--text-h1--line-height: 44px;*/
   --text-h1--letter-spacing: -0.5px;
 
   --text-h2: 32px;
-  --text-h2--line-height: 32px;
+  /*--text-h2--line-height: 32px;*/
 
   --text-h3: 24px;
-  --text-h3--line-height: 32px;
+  /*--text-h3--line-height: 32px;*/
 
   --text-h4: 20px;
-  --text-h4--line-height: 24px;
+  /*--text-h4--line-height: 24px;*/
 
   --text-h5: 16px;
-  --text-h5--line-height: 20px;
+  /*--text-h5--line-height: 20px;*/
 
   --text-card-item: 18px;
-  --text-card-item--line-height: 32px;
+  /*--text-card-item--line-height: 32px;*/
 
   --text-lead: 16px;
-  --text-lead--line-height: 22px;
+  /*--text-lead--line-height: 22px;*/
 
   --text-body: 14px;
-  --text-body--line-height: 22px;
+  /*--text-body--line-height: 22px;*/
 
   --text-button: 16px;
-  --text-button--line-height: 20px;
+  /*--text-button--line-height: 20px;*/
   --text-button--letter-spacing: 0.32px;
 
   --text-caption: 12px;
-  --text-caption--line-height: 16px;
+  /*--text-caption--line-height: 16px;*/
   --text-caption--letter-spacing: 0.4px;
-}
-
-@utility text-button {
-  font-size: var(--text-button);
-  line-height: var(--text-button--line-height);
-  font-weight: 700;
-  letter-spacing: var(--text-button--letter-spacing);
 }
