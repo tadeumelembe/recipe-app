@@ -2,14 +2,14 @@ import React from "react"
 import { StyleSheet } from "react-native"
 import { Tabs } from "react-native-collapsible-tab-view"
 
-import RecipeItem from "../../../components/Profile/RecipeItems"
+import RecipeItem from "./RecipeItems"
 
-import { View } from "../../../components/Themed"
-import style from "../../../constants/style"
-import { data } from "../data"
+import { View } from "../Themed"
+import style from "../../constants/style"
+import { data } from "../../constants/profileData"
 
 
-const Saved: React.FC = () => {
+const Recipe: React.FC = () => {
 
     function renderItem({ item }: any) {
         return <RecipeItem item={item} />;
@@ -35,7 +35,7 @@ const Saved: React.FC = () => {
     )
 }
 
-export default Saved
+export default Recipe
 
 const localStyles = StyleSheet.create({
     flatListStyle: {

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Control, UseFormHandleSubmit, UseFormWatch, useForm } from "react-hook-form";
-import { authService } from "../../../../services/auth/authService";
+import { authService } from "../services/auth/authService";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../../../firebaseConfig";
+import { auth } from "../../firebaseConfig";
 
 interface IFormData {
     name: string;
