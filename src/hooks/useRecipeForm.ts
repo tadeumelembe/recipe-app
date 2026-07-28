@@ -1,8 +1,8 @@
 import { Ref, useEffect, useState } from "react";
-import { IModalRef, IRecipeForm } from "../../../components/types";
-import { initialRecipeForm } from "../../../constants/initialData";
-import { pickImage, pickVideo } from "../../../utils/constants";
-import { recipeService } from "../../../services/recipe/recipeService";
+import { IModalRef, IRecipeForm } from "../components/types";
+import { initialRecipeForm } from "../constants/initialData";
+import { pickImage, pickVideo } from "../utils/constants";
+import { recipeService } from "../services/recipe/recipeService";
 
 interface IUseRecipeForm {
     modalRef: any//Ref<IModalRef | null | undefined>;
