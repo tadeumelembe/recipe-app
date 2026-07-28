@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Control, UseFormHandleSubmit, UseFormWatch, useForm } from "react-hook-form";
-import { authService } from "../../../../services/auth/authService";
-import { useAuth } from "../../../../contexts/authContext";
+import { authService } from "../services/auth/authService";
+import { useAuth } from "../contexts/authContext";
 
 interface IFormData {
     name: string;

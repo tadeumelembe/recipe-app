@@ -1,1 +1,372 @@
-export { default } from '../src/screens/AddRecipe';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Image, Pressable, StyleSheet } from "react-native"
+import * as ImagePicker from 'expo-image-picker';
+import { useForm } from "react-hook-form";
+import { ref as firebaseRef, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { Ionicons } from "@expo/vector-icons"
+
+import { Button, Modal, ScrollView, Text, TextInput, View } from "../src/components/Themed"
+import { Screen } from "../src/presentation/components/ui/Screen"
+import style from "../src/constants/style"
+import Header from "../src/components/Head"
+import Colors from "../src/constants/Colors"
+import { getBlobFromUri } from "../src/utils/helpers";
+import { storage } from "../firebaseConfig";
+import { IModalRef } from "../src/components/types";
+import CardContent from "../src/components/AddRecipe/CardContent";
+import CameraLibraryModal from "../src/components/CameraLibraryModal";
+import EditGallery from "../src/components/AddRecipe/EditGallery";
+import EditIngredients from "../src/components/AddRecipe/EditIngredients";
+import EditDirections from "../src/components/AddRecipe/EditDirections";
+import { useRecipeForm } from "../src/hooks/useRecipeForm";
+
+export default function AddRecipe() {
+    // React 19 requires an explicit initial value for useRef, and RefObject
+    // (not Ref) is what exposes .current to callers.
+    const modalRef = useRef<IModalRef | null>(null);
+    const modalGalleryRef = useRef<IModalRef | null>(null);
+    const modalIngredientsRef = useRef<IModalRef | null>(null);
+    const modalDirectionsRef = useRef<IModalRef | null>(null);
+
+    useEffect(() => {
+        const status = ImagePicker.requestMediaLibraryPermissionsAsync();
+    }, [])
+
+    const [modalContent, setModalContent] = useState('');
+
+    const { control, handleSubmit, watch } = useForm({
+        defaultValues: {
+            name: '',
+        }
+    });
+
+    const {
+        handleCoverImage,
+        handleDirectionsVideo,
+        handleGalleryImages,
+        handleGalleryRemove,
+        handleRemoveVideo,
+        form,
+        setForm,
+        loading,
+        submitRecipeForm
+    } = useRecipeForm({ modalRef, modalGalleryRef })
+
+    const handleOpenModal = useCallback((content: string) => {
+        switch (content) {
+            case 'camera':
+                setModalContent('camera')
+                break;
+
+            case 'directions':
+                setModalContent('directions')
+                break;
+
+            case 'gallery-pick-camera':
+                setModalContent('gallery-pick-camera')
+                break;
+
+            case 'edit-ingredients':
+                return modalIngredientsRef.current?.open()
+
+            case 'edit-gallery':
+                return modalGalleryRef.current?.open()
+
+            case 'edit-directions':
+                return modalDirectionsRef.current?.open()
+
+            default:
+                break;
+        }
+        modalRef.current?.open()
+    }, [])
+
+    return (
+        <Screen style={{ paddingHorizontal: 0 }}>
+            <View style={style.horizontalPadding}>
+                <Header type={'back'} />
+            </View>
+
+            <ScrollView
+                contentContainerStyle={localStyle.scrollView}
+                keyboardShouldPersistTaps={'handled'}
+            >
+                <View style={[style.horizontalPadding, { paddingTop: 15, flex: 1 }]}>
+
+                    <Text style={style.textH1}>New Recipe</Text>
+                    <View style={localStyle.recipeNameView}>
+                        <Pressable onPress={() => handleOpenModal('camera')} style={[localStyle.cover, form.coverImage?.uri && { borderWidth: 0 }]}>
+                            {form.coverImage?.uri ?
+                                <Image
+                                    resizeMode="cover"
+                                    style={localStyle.coverImage}
+                                    source={{ uri: form.coverImage?.uri }}
+                                />
+                                :
+                                <Ionicons name="add" size={20} color={Colors.light.text} />
+                            }
+
+                        </Pressable>
+                        <View style={localStyle.recipeNameInputView}>
+                            <TextInput
+                                placeholder={'Recipe Name'}
+                                autoCapitalize='sentences'
+                                control={control}
+                                rules={{
+                                    required: 'Name is required',
+                                    minLength: {
+                                        value: 3,
+                                        message: 'Name should be at least 3 characters long',
+                                    },
+                                    maxLength: {
+                                        value: 15,
+                                        message: 'Name should be max 15 characters long',
+                                    }
+                                }}
+                                name="name"
+                            />
+                        </View>
+                    </View>
+
+                    <CardContent
+                        name={'Gallery'}
+                        type={'gallery'}
+                        items={form.galleryImages}
+                        onPress={handleOpenModal}
+                        placeHolder={'Upload Images or Open Camera'}
+                    />
+
+                    <CardContent
+                        name={'Ingredients'}
+                        type={'ingredients'}
+                        items={form.ingredients}
+                        onPress={handleOpenModal}
+
+                        placeHolder={'Add Ingredient'}
+
+                    />
+
+                    <CardContent
+                        name={'How to Cook'}
+                        onPress={handleOpenModal}
+                        placeHolder={'Add Directions'}
+                        type="directions"
+                    />
+
+                    <CardContent
+                        name={'Additional Info'}
+                        placeHolder={'Add Info'}
+                    />
+
+                    <View style={[style.row, { gap: 10, marginVertical: 20 }]}>
+                        <Button
+                            btnText="Draft"
+                            style={{ flex: 1 }}
+                            btnSecondary={true}
+                            disabled={loading}
+                        />
+                        <Button
+                            disabled={loading}
+                            loading={loading}
+                            onPress={handleSubmit(submitRecipeForm)} btnText="Post" style={{ flex: 1 }}
+                        />
+
+                    </View>
+
+                    <View style={{ height: 50 }} />
+
+                </View>
+
+
+
+            </ScrollView>
+
+            <>
+                <Modal resizable={true} title={"Upload image"} ref={modalRef}>
+                    {modalContent == 'camera' &&
+                        <CameraLibraryModal
+                            openCamera={() => handleCoverImage('camera')}
+                            openLibrary={() => handleCoverImage('library')}
+                        />
+                    }
+                    {modalContent == 'gallery-pick-camera' &&
+                        <CameraLibraryModal
+                            openCamera={() => handleGalleryImages('camera')}
+                            openLibrary={() => handleGalleryImages('library')}
+                        />
+                    }
+
+                    {modalContent == 'directions' &&
+                        <CameraLibraryModal
+                            openCamera={() => handleDirectionsVideo('camera')}
+                            openLibrary={() => handleDirectionsVideo('library')}
+                        />
+                    }
+
+                </Modal>
+
+                <Modal resizable={true} title={"Edit gallery"} ref={modalGalleryRef}>
+                    <EditGallery
+                        items={form.galleryImages}
+                        openCamera={handleOpenModal}
+                        handleGalleryRemove={handleGalleryRemove}
+                        thisModalRef={modalGalleryRef.current}
+                    />
+                </Modal>
+
+                <Modal resizable={true} title={"Edit ingredients"} ref={modalIngredientsRef}>
+                    <EditIngredients
+                        items={form.ingredients}
+                        openCamera={handleOpenModal}
+                        handleGalleryRemove={handleGalleryRemove}
+                        setForm={setForm}
+                        form={form}
+                        thisModalRef={modalGalleryRef.current}
+                    />
+                </Modal>
+
+                <Modal resizable={true} title={"Edit directions"} ref={modalDirectionsRef}>
+                    <EditDirections
+                        items={form.ingredients}
+                        openCamera={handleOpenModal}
+                        handleGalleryRemove={handleGalleryRemove}
+                        form={form}
+                        handleRemoveVideo={handleRemoveVideo}
+                        thisModalRef={modalGalleryRef.current}
+                    />
+                </Modal>
+            </>
+        </Screen>
+    )
+}
+
+const localStyle = StyleSheet.create({
+    scrollView: {
+    },
+    recipeNameView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+        marginTop: 30,
+    },
+    recipeNameInputView: {
+        flex: 1
+    },
+    cover: {
+        width: 62,
+        height: 62,
+        marginRight: 10,
+        borderWidth: 1,
+        borderColor: Colors.light.text,
+        borderRadius: 8,
+        borderStyle: 'dashed',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    pressableArea: {
+        width: '100%',
+        marginRight: 10,
+        borderWidth: 1,
+        borderColor: Colors.light.text,
+        flexDirection: 'row',
+        borderRadius: 8,
+        borderStyle: 'dashed',
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        alignItems: 'center',
+        marginTop: 10
+    },
+    inputContainer: {
+        ...style.card,
+        backgroundColor: '#fff',
+        elevation: 8,
+        zIndex: 999,
+        padding: 15,
+        marginTop: 20,
+        width: '100%',
+    },
+    placeHolder: {
+        ...style.fontNunitoRegular,
+        ...style.fontM,
+        ...style.textMuted2,
+        marginLeft: 15
+    },
+    mediaTypePickerContainer: {
+        alignItems: 'center',
+    },
+    categorySection: {
+        marginTop: 20
+    },
+    categoryRow: {
+        flexDirection: 'row',
+        flex: 1,
+        gap: 15,
+        marginTop: 10
+    },
+    coverImage: {
+        ...style.strechImage,
+        borderRadius: 8
+    },
+    categoryCard: {
+        ...style.card,
+        elevation: 6,
+        padding: 5,
+        backgroundColor: '#fff',
+        flexGrow: 1
+    },
+})
+
+const handleFireabseUplaod = async (uri: string) => {
+    const blob = await getBlobFromUri(uri)
+
+    const storageRef = firebaseRef(storage, "images/recipes/" + Date.now().toString());
+
+    const metadata = {
+        contentType: 'image/jpeg',
+    };
+
+    const uploadTask = uploadBytesResumable(storageRef, blob);
+
+    // 'file' comes from the Blob or File API
+    uploadTask.on('state_changed',
+        (snapshot) => {
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+                case 'paused':
+                    console.log('Upload is paused');
+                    break;
+                case 'running':
+                    console.log('Upload is running');
+                    break;
+            }
+        },
+        (error) => {
+            switch (error.code) {
+                case 'storage/unauthorized':
+                    // User doesn't have permission to access the object
+                    break;
+                case 'storage/canceled':
+                    // User canceled the upload
+                    break;
+
+                // ...
+
+                case 'storage/unknown':
+                    // Unknown error occurred, inspect error.serverResponse
+                    break;
+            }
+            blob.close()
+        },
+        () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                console.log('File available at', downloadURL);
+            });
+            blob.close()
+        }
+    );
+}

@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ImageBackground, Text, View } from "../Themed";
 import styles from "../../constants/style";
-import authStyles from "../../screens/Auth/authStyles";
+import authStyles from "../../constants/authStyles";
 
 import { IHead } from "../types";
 
