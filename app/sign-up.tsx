@@ -11,6 +11,7 @@ import AuthHeader from "../src/components/Auth/AuthHeader";
 import authStyles from "../src/constants/authStyles"
 import { helpers } from "../src/utils/constants";
 import { useSignUpForm } from "../src/hooks/useSignUpForm";
+import { Button } from "../src/presentation/components/ui/Button";
 
 export default function SignUp() {
 
