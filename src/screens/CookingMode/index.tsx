@@ -5,7 +5,7 @@ import { useEvent } from 'expo';
 import { useFocusEffect, useLocalSearchParams, useNavigation } from 'expo-router';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
-import { Button, ImageBackground, ScrollView, Text, View } from "../../components/Themed";
+import { ImageBackground, ScrollView, Text, View } from "../../components/Themed";
 import { Screen } from "../../presentation/components/ui/Screen";
 import style from "../../constants/style";
 import Layout from "../../constants/Layout";

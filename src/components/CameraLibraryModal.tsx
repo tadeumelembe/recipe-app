@@ -2,7 +2,8 @@ import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
-import { Button, View } from './Themed'
+import { View } from './Themed'
+import { Button } from '../presentation/components/ui/Button'
 import style from '../constants/style'
 import Colors from '../constants/Colors'
 
@@ -15,16 +16,15 @@ const CameraLibraryModal: React.FC<ICameraLibraryModal> = (props) => {
     return (
         <View style={localStyle.root}>
             <Button
-                btnText="Open Camera"
-                style={[localStyle.button]}
+                title="Open Camera"
+                style={localStyle.button}
                 onPress={props.openCamera}
             />
             <Button
-
-                btnText="Pick from library"
+                title="Pick from library"
                 onPress={props.openLibrary}
-                btnSecondary={true}
-                style={[localStyle.button,{ marginTop: 10 }]}
+                variant="secondary"
+                style={[localStyle.button, { marginTop: 10 }]}
             />
         </View>
     )

@@ -283,20 +283,6 @@ export function TextInput(props: TextInputProps) {
   );
 }
 
-export function Button(props: TouchableOpacityProps) {
-  const { btnText, style, loading, btnSecondary, ...otherProps } = props
-
-  return (
-    <DefaultTouchableOpacity style={[btnSecondary == true ? styles.btnSecondary : styles.btn, style]} {...otherProps}>
-      {loading ?
-        <ActivityIndicator size={'small'} color={'#fff'} />
-        :
-        <Text style={[styles.fontNunitoBold, styles.fontM, btnSecondary ? styles.btnSecondaryText : styles.btn1Text]}>{btnText}</Text>
-      }
-    </DefaultTouchableOpacity>
-  )
-}
-
 export function ButtonRounded(props: TouchableOpacityProps) {
   const { btnText, iconName, style, ...otherProps } = props
 

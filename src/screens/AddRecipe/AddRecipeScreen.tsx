@@ -5,8 +5,9 @@ import { useForm, Controller } from "react-hook-form";
 import { ref as firebaseRef, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { Ionicons } from "@expo/vector-icons"
 
-import { Button, Modal, ScrollView, Text, TextInput, View } from "../../components/Themed"
+import { Modal, ScrollView, Text, TextInput, View } from "../../components/Themed"
 import { Screen } from "../../presentation/components/ui/Screen"
+import { Button } from "../../presentation/components/ui/Button"
 import style from "../../constants/style"
 import Header from "../../components/Head"
 import Colors from "../../constants/Colors"
@@ -175,15 +176,15 @@ const AddRecipe = () => {
                     */}
                     <View style={[style.row, { gap: 10, marginVertical: 20 }]}>
                         <Button
-                            btnText="Draft"
+                            title="Draft"
                             style={{ flex: 1 }}
-                            btnSecondary={true}
+                            variant="secondary"
                             disabled={loading}
                         />
                         <Button
                             disabled={loading}
                             loading={loading}
-                            onPress={handleSubmit(submitRecipeForm)} btnText="Post" style={{ flex: 1 }}
+                            onPress={handleSubmit(submitRecipeForm)} title="Post" style={{ flex: 1 }}
                         />
 
                     </View>

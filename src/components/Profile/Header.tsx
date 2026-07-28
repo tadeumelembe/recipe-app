@@ -3,7 +3,8 @@ import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
-import { View, Text, Avatar, Button } from "../Themed"
+import { View, Text, Avatar } from "../Themed"
+import { Button } from "../../presentation/components/ui/Button"
 import style from "../../constants/style";
 import Colors from "../../constants/Colors";
 import { IProfileHeader } from "../types";
@@ -61,7 +62,7 @@ const HeaderProfile: React.FC<IProfileHeader> = ({ headerHeight }) => {
                 </View>
             </View>
             {isOther ?
-                <Button style={localStyle.followButton} btnText="Follow" />
+                <Button style={localStyle.followButton} title="Follow" />
                 :
                 <View style={[style.borderSeparator, { marginTop: 25 }]} />
 

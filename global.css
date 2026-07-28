@@ -63,3 +63,10 @@
   --text-caption--line-height: 16px;
   --text-caption--letter-spacing: 0.4px;
 }
+
+@utility text-button {
+  font-size: var(--text-button);
+  line-height: var(--text-button--line-height);
+  font-weight: 700;
+  letter-spacing: var(--text-button--letter-spacing);
+}

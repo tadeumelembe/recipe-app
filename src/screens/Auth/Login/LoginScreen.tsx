@@ -3,8 +3,9 @@ import { StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "expo-router";
 
-import { Text, View, TextInput, Button, TextButton } from "../../../components/Themed";
+import { Text, View, TextInput, TextButton } from "../../../components/Themed";
 import { Screen } from "../../../presentation/components/ui/Screen";
+import { Button } from "../../../presentation/components/ui/Button";
 import AuthHeader from "../../../components/Auth/AuthHeader";
 import styles from "../../../constants/style";
 import authStyles from "../authStyles"
@@ -70,11 +71,10 @@ const Login: React.FC = () => {
                 <Text style={localStyle.formWarning}>{formError}</Text>
 
                 <Button
-                    btnText="Login"
+                    title="Login"
                     onPress={handleSubmit(submitForm)}
                     loading={loading}
                     disabled={loading}
-
                 />
 
                 <View style={[{ alignItems: 'center', marginTop: 40 }]}>
