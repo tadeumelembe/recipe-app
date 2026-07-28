@@ -6,6 +6,7 @@ import { useAuth } from "../contexts/authContext";
 interface IFormData {
     name: string;
     password: string;
+    password2: string;
     email: string
 }
 

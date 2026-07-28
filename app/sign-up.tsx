@@ -2,8 +2,10 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
-import { Text, View, TextInput, TextButton } from "../src/components/Themed";
+import { Text, View, TextButton } from "../src/components/Themed";
 import { Screen } from "../src/presentation/components/ui/Screen";
+import { Input } from "../src/presentation/components/ui/Input";
+import { Button } from "../src/presentation/components/ui/Button";
 import styles from "../src/constants/style";
 import AuthHeader from "../src/components/Auth/AuthHeader";
 import authStyles from "../src/constants/authStyles"
@@ -34,67 +36,62 @@ export default function SignUp() {
                     Create a new account
                 </Text>
 
-                <View style={authStyles.inputView}>
-                    <TextInput
-                        placeholder="Full name"
-                        autoCapitalize="none"
-                        control={control}
-                        rules={{
-                            required: 'Name is required',
-                            minLength: {
-                                value: 3,
-                                message: 'Name should be at least 3 characters long',
-                            },
-                            maxLength: {
-                                value: 24,
-                                message: 'Name should be max 24 characters long',
-                            }
-                        }}
-                        name="name"
-                    />
-                </View>
+                <Input
+                    className="mb-[30px]"
+                    label="Full name"
+                    autoCapitalize="none"
+                    control={control}
+                    rules={{
+                        required: 'Name is required',
+                        minLength: {
+                            value: 3,
+                            message: 'Name should be at least 3 characters long',
+                        },
+                        maxLength: {
+                            value: 24,
+                            message: 'Name should be max 24 characters long',
+                        }
+                    }}
+                    name="name"
+                />
 
-                <View style={authStyles.inputView}>
-                    <TextInput
-                        placeholder="Email"
-                        autoCapitalize="none"
-                        control={control}
-                        inputMode='email'
-                        rules={{
-                            required: 'Email is required',
-                            pattern: { value: helpers.EMAIL_VALIDATION, message: 'Email is invalid' },
-                        }}
-                        name="email"
-                    />
-                </View>
+                <Input
+                    className="mb-[30px]"
+                    label="Email"
+                    autoCapitalize="none"
+                    control={control}
+                    inputMode='email'
+                    rules={{
+                        required: 'Email is required',
+                        pattern: { value: helpers.EMAIL_VALIDATION, message: 'Email is invalid' },
+                    }}
+                    name="email"
+                />
 
-                <View style={authStyles.inputView}>
-                    <TextInput
-                        placeholder="Password"
-                        autoCapitalize="none"
-                        secureTextEntry
-                        control={control}
-                        rules={{
-                            required: 'Password is required',
-                            min: { value: 8, message: "Password must have at least 8 characters" }
-                        }}
-                        name="password"
-                    />
-                </View>
+                <Input
+                    className="mb-[30px]"
+                    label="Password"
+                    autoCapitalize="none"
+                    secureTextEntry
+                    control={control}
+                    rules={{
+                        required: 'Password is required',
+                        min: { value: 8, message: "Password must have at least 8 characters" }
+                    }}
+                    name="password"
+                />
 
-
-                <View style={authStyles.inputView}>
-                    <TextInput
-                        placeholder="Confirm Password"
-                        autoCapitalize="none"
-                        secureTextEntry
-                        control={control}
-                        rules={{
-                            validate: (value: string) => (value === pwd || pwd == '') || 'Password do not match',
-                        }}
-                        name="password2"
-                    />
-                </View>
+                <Input
+                    className="mb-[30px]"
+                    label="Confirm Password"
+                    autoCapitalize="none"
+                    secureTextEntry
+                    control={control}
+                    rules={{
+                        validate: (value: string) => (value === pwd || pwd == '') || 'Password do not match',
+                    }}
+                    name="password2"
+                />
 
                 <Text style={localStyle.formWarning}>{formError}</Text>
 
